@@ -1,0 +1,373 @@
+/*
+ * Copyright (c) 2022, Connect Tech Inc.  All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/ {
+    tegra-capture-vi {
+        num-channels = <8>;
+        status = "disabled";
+        ports {
+            #address-cells = <1>;
+            #size-cells = <0>;
+            port@0 {
+                reg = <0>;
+                status = "disabled";
+                vi_in0: endpoint {
+                    vc-id = <0>;
+                    status = "disabled";
+                    remote-endpoint = <&csi_out0>;
+                };
+            };
+            port@1 {
+                reg = <1>;
+                status = "disabled";
+                vi_in1: endpoint {
+                    vc-id = <0>;
+                    status = "disabled";
+                    remote-endpoint = <&csi_out1>;
+                };
+            };
+            port@2 {
+                reg = <2>;
+                status = "disabled";
+                vi_in2: endpoint {
+                    vc-id = <0>;
+                    status = "disabled";
+                    remote-endpoint = <&csi_out2>;
+                };
+            };
+            port@3 {
+                reg = <3>;
+                status = "disabled";
+                vi_in3: endpoint {
+                    vc-id = <0>;
+                    status = "disabled";
+                    remote-endpoint = <&csi_out3>;
+                };
+            };
+            port@4 {
+                reg = <4>;
+                status = "disabled";
+                vi_in4: endpoint {
+                    vc-id = <0>;
+                    status = "disabled";
+                    remote-endpoint = <&csi_out4>;
+                };
+            };
+            port@5 {
+                reg = <5>;
+                status = "disabled";
+                vi_in5: endpoint {
+                    vc-id = <0>;
+                    status = "disabled";
+                    remote-endpoint = <&csi_out5>;
+                };
+            };
+            port@6 {
+                reg = <6>;
+                status = "disabled";
+                vi_in6: endpoint {
+                    vc-id = <0>;
+                    status = "disabled";
+                    remote-endpoint = <&csi_out6>;
+                };
+            };
+            port@7 {
+                reg = <7>;
+                status = "disabled";
+                vi_in7: endpoint {
+                    vc-id = <0>;
+                    status = "disabled";
+                    remote-endpoint = <&csi_out7>;
+                };
+            };
+        };
+    };
+
+    host1x@13e00000 {
+		nvcsi@15a00000 {
+			num-channels = <8>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+            status = "disabled";
+			
+			channel@0 {
+                status = "disabled";
+				reg = <0>;
+				ports {
+				    #address-cells = <1>;
+					#size-cells = <0>;
+					port@0 {
+						reg = <0>;
+                        status = "disabled";
+						csi_in0: endpoint@0 {
+                            status = "disabled";
+						};
+					};
+					port@1 {
+                        status = "disabled";
+						reg = <1>;
+						csi_out0: endpoint@1 {
+                            status = "disabled";
+							remote-endpoint = <&vi_in0>;
+						};
+					};
+				};
+			};
+			channel@1 {
+                status = "disabled";
+				reg = <1>;
+				ports {
+				    #address-cells = <1>;
+					#size-cells = <0>;
+					port@0 {
+						reg = <0>;
+                        status = "disabled";
+						csi_in1: endpoint@2 {
+                            status = "disabled";
+						};
+					};
+					port@1 {
+                        status = "disabled";
+						reg = <1>;
+						csi_out1: endpoint@3 {
+                            status = "disabled";
+							remote-endpoint = <&vi_in1>;
+						};
+					};
+				};
+			};
+			channel@2 {
+                status = "disabled";
+				reg = <2>;
+				ports {
+				    #address-cells = <1>;
+					#size-cells = <0>;
+					port@0 {
+						reg = <0>;
+                        status = "disabled";
+						csi_in2: endpoint@4 {
+                            status = "disabled";
+						};
+					};
+					port@1 {
+                        status = "disabled";
+						reg = <1>;
+						csi_out2: endpoint@5 {
+                            status = "disabled";
+							remote-endpoint = <&vi_in2>;
+						};
+					};
+				};
+			};
+			
+			channel@3 {
+                status = "disabled";
+				reg = <3>;
+				ports {
+				    #address-cells = <1>;
+					#size-cells = <0>;
+					port@0 {
+						reg = <0>;
+                        status = "disabled";
+						csi_in3: endpoint@6 {
+                            status = "disabled";
+						};
+					};
+					port@1 {
+                        status = "disabled";
+						reg = <1>;
+						csi_out3: endpoint@7 {
+                            status = "disabled";
+							remote-endpoint = <&vi_in3>;
+						};
+					};
+				};
+			};
+			channel@4 {
+                status = "disabled";
+				reg = <4>;
+				ports {
+				    #address-cells = <1>;
+					#size-cells = <0>;
+					port@0 {
+						reg = <0>;
+                        status = "disabled";
+						csi_in4: endpoint@8 {
+                            status = "disabled";
+						};
+					};
+					port@1 {
+                        status = "disabled";
+						reg = <1>;
+						csi_out4: endpoint@9 {
+                            status = "disabled";
+							remote-endpoint = <&vi_in4>;
+						};
+					};
+				};
+			};
+			channel@5 {
+                status = "disabled";
+				reg = <5>;
+				ports {
+				    #address-cells = <1>;
+					#size-cells = <0>;
+					port@0 {
+						reg = <0>;
+                        status = "disabled";
+						csi_in5: endpoint@10 {
+                            status = "disabled";
+						};
+					};
+					port@1 {
+                        status = "disabled";
+						reg = <1>;
+						csi_out5: endpoint@11 {
+                            status = "disabled";
+							remote-endpoint = <&vi_in5>;
+						};
+					};
+				};
+			};
+			channel@6 {
+                status = "disabled";
+				reg = <6>;
+				ports {
+				    #address-cells = <1>;
+					#size-cells = <0>;
+					port@0 {
+						reg = <0>;
+                        status = "disabled";
+						csi_in6: endpoint@12 {
+                            status = "disabled";
+						};
+					};
+					port@1 {
+                        status = "disabled";
+						reg = <1>;
+						csi_out6: endpoint@13 {
+                            status = "disabled";
+							remote-endpoint = <&vi_in6>;
+						};
+					};
+				};
+			};
+			channel@7 {
+                status = "disabled";
+				reg = <7>;
+				ports {
+				    #address-cells = <1>;
+					#size-cells = <0>;
+					port@0 {
+						reg = <0>;
+                        status = "disabled";
+						csi_in7: endpoint@14 {
+                            status = "disabled";
+						};
+					};
+					port@1 {
+                        status = "disabled";
+						reg = <1>;
+						csi_out7: endpoint@15 {
+                            status = "disabled";
+							remote-endpoint = <&vi_in7>;
+						};
+					};
+				};
+			};
+		};
+	};
+
+    tegra-camera-platform {
+        compatible = "nvidia, tegra-camera-platform";
+
+        modules {
+            module0 {
+                status = "disabled";
+                badge = "cti_topleft_cam";
+                position = "topleft";
+                orientation = "1";
+                drivernode0 {
+                    pcl_id = "v4l2_sensor";
+                };
+            };
+            module1 {
+                status = "disabled";
+                badge = "cti_topright_cam";
+                position = "topright";
+                orientation = "1";
+                drivernode0 {
+                    pcl_id = "v4l2_sensor";
+                };
+            };
+            module2 {
+                status = "disabled";
+                badge = "cti_centerleft_cam";
+                position = "centerleft";
+                orientation = "1";
+                drivernode0 {
+                    pcl_id = "v4l2_sensor";
+                };
+            };
+            module3 {
+                status = "disabled";
+                badge = "cti_centerright_cam";
+                position = "centerright";
+                orientation = "1";
+                drivernode0 {
+                    pcl_id = "v4l2_sensor";
+                };
+            };
+            module4 {
+                status = "disabled";
+                badge = "cti_bottomleft_cam";
+                position = "bottomleft";
+                orientation = "1";
+                drivernode0 {
+                    pcl_id = "v4l2_sensor";
+                };
+            };
+            module5 {
+                status = "disabled";
+                badge = "cti_bottomright_cam";
+                position = "bottomright";
+                orientation = "1";
+                drivernode0 {
+                    pcl_id = "v4l2_sensor";
+                };
+            };
+            module6 {
+                status = "disabled";
+                badge = "cti_front_cam";
+                position = "front";
+                orientation = "1";
+                drivernode0 {
+                    pcl_id = "v4l2_sensor";
+                };
+            };
+            module7 {
+                status = "disabled";
+                badge = "cti_rear_cam";
+                position = "rear";
+                orientation = "1";
+                drivernode0 {
+                    pcl_id = "v4l2_sensor";
+                };
+            };
+        };
+    };
+};
+

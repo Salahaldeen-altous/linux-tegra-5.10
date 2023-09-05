@@ -1,0 +1,294 @@
+
+#include "tegra194-agx-cti-base.dtsi"
+#include "cti_common/tegra194-agx-cti-AGX111-USBC.dtsi"
+/{
+
+    nvidia,dtsfilename = "tegra194-agx-cti-AGX103.dts";
+
+    xusb_padctl@3520000 {
+        status = "okay";
+        pads {
+            usb2 {
+                lanes {
+                    usb2-0 {
+                        status = "okay";
+                    };
+                    usb2-1 {
+                        status = "okay";
+                    };
+                    usb2-2 {
+                        status = "okay";
+                    };
+                    usb2-3 {
+                        status = "okay";
+                    };
+                };
+            };
+            usb3 {
+                lanes {
+                    usb3-0 {
+                        status = "okay";
+                    };
+                    usb3-1 {
+                        status = "disabled";
+                    };
+                    usb3-2 {
+                        status = "okay";
+                    };
+                    usb3-3 {
+                        status = "okay";
+                    };
+                };
+            };
+        };
+        ports {
+            usb2-0 {
+                status = "okay";
+                vbus-supply = <&vdd_usb_vbus0>;
+            };
+            usb2-1 {
+                status = "okay";
+                vbus-supply = <&vdd_usb_vbus0>;
+            };
+            usb2-2 {
+                status = "okay";
+            };
+            usb2-3 {
+                status = "okay";
+                vbus-supply = <&vdd_usb_vbus0>;
+            };
+            usb3-0 {
+                nvidia,usb2-companion = <1>;
+            //    nvidia,usb3-gen1-only= <1>;
+                status = "okay";
+            };
+            usb3-1{
+            //    nvidia,usb2-companion = <1>;
+            //    nvidia,usb3-gen1-only= <1>;
+                status = "disabled";
+            };
+            usb3-2 {
+                nvidia,usb2-companion = <0>;
+            //    nvidia,usb3-gen1-only= <1>;
+                status = "okay";
+            };
+            usb3-3 {
+                nvidia,usb2-companion = <3>;
+            //    nvidia,usb3-gen1-only= <1>;
+                status = "okay";
+            };
+        };
+    };
+
+    xhci@3610000 {
+        status = "okay";
+        phys = <&{/xusb_padctl@3520000/pads/usb2/lanes/usb2-0}>,
+            <&{/xusb_padctl@3520000/pads/usb2/lanes/usb2-1}>,
+            <&{/xusb_padctl@3520000/pads/usb2/lanes/usb2-3}>,
+            <&{/xusb_padctl@3520000/pads/usb2/lanes/usb2-2}>,
+            <&{/xusb_padctl@3520000/pads/usb3/lanes/usb3-0}>,
+            <&{/xusb_padctl@3520000/pads/usb3/lanes/usb3-2}>,
+            <&{/xusb_padctl@3520000/pads/usb3/lanes/usb3-3}>;
+        phy-names = "usb2-0", "usb2-1", "usb2-3", "usb2-2",
+                    "usb3-0", "usb3-2", "usb3-3";
+    };
+	//Enabling Nvme
+	pcie@14160000 {
+        status = "okay";
+        num-lanes=<2>;      //supports only 2 lanes
+
+        phys =  <&p2u_hsio_8>,
+				<&p2u_hsio_9>;
+        phy-names = "p2u-0", "p2u-1";
+    };
+
+    pcie@14100000 {
+        status = "okay";
+        phys = <&p2u_hsio_0>;
+        phy-names = "p2u-0";
+    };
+
+    pcie@14140000 {
+        status = "okay";
+        phys = <&p2u_hsio_7>;
+        phy-names = "p2u-0";
+    };
+
+    pcie@14180000 {
+        status = "okay";
+        phys = <&p2u_hsio_2>, <&p2u_hsio_3>, <&p2u_hsio_4>, <&p2u_hsio_5>;
+        phy-names = "p2u-0", "p2u-1", "p2u-2", "p2u-3";
+
+    };
+
+    pcie@141a0000 {
+        status = "okay";
+
+        phys =  <&p2u_nvhs_0>, <&p2u_nvhs_1>, <&p2u_nvhs_2>, <&p2u_nvhs_3>;
+
+        phy-names = "p2u-0", "p2u-1", "p2u-2", "p2u-3";
+    };
+
+    spi@3210000{
+        status = "okay";
+        spidev@0 {
+            compatible = "tegra-spidev";
+            reg = <0>;
+            spi-max-frequency = <25000000>;
+        };
+    };
+	
+	//enabling i/o
+	sdhci@3400000{
+		status = "okay";
+	};
+	
+	serial@3100000{
+		status = "okay";
+	};
+	
+	serial@3110000{
+		status = "okay";
+	};
+	
+	mttcan@c310000{
+		status = "okay";
+	};
+	
+	mttcan@c320000{
+		status = "okay";
+	};
+	
+    i2c3: i2c@3180000{
+        status = "okay";
+        #address-cells = <1>;
+        #size-cells = <0>;
+
+        gpios_60:pca9532@60{
+            compatible="nxp,pca9531";
+            status = "okay";
+            reg=<0x60>;
+            gpio-controller;
+            #gpio-cells=<2>;         
+            
+            gpio-base=<0>;
+            pcagpio_0{
+                label="pca:gpio_0";
+                type=<3>;
+            };
+            pcagpio_1{
+                label="pca:gpio_1";
+                type=<3>;
+            };
+            pcagpio_2{
+                label="pca:gpio_2";
+                type=<3>;
+            };
+            pcagpio_3{
+                label="pca:gpio_3";
+                type=<3>;
+            };
+            pcagpio_4{
+                label="pca:gpio_4";
+                type=<3>;
+            };
+            pcagpio_5{
+                label="pca:gpio_5";
+                type=<3>;
+            };
+            pcagpio_6{
+                label="pca:gpio_6";
+                type=<3>;
+            };
+            pcagpio_7{
+                label="pca:gpio_7";
+                type=<3>;
+            };
+     
+        };
+
+        gpios_61:pca9532@61{
+            compatible="nxp,pca9531";
+            status = "okay";
+            reg=<0x61>;
+            gpio-controller;
+            #gpio-cells=<2>;
+
+            gpio-base=<8>;         
+            pcagpio_0{
+                label="pca:gpio_8";
+                type=<3>;
+            };
+            pcagpio_1{
+                label="pca:gpio_9";
+                type=<3>;
+            };
+            pcagpio_2{
+                label="pca:gpio_10";
+                type=<3>;
+            };
+            pcagpio_3{
+                label="pca:gpio_11";
+                type=<3>;
+            };
+            pcagpio_4{
+                label="pca:gpio_12";
+                type=<3>;
+            };
+            pcagpio_5{
+                label="pca:gpio_13";
+                type=<3>;
+            };
+            pcagpio_6{
+                label="pca:gpio_14";
+                type=<3>;
+            };
+            pcagpio_7{
+                label="pca:gpio_15";
+                type=<3>;
+            };
+        };
+    };
+
+};
+
+//sor0
+&head1 {
+    status = "okay";
+};
+
+//sor1
+&head2 {
+    status = "okay";
+};
+
+&sor0 {
+    status = "okay";
+    nvidia,active-panel = <&sor0_hdmi_display>;
+};
+
+&sor0_hdmi_display {
+    status = "okay";
+};
+
+&dpaux0 {
+    status = "okay";
+};
+
+&sor1 {
+    status = "okay";
+    nvidia,active-panel = <&sor1_hdmi_display>;
+};
+
+&sor1_hdmi_display {
+    status = "okay";
+};
+
+&dpaux1 {
+    status = "okay";
+};
+
+&tegra_cec {
+    status = "okay";
+};
+

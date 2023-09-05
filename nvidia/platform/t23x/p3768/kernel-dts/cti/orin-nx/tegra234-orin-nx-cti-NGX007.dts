@@ -1,0 +1,46 @@
+/*
+ * Copyright (c) 2023, Connect Tech Inc.  All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include "tegra234-orin-nx-cti-base.dtsi"
+
+/{
+    nvidia,dtsfilename = "tegra234-orin-nx-cti-NGX007.dts";
+
+    //enable serial connections
+    
+    // UART 0 /dev/ttyTHS1
+    serial@3110000 {
+        status = "okay";
+    };
+    // UART 1 /dev/ttyTHS0
+    serial@3100000 {/* UARTA, for 40 pin header */
+        status = "okay";
+    };
+    i2c@c250000{
+                gpio_i2c_8_74: gpio@74 {
+                    status = "okay";
+                    compatible = "ti,tca9539";
+                    reg = <0x74>;
+                    gpio-controller;
+                    #gpio-cells = <2>;
+                    #address-cells = <1>;
+                    #size-cells = <0>;
+                    vcc-supply = <&vdd_5v_sys>;
+        };
+
+    };
+};
+

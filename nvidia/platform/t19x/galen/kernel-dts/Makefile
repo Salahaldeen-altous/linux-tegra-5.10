@@ -32,11 +32,52 @@ dtbo-$(BUILD_19x_ENABLE) += tegra194-p2888-0001-p2822-0000-m2ke.dtbo
 dtbo-$(BUILD_19x_ENABLE) += tegra194-p2888-0001-p2822-0000-csi.dtbo
 dtbo-$(BUILD_19x_ENABLE) += tegra194-p2888-0005-overlay.dtbo
 dtbo-$(BUILD_19x_ENABLE) += tegra194-p2822-camera-dual-imx274-overlay.dtbo
+dtbo-$(BUILD_19x_ENABLE) += tegra194-p2822-camera-e3326-overlay.dtbo
 dtbo-$(BUILD_19x_ENABLE) += tegra194-p2822-camera-e3331-overlay.dtbo
 dtbo-$(BUILD_19x_ENABLE) += tegra194-p2822-camera-e3333-overlay.dtbo
 dtbo-$(BUILD_19x_ENABLE) += tegra194-p2822-camera-imx185-overlay.dtbo
 dtbo-$(BUILD_19x_ENABLE) += tegra194-p2822-camera-imx390-overlay.dtbo
 dtbo-$(BUILD_19x_ENABLE) += tegra194-p2822-camera-e2832-overlay.dtbo
+dtbo-$(BUILD_19x_ENABLE) += tegra194-p2822-camera-eCAM130A_CUXVR-overlay.dtbo
+
+
+#CTI Device Trees
+
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX101.dtb
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX101-JCB005-AVT-CSI2-4CAM.dtb
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX101-JCB005-AVT-CSI2-6CAM.dtb
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX101-JCB006-AVT-CSI2-8CAM.dtb
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX101-FSM-IMX290-4CAM.dtb
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX101-FSM-IMX296-4CAM.dtb
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX101-FSM-IMX412-4CAM.dtb
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX101-FSM-IMX415-4CAM.dtb
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX101-FSM-IMX464-4CAM.dtb
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX101-FSM-IMX565-4CAM.dtb
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX101-FSM-IMX585-4CAM.dtb
+
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX103.dtb
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX103-JCB005-AVT-CSI2-4CAM.dtb
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX103-JCB005-AVT-CSI2-6CAM.dtb
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX103-JCB006-AVT-CSI2-8CAM.dtb
+
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX104.dtb
+
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX105.dtb
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX105-JCB005-AVT-CSI2-4CAM.dtb
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX105-JCB005-AVT-CSI2-6CAM.dtb
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX105-JCB006-AVT-CSI2-8CAM.dtb
+
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX108.dtb
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX108-JCB005-AVT-CSI2-4CAM.dtb
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX108-JCB005-AVT-CSI2-6CAM.dtb
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX108-JCB006-AVT-CSI2-8CAM.dtb
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX108-FSM-IMX290-4CAM.dtb
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX108-FSM-IMX296-4CAM.dtb
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX108-FSM-IMX412-4CAM.dtb
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX108-FSM-IMX415-4CAM.dtb
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX108-FSM-IMX464-4CAM.dtb
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX108-FSM-IMX565-4CAM.dtb
+dtb-$(BUILD_19x_ENABLE) += cti/tegra194-agx-cti-AGX108-FSM-IMX585-4CAM.dtb
 
 
 ifneq ($(dtb-y),)

@@ -1,0 +1,7 @@
+/dts-v1/;
+#include "tegra234-orin-nx-cti-NGX007.dts"
+#include "../cti_camera/tegra234-orin-nx-cti-NGX007-FSM-IMX565-4CAM.dtsi"
+/ {
+		nvidia,dtsfilename = "tegra234-orin-nx-cti-NGX007-FSM-IMX565-4CAM.dts";
+		nvidia,dtbbuildtime = __DATE__, __TIME__;
+};

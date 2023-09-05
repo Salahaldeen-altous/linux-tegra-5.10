@@ -1,0 +1,88 @@
+/ {		
+
+	tegra-capture-vi {
+			num-channels = <2>;
+			status = "okay";
+			ports {
+				#address-cells = <1>;
+				#size-cells = <0>;
+				vi_port0: port@0 {
+					status = "okay";
+					reg = <0>;
+					vi_in0: endpoint {
+						status = "okay";
+						port-index = <VI_CSI_PORT_INDEX0>;
+						bus-width = <BUS_WIDTH>;
+						remote-endpoint = <&csi_out0>;
+					};
+				};
+				vi_port1: port@1 {
+					status = "okay";
+					reg = <1>;
+					vi_in1: endpoint {
+						status = "okay";
+						port-index = <VI_CSI_PORT_INDEX1>;
+						bus-width = <BUS_WIDTH>;
+						remote-endpoint = <&csi_out1>;
+					};
+				};
+			};
+		};
+
+	host1x@13e00000 {
+		NVCSI_ADDR {
+			num-channels = <NUM_MIPI_CHAN>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+			csi_chan0: channel@0 {
+				status = "okay";
+				reg = <0>;
+				ports {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					csi_chan0_port0: port@0 {
+						status = "okay";
+						reg = <0>;
+						csi_in0: endpoint@0 {
+							status = "okay";
+							port-index = <VI_CSI_PORT_INDEX0>;
+							bus-width = <BUS_WIDTH>;
+							remote-endpoint = <&vi_out0>;
+						};
+					};
+					csi_chan0_port1: port@1 {
+						status = "okay";
+						reg = <1>;
+						csi_out0: endpoint@1 {
+							remote-endpoint = <&vi_in0>;
+						};
+					};
+				};
+			};
+			csi_chan1: channel@1 {
+				reg = <1>;
+				ports {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					csi_chan1_port0: port@0 {
+						status = "okay";
+						reg = <0>;
+						csi_in1: endpoint@2 {
+							status = "okay";
+							port-index = <VI_CSI_PORT_INDEX1>;
+							bus-width = <BUS_WIDTH>;
+							remote-endpoint = <&vi_out1>;
+						};
+					};
+					csi_chan1_port1: port@1 {
+						status = "okay";
+						reg = <1>;
+						csi_out1: endpoint@3 {
+							remote-endpoint = <&vi_in1>;
+						};
+					};
+				};
+			};
+		};
+	};
+};

@@ -1,0 +1,113 @@
+/*
+ * Copyright (c) 2018-2019, NVIDIA CORPORATION.  All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#include "tegra234-cti-camera-NGX003-RPI-IMX219-header.dtsi"
+#include "tegra234-orin-nx-cti-rpi-imx219-modes-header.dtsi"
+#include "tegra234-cti-camera-2cam-base.dtsi"
+
+#define CAM1_PWDN	TEGRA234_MAIN_GPIO(H, 6)
+#define CAM2_PWDN   TEGRA234_MAIN_GPIO(AC, 0)
+
+/* camera control gpio definitions */
+
+/ {	
+
+	gpio@2200000 {
+		camera-control-output-low {
+			gpio-hog;
+			output-low;
+			gpios = <CAM1_PWDN 0 CAM2_PWDN 0>;
+			label = "cam1-pwdn", "cam2-pwdn";
+		};
+	};
+	
+	i2c@3180000 {
+	    tca9546@70{
+            compatible = "nxp,pca9544";
+            reg = <0x70>;
+            #address-cells = <1>;
+            #size-cells = <0>;
+            //skip_mux_detect = "yes";
+            vif-supply = <&vdd_1v8_sys>; 
+            vcc-supply = <&vdd_1v8_sys>; 
+            vcc_lp = "vcc";
+
+            i2c@0{
+                reg = <0>;
+                i2c-mux,deselect-on-exit;
+                rbpcv2_imx219_a@10 {
+                        status = "okay";
+                        reset-gpios = <&tegra_main_gpio CAM1_PWDN GPIO_ACTIVE_HIGH>;
+                        SENSOR_COMMON
+                };
+            };
+            i2c@1{
+                reg = <1>;
+                i2c-mux,deselect-on-exit;
+                rbpcv2_imx219_c@10 {
+                        status = "okay";
+                        reset-gpios = <&tegra_main_gpio CAM2_PWDN GPIO_ACTIVE_HIGH>;
+                        SENSOR_COMMON
+                };
+            };
+
+        };
+	};
+};
+
+
+/ {
+    tcp: tegra-camera-platform {
+        compatible = "nvidia, tegra-camera-platform";
+
+        /**
+        * Physical settings to calculate max ISO BW
+        *
+        * num_csi_lanes = <>;
+        * Total number of CSI lanes when all cameras are active
+        *
+        * max_lane_speed = <>;
+        * Max lane speed in Kbit/s
+        *
+        * min_bits_per_pixel = <>;
+        * Min bits per pixel
+        *
+        * vi_peak_byte_per_pixel = <>;
+        * Max byte per pixel for the VI ISO case
+        *
+        * vi_bw_margin_pct = <>;
+        * Vi bandwidth margin in percentage
+        *
+        * max_pixel_rate = <>;
+        * Max pixel rate in Kpixel/s for the ISP ISO case
+        *
+        * isp_peak_byte_per_pixel = <>;
+        * Max byte per pixel for the ISP ISO case
+        *
+        * isp_bw_margin_pct = <>;
+        * Isp bandwidth margin in percentage
+        */
+        num_csi_lanes = <4>;
+        max_lane_speed = <1500000>;
+        min_bits_per_pixel = <10>;
+        vi_peak_byte_per_pixel = <2>;
+        vi_bw_margin_pct = <25>;
+        max_pixel_rate = <240000>;
+        isp_peak_byte_per_pixel = <5>;
+        isp_bw_margin_pct = <25>;
+    };
+};
+

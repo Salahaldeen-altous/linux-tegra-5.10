@@ -1,0 +1,14 @@
+
+#include "tegra194-agxi-cti-AGX101.dts"
+/{
+
+    nvidia,dtsfilename = "tegra194-agxi-cti-AGX108.dts";
+
+
+    pcie@141a0000 {
+        status = "okay";
+    };
+
+
+};
+

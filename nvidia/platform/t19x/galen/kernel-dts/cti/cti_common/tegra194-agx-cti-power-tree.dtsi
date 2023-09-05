@@ -1,0 +1,205 @@
+#include <dt-bindings/gpio/tegra194-gpio.h>
+
+#include "tegra194-agx-cti-regulators.dtsi"
+
+/ {
+	sdhci@3460000 {
+		vmmc-supply = <&p2888_spmic_ldo3>;
+		vqmmc-supply = <&p2888_spmic_sd2>;
+	};
+
+	sdhci@3400000 {
+		vmmc-supply = <&vdd_sdmmc1_sw>;
+	};
+
+	ufshci@2450000 {
+		vcc-supply = <&vdd_sdmmc1_sw>;
+		vccq-supply = <&p2888_spmic_ldo7>;
+		vccq2-supply = <&p2888_spmic_sd2>;
+	};
+
+	ethernet@2490000 {
+		vddio_sys_enet_bias-supply = <&battery_reg>;
+		vddio_enet-supply = <&battery_reg>;
+		phy_vdd_1v8-supply = <&p2888_spmic_sd2>;
+		phy_ovdd_rgmii-supply = <&p2888_spmic_sd2>;
+		phy_pllvdd-supply = <&battery_reg>;
+	};
+
+	xusb_padctl@3520000 {
+
+		vclamp-usb-supply = <&p2888_spmic_sd3>;
+		avdd-usb-supply = <&p2888_spmic_ldo5>;
+
+		ports {
+			usb2-0 {
+				vbus-supply = <&battery_reg>;
+			};
+			usb2-1 {
+				vbus-supply = <&battery_reg>;
+			};
+			usb2-2 {
+				vbus-supply = <&battery_reg>;
+			};
+			usb2-3 {
+				vbus-supply = <&battery_reg>;
+			};
+		};
+	};
+
+	xudc@3550000 {
+		avdd-usb-supply = <&p2888_spmic_ldo5>;
+	};
+
+	pcie@14180000 {
+		vddio-pex-ctl-supply = <&p2888_spmic_sd3>;
+	};
+
+	pcie@14100000 {
+		vddio-pex-ctl-supply = <&p2888_spmic_sd3>;
+	};
+
+	pcie@14140000 {
+		vddio-pex-ctl-supply = <&p2888_spmic_sd3>;
+	};
+
+	pcie@141a0000 {
+		vddio-pex-ctl-supply = <&p2888_spmic_sd3>;
+		vpcie3v3-supply = <&battery_reg>;
+		vpcie12v-supply = <&battery_reg>;
+	};
+
+	pcie_ep@141a0000 {
+		vddio-pex-ctl-supply = <&p2888_spmic_sd3>;
+	};
+
+	pwm-fan {
+		vdd-fan-supply = <&battery_reg>;
+	};
+
+	bpmp { 
+        i2c {
+            spmic@3c {
+                regulators {
+                    sd0 {
+                        regulator-enable-ramp-delay = <3960>;
+                        regulator-disable-ramp-delay = <660>;
+                        ramp-rate-setting = <27500>;
+                        regulator-ramp-delay = <1100>;
+                    };
+
+                    sd1 {
+                        regulator-enable-ramp-delay = <3310>;
+                        regulator-disable-ramp-delay = <2000>;
+                        ramp-rate-setting = <27500>;
+                        regulator-ramp-delay = <550>;
+                    };
+
+                    sd2 {
+                        regulator-enable-ramp-delay = <3310>;
+                        regulator-disable-ramp-delay = <1970>;
+                        ramp-rate-setting = <27500>;
+                        regulator-ramp-delay = <550>;
+                    };
+
+                    sd3 {
+                        regulator-enable-ramp-delay = <2130>;
+                        regulator-disable-ramp-delay = <1970>;
+                        ramp-rate-setting = <27500>;
+                        regulator-ramp-delay = <350>;
+                    };
+
+                    sd4 {
+                        regulator-enable-ramp-delay = <2650>;
+                        regulator-disable-ramp-delay = <1300>;
+                        ramp-rate-setting = <27500>;
+                        regulator-ramp-delay = <700>;
+                    };
+
+                    ldo0 {
+                        regulator-enable-ramp-delay = <160>;
+                        regulator-disable-ramp-delay = <4480>;
+                        ramp-rate-setting = <100000>;
+                        regulator-ramp-delay = <200>;
+                    };
+
+                    ldo1 {
+                        regulator-enable-ramp-delay = <2650>;
+                        regulator-disable-ramp-delay = <1300>;
+                        ramp-rate-setting = <100000>;
+                        regulator-ramp-delay = <1150>;
+                    };
+
+                    ldo2 {
+                        regulator-enable-ramp-delay = <4670>;
+                        ramp-rate-setting = <100000>;
+                        regulator-ramp-delay = <1500>;
+                    };
+
+                    ldo3 {
+                        regulator-enable-ramp-delay = <4670>;
+                        ramp-rate-setting = <100000>;
+                        regulator-ramp-delay = <1500>;
+                    };
+
+                    ldo4 {
+                        regulator-enable-ramp-delay = <3310>;
+                        regulator-disable-ramp-delay = <1970>;
+                        ramp-rate-setting = <100000>;
+                        regulator-ramp-delay = <2200>;
+                    };
+
+                    ldo5 {
+                        regulator-enable-ramp-delay = <4670>;
+                        ramp-rate-setting = <100000>;
+                        regulator-ramp-delay = <1500>;
+                    };
+
+                    ldo6 {
+                        regulator-enable-ramp-delay = <4690>;
+                        ramp-rate-setting = <100000>;
+                        regulator-ramp-delay = <1500>;
+                    };
+
+                    ldo7 {
+                        regulator-enable-ramp-delay = <3960>;
+                        regulator-disable-ramp-delay = <660>;
+                        ramp-rate-setting = <100000>;
+                        regulator-ramp-delay = <3350>;
+                    };
+
+                    ldo8 {
+                        regulator-enable-ramp-delay = <3960>;
+                        regulator-disable-ramp-delay = <660>;
+                        ramp-rate-setting = <100000>;
+                        regulator-ramp-delay = <2250>;
+                    };
+                };
+            };
+        };
+	};
+};
+
+&head0 {
+    avdd_hdmi-supply = <&p2888_spmic_sd0>; /* 1v0 */
+    avdd_hdmi_pll-supply = <&p2888_spmic_sd1>; /* 1v8 */
+    vdd_hdmi_5v0-supply = <&battery_reg>; /* 5v0 */
+};
+
+&head1 {
+    vdd-dp-pwr-supply = <&p2888_spmic_sd0>;
+    avdd-dp-pll-supply = <&p2888_spmic_sd1>;
+    vdd-edp-sec-mode-supply = <&battery_reg>;
+    vdd-dp-pad-supply = <&battery_reg>;
+    vdd_hdmi_5v0-supply = <&battery_reg>;
+};
+
+&head2 {
+    vdd-dp-pwr-supply = <&p2888_spmic_sd0>;
+    avdd-dp-pll-supply = <&p2888_spmic_sd1>;
+    vdd-edp-sec-mode-supply = <&battery_reg>;
+    vdd-dp-pad-supply = <&battery_reg>;
+    vdd_hdmi_5v0-supply = <&battery_reg>;
+};
+
+

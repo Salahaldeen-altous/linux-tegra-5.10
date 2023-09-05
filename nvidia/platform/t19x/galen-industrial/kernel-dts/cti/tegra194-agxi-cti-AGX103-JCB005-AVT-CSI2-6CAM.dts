@@ -1,0 +1,6 @@
+#include "tegra194-agxi-cti-AGX103.dts" 
+#include "../../galen/kernel-dts/cti/cti_camera/tegra194-agx-cti-camera-avt-csi2-6cam.dtsi" 
+/{
+    nvidia,dtsfilename = "tegra194-agxi-cti-AGX103-JCB005-AVT-CSI2-6CAM.dts";
+    nvidia,dtbbuildtime = __DATE__, __TIME__;
+};

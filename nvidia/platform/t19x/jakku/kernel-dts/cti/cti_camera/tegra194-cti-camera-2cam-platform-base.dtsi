@@ -1,0 +1,39 @@
+/ {
+	tcp: tegra-camera-platform {
+		compatible = "nvidia, tegra-camera-platform";		
+		/**
+		 * The general guideline for naming badge_info contains 3 parts, and is as follows,
+		 * The first part is the camera_board_id for the module; if the module is in a FFD
+		 * platform, then use the platform name for this part.
+		 * The second part contains the position of the module, ex. "rear" or "front".
+		 * The third part contains the last 6 characters of a part number which is found
+		 * in the module's specsheet from the vendor.
+		 */
+		modules {
+			cam_module0: module0 {
+				badge = MODULE0_BADGE;
+				position = "front";
+				orientation = "1";
+				status = "okay";
+				cam_module0_drivernode0: drivernode0 {
+					status = "okay";
+					pcl_id = "v4l2_sensor";
+					devname = MODULE0_DEVNAME;
+					proc-device-tree = PROC_DEVICE_TREE_MODULE0;
+				};
+			};
+			cam_module1: module1 {
+				badge = MODULE1_BADGE;
+				position = "rear";
+				orientation = "1";
+				status = "okay";
+				cam_module1_drivernode0: drivernode0 {
+					status = "okay";
+					pcl_id = "v4l2_sensor";
+					devname = MODULE1_DEVNAME;
+					proc-device-tree = PROC_DEVICE_TREE_MODULE1;
+				};				
+			};
+		};
+	};
+};

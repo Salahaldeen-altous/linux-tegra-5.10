@@ -1,0 +1,51 @@
+/*
+ * Copyright (c) 2022, Connect Tech Inc.  All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include "tegra234-orin-agx-cti-AGX922.dts"
+
+/{
+    nvidia,dtsfilename = "tegra234-orin-agx-cti-AGX922-dual-pciex4-usb5Gbps.dts";
+
+
+    //PCIe C5
+    pcie@141a0000 {
+        status = "okay";
+        num-lanes = <4>;
+        phys = <&p2u_nvhs_0>, <&p2u_nvhs_1>, <&p2u_nvhs_2>, <&p2u_nvhs_3>;
+        phy-names = "p2u-0", "p2u-1", "p2u-2", "p2u-3";
+    };
+
+    //PCIe C6
+    pcie@141c0000{
+        status = "okay";
+        num-lanes = <4>;
+        phys = <&p2u_nvhs_4>, <&p2u_nvhs_5>, <&p2u_nvhs_6>, <&p2u_nvhs_7>;
+        phy-names = "p2u-0", "p2u-1", "p2u-2", "p2u-3";
+    };
+	
+	xusb_padctl@3520000{
+		status = "okay";
+		ports{
+			usb3-2 {
+				nvidia,usb2-companion = <3>;
+				status = "okay";
+				maximum-speed = "super-speed";  // limits speeds to 5Gbps 
+            };
+		};
+	};
+
+};
+

@@ -1,0 +1,59 @@
+/*
+ * Copyright (c) 2022, Connect Tech Inc.  All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/dts-v1/;
+/plugin/;
+
+#include <dt-bindings/gpio/tegra234-gpio.h>
+
+/ {
+	overlay-name = "PCIe Endpoint Support";
+	compatible = "nvidia,tegra23x";
+	nvidia,dtsfilename = "tegra234-orin-overlay-pcie-ep.dts";
+	nvidia,dtbbuildtime = __DATE__, __TIME__;
+
+	//C5 PCIe x8 Endpoint
+	fragment@0 {
+		target-path = "/";
+		board_config {
+			odm-data = "nvhs-uphy-config-1";
+		};
+		__overlay__ {
+			pcie@141a0000 {
+				status = "disabled";
+			};
+			pcie_ep@141a0000 {
+				status = "okay";
+			};
+		};
+	};
+
+	//C5 PCIe x4 Endpoint
+	fragment@1 {
+		target-path = "/";
+		board_config {
+			odm-data = "nvhs-uphy-config-3";
+		};
+		__overlay__ {
+			pcie@141a0000 {
+				status = "disabled";
+			};
+			pcie_ep@141a0000 {
+				status = "okay";
+			};
+		};
+	};
+};

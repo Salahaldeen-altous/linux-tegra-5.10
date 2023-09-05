@@ -1,0 +1,106 @@
+#define SENSOR_MODE0 \
+    mclk_khz = "24000"; \
+    phy_mode = "DPHY"; \
+    discontinuous_clk = "yes"; \
+    dpcm_enable = "false"; \
+    cil_settletime = "0"; \
+    dynamic_pixel_bit_depth = "16"; \
+    csi_pixel_bit_depth = "16"; \
+    mode_type = "yuv"; \
+    pixel_phase = "uyvy"; \
+    active_w = "1280"; \
+    active_h = "720"; \
+    readout_orientation = "0"; \
+    deskew_initial_enable = "false"; \
+    pix_clk_hz = "186250000"; \
+    serdes_pix_clk_hz = "400000000"; \
+    line_length = "640"; \
+    inherent_gain = "1"; \
+    mclk_multiplier = "6.67"; \
+    min_gain_val = "1"; \
+    max_gain_val = "8"; \
+    min_hdr_ratio = "1"; \
+    max_hdr_ratio = "1"; \
+    min_framerate = "1"; \
+    max_framerate = "58"; \
+    min_exp_time = "10"; /* 1ms */ \
+    max_exp_time = "5000"; /* 500ms */ \
+
+#define SENSOR_MODE1 \
+    mclk_khz = "24000"; \
+    phy_mode = "DPHY"; \
+    discontinuous_clk = "yes"; \
+    dpcm_enable = "false"; \
+    cil_settletime = "0"; \
+    dynamic_pixel_bit_depth = "16"; \
+    csi_pixel_bit_depth = "16"; \
+    mode_type = "yuv"; \
+    pixel_phase = "uyvy"; \
+    active_w = "1920"; \
+    active_h = "1080"; \
+    readout_orientation = "0"; \
+    deskew_initial_enable = "false"; \
+    pix_clk_hz = "186250000"; \
+    serdes_pix_clk_hz = "400000000"; \
+    line_length = "640"; \
+    inherent_gain = "1"; \
+    mclk_multiplier = "6.67"; \
+    min_gain_val = "1"; \
+    max_gain_val = "8"; \
+    min_hdr_ratio = "1"; \
+    max_hdr_ratio = "1"; \
+    min_framerate = "1"; \
+    max_framerate = "45"; \
+    min_exp_time = "10"; /* 1ms */ \
+    max_exp_time = "5000"; /* 500ms */ \
+
+#define SENSOR_MODE2 \
+    mclk_khz = "24000"; \
+    phy_mode = "DPHY"; \
+    discontinuous_clk = "yes"; \
+    dpcm_enable = "false"; \
+    cil_settletime = "0"; \
+    dynamic_pixel_bit_depth = "16"; \
+    csi_pixel_bit_depth = "16"; \
+    mode_type = "yuv"; \
+    pixel_phase = "uyvy"; \
+    active_w = "1920"; \
+    active_h = "1200"; \
+    readout_orientation = "0"; \
+    deskew_initial_enable = "false"; \
+    pix_clk_hz = "186250000"; \
+    serdes_pix_clk_hz = "400000000"; \
+    line_length = "640"; \
+    inherent_gain = "1"; \
+    mclk_multiplier = "6.67"; \
+    min_gain_val = "1"; \
+    max_gain_val = "8"; \
+    min_hdr_ratio = "1"; \
+    max_hdr_ratio = "1"; \
+    min_framerate = "1"; \
+    max_framerate = "58"; \
+    min_exp_time = "10"; /* 1ms */ \
+    max_exp_time = "5000"; /* 500ms */ \
+
+
+
+
+#define SENSOR_COMMON \
+    status = "okay"; \
+    sensor_model = "ar0234"; \
+    avdd-reg = "vana"; \
+    iovdd-reg = "vif"; \
+    clock-frequency = <24000000>; \
+    vana-supply = <&vdd_cam_2v8>; \
+    vif-supply = <&vdd_1v8_sys>; \
+    use_sensor_mode_id = "false"; \
+    camera-mipi-clk = <600>; \
+    clocks = <&bpmp_clks TEGRA234_CLK_EXTPERIPH1>, \
+    <&bpmp_clks TEGRA234_CLK_EXTPERIPH1>; \
+    clock-names = "extperiph1", "pllp_grtba"; \
+    mclk = "extperiph1"; \
+    compatible = "econ,nedu25-ar0234";
+
+
+/{
+

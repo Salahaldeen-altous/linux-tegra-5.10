@@ -1,0 +1,129 @@
+/*
+ * Copyright (c) 2022, Connect Tech Inc.  All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include <dt-bindings/gpio/tegra234-gpio.h>
+/ {
+	fixed-regulators {
+        battery_reg: regulator@0 {
+               compatible = "regulator-fixed";
+               reg = <0>;
+               regulator-name = "vdd-ac-bat";
+               regulator-min-microvolt = <5000000>;
+               regulator-max-microvolt = <5000000>;
+               regulator-always-on;
+         };
+	vdd_5v_sys: regulator@100 {
+            /* Enable is automatic with DC_IN */
+            compatible = "regulator-fixed";
+            reg = <100>;
+            regulator-name = "vdd-5v-sys";
+            regulator-min-microvolt = <5000000>;
+            regulator-max-microvolt = <5000000>;
+            regulator-always-on;
+        };
+        hdr40_vdd_3v3: vdd_3v3_sys: regulator@101 {
+            /* BUCK_3V3_EN enable is driven by button MCU */
+            compatible = "regulator-fixed";
+            reg = <101>;
+            regulator-name = "vdd-3v3-sys";
+            regulator-min-microvolt = <3300000>;
+            regulator-max-microvolt = <3300000>;
+            regulator-always-on;
+        };
+        vdd_1v8_sys: regulator@102 {
+            /* BUCK_3V3_PG enable is driven by vdd_3v3_sys */
+            compatible = "regulator-fixed";
+            reg = <102>;
+            regulator-name = "vdd-1v8";
+            regulator-min-microvolt = <1800000>;
+            regulator-max-microvolt = <1800000>;
+            vin-supply = <&vdd_3v3_sys>;
+            regulator-always-on;
+        };
+        vdd_3v3_AO: regulator@103 {
+            /* BUCK_5V_PG enable is driven by 5v_sys */
+            compatible = "regulator-fixed";
+            reg = <103>;
+            regulator-name = "vdd-3v3-AO";
+            regulator-min-microvolt = <3300000>;
+            regulator-max-microvolt = <3300000>;
+            vin-supply = <&vdd_5v_sys>;
+            regulator-always-on;
+        };
+        vdd_av10_hub: regulator@104 {
+            /* BUCK_3V3_PG enable is driven 3v3_sys */
+            compatible = "regulator-fixed";
+            reg = <104>;
+            regulator-name = "vdd-av10-hub";
+            regulator-min-microvolt = <1100000>;
+            regulator-max-microvolt = <1100000>;
+            vin-supply = <&vdd_5v_sys>;
+            regulator-always-on;
+        };
+        vdd_vbus_a: regulator@105 {
+            /* HUB_DSP12_PWR_EN enable is driven usb hub's gpio */
+            compatible = "regulator-fixed";
+            reg = <105>;
+            regulator-name = "vdd-vbus-a";
+            regulator-min-microvolt = <5000000>;
+            regulator-max-microvolt = <5000000>;
+            vin-supply = <&vdd_5v_sys>;
+            regulator-always-on;
+        };
+        vdd_vbus_b: regulator@106 {
+            /* HUB_DSP34_PWR_EN enable is driven usb hub's gpio */
+            compatible = "regulator-fixed";
+            reg = <106>;
+            regulator-name = "vdd-vbus-b";
+            regulator-min-microvolt = <5000000>;
+            regulator-max-microvolt = <5000000>;
+            vin-supply = <&vdd_5v_sys>;
+            regulator-always-on;
+        };
+        vdd_hdmi_5v0: regulator@107 {
+            /* SOC_PWR_REQ->MOD_SLEEP->VDD_3V3_HDMI->VDD_5V0_HDMI_CN */
+            compatible = "regulator-fixed";
+            reg = <107>;
+            regulator-name = "vdd-hdmi-5v0";
+            regulator-min-microvolt = <5000000>;
+            regulator-max-microvolt = <5000000>;
+            regulator-always-on;
+        };
+        vdd_3v3_dp: regulator@108 {
+            /* BUCK_3V3_PG enable is driven 3v3_sys */
+            compatible = "regulator-fixed";
+            reg = <108>;
+            regulator-name = "vdd-3v3-dp";
+            regulator-min-microvolt = <3300000>;
+            regulator-max-microvolt = <3300000>;
+            vin-supply = <&vdd_3v3_sys>;
+            regulator-always-on;
+        };
+        cti_usb_vbus: regulator@200 {
+            compatible = "regulator-fixed";
+            reg = <200>;
+            status = "okay";
+            regulator-name = "cti-usb-vbus";
+            regulator-min-microvolt = <5000000>;
+            regulator-max-microvolt = <5000000>;
+            gpio = <&tegra_main_gpio TEGRA234_MAIN_GPIO(AC, 6) GPIO_ACTIVE_HIGH>;
+            enable-active-high;
+            //regulator-boot-on;
+            regulator-always-on;
+        };
+
+	};
+};

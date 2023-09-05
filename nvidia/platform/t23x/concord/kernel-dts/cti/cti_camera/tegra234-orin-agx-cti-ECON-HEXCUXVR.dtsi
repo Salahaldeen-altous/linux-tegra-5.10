@@ -1,0 +1,146 @@
+/*
+ * Copyright (c) 2022, Connect Tech Inc.  All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
+#include "dt-bindings/gpio/tegra234-gpio.h"
+#include "dt-bindings/clock/tegra234-clock.h"
+
+#define IO_EXP_RST  TEGRA234_MAIN_GPIO(AC, 1)
+#define MIPICFG0    TEGRA234_MAIN_GPIO(I, 0)
+#define MIPICFG1    TEGRA234_MAIN_GPIO(H, 7)
+#define MIPICFG2    TEGRA234_MAIN_GPIO(AC, 0)
+
+
+/ {
+    /* setting Mipi cfg GPIO for lane Configuration */
+    gpio@2200000 {
+        mipi-cfg-gpios {
+            gpio-hog;
+            output-low;
+            gpios = <MIPICFG0 1 MIPICFG1 1 MIPICFG2 0 IO_EXP_RST 1>;
+            label = "mipi_sel_1", "mipi_sel_2", "mipi_sel_3", "cam_ioexp_rst";
+            status = "okay";
+        };
+    };
+
+    i2c@c240000{
+        status = "okay";
+        #address-cells = <1>;
+        #size-cells = <0>;
+       tca6424_22: tca6424@22 {
+            compatible = "ti,tca6424";
+            gpio-controller;
+            #gpio-cells = <2>;
+            reg = <0x22>;
+            vcc-supply = <&vdd_1v8_sys>;
+            status = "okay";
+            tca6424_22_outlow {
+                /*
+                 * GPIO-0  : RST_CAM1
+                 * GPIO-1  : RST_CAM2
+                 * GPIO-2  : RST_CAM3
+                 * GPIO-3  : RST_CAM4
+                 * GPIO-4  : RST_CAM5
+                 * GPIO-5  : RST_CAM6
+                 * GPIO-6  : PWDN_CAM1
+                 * GPIO-7  : PWDN_CAM2
+                 * GPIO-8  : PWDN_CAM3
+                 * GPIO-9  : PWDN_CAM4
+                 * GPIO-10 : PWDN_CAM5
+                 * GPIO-11 : PWDN_CAM6
+                 */
+
+                gpio-hog;
+                gpios = <0 0 1 0 2 0 3 0 4 0 5 0 6 0 7 0 8 0 9 0 10 0 11 0 12 0 13 0 14 0 15 0 22 0 23 0>;
+                output-low;
+                label = "tca6424_22_reset-cam0_0",
+                    "tca6424_22_reset-cam1_1",
+                    "tca6424_22_reset-cam2_2",
+                    "tca6424_22_reset-cam3_3",
+                    "tca6424_22_reset-cam4_4",
+                    "tca6424_22_reset-cam5_5",
+                    "tca6424_22_boot-cam0_6",
+                    "tca6424_22_boot-cam1_7",
+                    "tca6424_22_boot-cam2_8",
+                    "tca6424_22_boot-cam3_9",
+                    "tca6424_22_boot-cam4_10",
+                    "tca6424_22_boot-cam5_11",
+                    "tca6424_22_flash-cam0_12",
+                    "tca6424_22_flash-cam1_13";
+            };
+            tca6424_22_outhigh {
+                status= "disabled";
+            };
+            tca6424_22_input {
+            //  status = "disabled";
+                gpio-hog;
+                gpios = < 16 0 17 0 18 0 19 0 20 0 21 0>;
+                output-low;
+                label = "tca6424_22_spi_cam0_16",
+                      "tca6424_22_spi_cam1_17",
+                      "tca6424_22_spi_cam2_18",
+                      "tca6424_22_spi_cam3_19",
+                      "tca6424_22_spi_cam4_20",
+                      "tca6424_22_spi_cam5_21";
+            };
+        };
+    };
+
+    i2c@3180000 {
+        status = "okay";
+        #address-cells = <1>;
+        #size-cells = <0>;
+        tca9548@70 {
+            compatible = "nxp,pca9548";
+            reg = <0x70>;
+            #address-cells = <1>;
+            #size-cells = <0>;
+            vcc-supply = <&vdd_1v8_sys>;
+            skip_mux_detect;
+            force_bus_start = <30>;
+
+            i2c@0 {
+                reg = <0>;
+                i2c-mux,deselect-on-exit;
+                #address-cells = <1>;
+                #size-cells = <0>;
+                status = "disabled";
+            };
+            i2c@2 {
+                reg = <2>;
+                i2c-mux,deselect-on-exit;
+                #address-cells = <1>;
+                #size-cells = <0>;
+                status = "disabled";
+            };
+            i2c@4 {
+                reg = <4>;
+                i2c-mux,deselect-on-exit;
+                #address-cells = <1>;
+                #size-cells = <0>;
+                status = "disabled";
+            };
+            i2c@5 {
+                reg = <5>;
+                i2c-mux,deselect-on-exit;
+                #address-cells = <1>;
+                #size-cells = <0>;
+                status = "disabled";
+            };
+        };
+    };
+};
+

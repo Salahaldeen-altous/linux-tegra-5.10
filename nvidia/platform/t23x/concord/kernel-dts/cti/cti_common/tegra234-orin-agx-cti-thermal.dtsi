@@ -1,0 +1,188 @@
+/*
+ * Copyright (c) 2022, Connect Tech Inc.  All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
+#include <dt-bindings/gpio/tegra234-gpio.h>
+#include <dt-bindings/pwm/pwm.h>
+
+#include <t234-common-cvm/tegra234-thermal.dtsi>
+#include <t234-common-cvm/tegra234-thermal-cooling.dtsi>
+#include <t234-common-cvm/tegra234-thermal-userspace-alert.dtsi>
+
+/ {
+
+    bpmp {
+        i2c {
+            tegra_tmp451: temp-sensor@4c {
+                vdd-supply = <&vdd_1v8_sys>;
+
+                ext {
+                    shutdown-limit = <107>;
+                };
+            };
+            vrs11_1@20 {
+				compatible = "nvidia,vrs11";
+				reg = <0x20>;
+				rail-name-loopA = "GPU";
+				rail-name-loopB = "CPU";
+				status = "okay";
+			};
+
+			vrs11_2@22 {
+				compatible = "nvidia,vrs11";
+				reg = <0x22>;
+				rail-name-loopA = "SOC";
+				rail-name-loopB = "CV";
+				status = "okay";
+			};
+        };
+    };
+
+    //FAN PWM
+    pwm@32a0000 {
+        status = "okay";
+    };
+
+    pwm_fan_shared_data: pfsd {
+        num_resources = <0>;
+        secret = <47>;
+        active_steps = <10>;
+        active_rpm = <0 1000 2000 3000 4000 5000 6000 7000 10000 11000>;
+        rpm_diff_tolerance = <2>;
+        active_rru = <40 2 1 1 1 1 1 1 1 1>;
+        active_rrd = <40 2 1 1 1 1 1 1 1 1>;
+        state_cap_lookup = <2 2 2 2 3 3 3 4 4 4>;
+        pwm_period = <45334>;
+        pwm_id = <3>;
+        pwm_polarity = <PWM_POLARITY_INVERTED>;
+        suspend_state = <1>;
+        step_time = <100>; /* mesecs */
+        state_cap = <7>;
+        active_pwm_max = <256>;
+        tach_period = <1000>;
+        pwm_gpio = <&tegra_main_gpio TEGRA234_MAIN_GPIO(Q, 2) GPIO_ACTIVE_LOW>;
+    };
+
+    pwm-fan {
+        compatible = "pwm-fan";
+        status = "okay";
+        #pwm-cells = <1>;
+        pwms = <&tegra_pwm3 0 45334>;
+        shared_data = <&pwm_fan_shared_data>;
+        profiles {
+            default = "quiet";
+            quiet {
+                state_cap = <4>;
+#if TEGRA_PWM_FAN_DT_VERSION == DT_VERSION_2
+                cooling-levels = <255 178 135 95 0 0 0 0 0 0>;
+#else
+                active_pwm = <0 77 120 160 255 255 255 255 255 255>;
+#endif
+            };
+            cool {
+                state_cap = <4>;
+#if TEGRA_PWM_FAN_DT_VERSION == DT_VERSION_2
+                cooling-levels = <255 178 135 95 0 0 0 0 0 0>;
+#else
+                active_pwm = <0 77 120 160 255 255 255 255 255 255>;
+#endif
+            };
+        };
+    };
+
+
+    tachometer@39c0000 {
+        status = "okay";
+        upper-threshold = <0xfffff>;
+        lower-threshold = <0x0>;
+    };
+
+	thermal-zones {
+        CPU-therm {
+            cooling-maps {
+                map0 {
+                    cooling-device = <&cl0_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+                             <&cl1_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+                             <&tegra_ga10b THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
+                };
+            };
+        };
+        GPU-therm {
+            cooling-maps {
+                map0 {
+                    cooling-device = <&cl0_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+                             <&cl1_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+                             <&tegra_ga10b THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
+                };
+            };
+        };
+        CV0-therm {
+            cooling-maps {
+                map0 {
+                    cooling-device = <&cl0_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+                             <&cl1_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+                             <&tegra_ga10b THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
+                };
+            };
+        };
+        CV1-therm {
+            cooling-maps {
+                map0 {
+                    cooling-device = <&cl0_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+                             <&cl1_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+                             <&tegra_ga10b THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
+                };
+            };
+        };
+		CV2-therm {
+            cooling-maps {
+                map0 {
+                    cooling-device = <&cl0_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+                             <&cl1_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+                             <&tegra_ga10b THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
+                };
+            };
+        };
+        SOC0-therm {
+            cooling-maps {
+                map0 {
+                    cooling-device = <&cl0_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+                             <&cl1_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+                             <&tegra_ga10b THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
+                };
+            };
+        };
+        SOC1-therm {
+            cooling-maps {
+                map0 {
+                    cooling-device = <&cl0_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+                             <&cl1_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+                             <&tegra_ga10b THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
+                };
+            };
+        };
+        SOC2-therm {
+            cooling-maps {
+                map0 {
+                    cooling-device = <&cl0_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+                             <&cl1_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+                             <&tegra_ga10b THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
+                };
+            };
+        };
+    };
+
+};

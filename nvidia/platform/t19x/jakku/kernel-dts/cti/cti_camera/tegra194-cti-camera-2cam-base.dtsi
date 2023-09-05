@@ -1,0 +1,92 @@
+/*
+ * Copyright (c) 2018-2019, NVIDIA CORPORATION.  All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
+/* camera control gpio definitions */
+
+#include <dt-bindings/media/camera.h>
+#include "tegra194-cti-camera-2cam-vi-csi-base.dtsi"
+#include "tegra194-cti-camera-2cam-platform-base.dtsi"
+
+/ {
+	I2C_ADDR {
+		I2C_EXPANDER_ADDR {
+			
+				I2C0 {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					I2C0_NODE {
+						compatible = COMPATIBLE_STRING;
+						reg = <I2C_NODE_REG>;
+						devnode = "video0";																						
+						sensor_model = SENSOR_MODEL;
+						status = "okay";
+
+						mode0 { 						
+							num_lanes = NUM_OF_LANES;
+							tegra_sinterface = I2C0_NODE_SINTERFACE;
+							SENSOR_MODE0
+						};						
+						ports {
+							#address-cells = <1>;
+							#size-cells = <0>;
+
+							port@0 {
+								reg = <0>;
+								vi_out0: endpoint {
+									port-index = <VI_CSI_PORT_INDEX0>;
+									bus-width = <BUS_WIDTH>;
+									remote-endpoint = <&csi_in0>;
+								};
+							};
+						};
+					};
+				};
+				I2C1 {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					I2C1_NODE {
+						compatible = COMPATIBLE_STRING;						
+						reg = <I2C_NODE_REG>;						
+						devnode = "video1";																		
+						sensor_model = SENSOR_MODEL;
+						status = "okay";
+
+						mode0 {
+							num_lanes = NUM_OF_LANES;
+							tegra_sinterface = I2C1_NODE_SINTERFACE;
+							SENSOR_MODE0
+						};						
+						ports {
+							#address-cells = <1>;
+							#size-cells = <0>;
+
+							port@0 {
+								reg = <0>;
+								vi_out1: endpoint {
+									port-index = <VI_CSI_PORT_INDEX1>;
+									bus-width = <BUS_WIDTH>;
+									remote-endpoint = <&csi_in1>;
+								};
+							};
+						};
+					};
+				};
+			};
+		};		
+};
+

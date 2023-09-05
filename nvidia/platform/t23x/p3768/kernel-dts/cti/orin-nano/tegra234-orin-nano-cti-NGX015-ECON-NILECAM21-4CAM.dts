@@ -1,0 +1,13 @@
+
+#include "tegra234-orin-nano-cti-NGX015.dts"
+#include "../cti_camera/tegra234-orin-nx-cti-NGX015-ECON-NILECAM21-base.dtsi"
+
+/{
+    nvidia,dtsfilename = "tegra234-orin-nano-cti-NGX015-ECON-NILECAM21-4CAM.dts";
+};
+
+#if LINUX_VERSION >= 414
+#include <tegra194-linux-4.14.dtsi>
+#endif
+
+

@@ -1,0 +1,325 @@
+
+#include <t19x-common-modules/tegra194-cvm-p2888-0000-a00.dtsi>
+#include <t19x-common-platforms/tegra194-no-pll-aon-clock.dtsi>
+#include <t19x-common-platforms/tegra194-platforms-eqos.dtsi>
+
+#include "cti_common/tegra194-agx-cti-power-tree.dtsi"
+#include "cti_common/tegra194-agx-cti-usb.dtsi"
+#include "cti_common/tegra194-agx-cti-pcie.dtsi"
+#include "cti_common/tegra194-agx-cti-plugin-manager.dtsi"
+#include "cti_common/tegra194-agx-cti-display.dtsi"
+
+#include "../common/tegra194-thermal-p2888.dtsi"
+#include "../common/tegra194-powermon-p2888.dtsi"
+
+
+/ {
+    nvidia,dtbbuildtime = __DATE__, __TIME__;
+    nvidia,fastboot-usb-vid = <0x0955>;
+    nvidia,fastboot-usb-pid = <0xee1e>;
+
+    compatible = "nvidia,galen", "nvidia,jetson-xavier", \
+                 "nvidia,p2822-0000+p2888-0001", "nvidia,tegra194";
+
+    chosen {
+        bootargs ="console=ttyTCU0,115200 mem=62G@2G";
+        board-has-eeprom;
+    };
+
+       aliases {
+                rtc0 = &tegra_rtc;
+                rtc1 = &p2888_spmic;
+        };
+
+
+
+    firmware {
+        android {
+            compatible = "android,firmware";
+            hardware = "galen";
+            vbmeta {
+                compatible = "android,vbmeta";
+                parts = "vbmeta,kernel,kernel-dtb,APP,vendor,SOS";
+            };
+            fstab {
+                compatible = "android,fstab";
+                vendor {
+                    compatible = "android,vendor";
+                    dev = "/dev/block/platform/3460000.sdhci/by-name/vendor";
+                    type = "ext4";
+                    mnt_flags = "ro";
+                    fsmgr_flags = "wait,avb";
+                };
+                odm {
+                    compatible = "android,odm";
+                    dev = "/dev/block/platform/3460000.sdhci/by-name/odm";
+                    type = "ext4";
+                    mnt_flags = "ro";
+                    fsmgr_flags = "wait,avb";
+                };
+            };
+        };
+    };
+
+    sdhci@3460000 {
+        uhs-mask = <0x0>;
+        supports-cqe;
+        status = "okay";
+    };
+
+    sdhci@3400000 {
+        mmc-ocr-mask = <0x0>;
+        cd-gpios = <&tegra_main_gpio TEGRA194_MAIN_GPIO(G, 7) 0>;
+        nvidia,cd-wakeup-capable;
+        nvidia,vmmc-always-on;
+        status = "disabled";
+    };
+
+    gpio-keys {
+        compatible = "gpio-keys";
+        gpio-keys,name = "gpio-keys";
+
+        forcerecovery {
+            label = "force-recovery";
+            gpios = <&tegra_main_gpio TEGRA194_MAIN_GPIO(G, 0) GPIO_ACTIVE_LOW>;
+            linux,code = <BTN_1>;
+        };
+
+        power_key {
+            label = "power-key";
+            gpios = <&tegra_aon_gpio TEGRA194_AON_GPIO(EE, 4) GPIO_ACTIVE_LOW>;
+            linux,code = <KEY_POWER>;
+            gpio-key,wakeup;
+        };
+    };
+
+    soft_wdt: soft_watchdog {
+        compatible = "softdog-platform";
+        status = "okay";
+    };
+
+    gte@c1e0000 {
+        status = "okay";
+    };
+
+    gpio@c2f0000 {
+        /delete-property/ use-timestamp;
+    };
+
+    /* FIXME: K5.4 overrides */
+    bpmp {
+        i2c {
+            spmic@3c {
+                interrupt-parent = <&intc>;
+                interrupts = <GIC_SPI 209 IRQ_TYPE_LEVEL_HIGH>;
+            };
+        };
+    };
+
+    hda@3510000 {
+        power-domains = <&bpmp TEGRA194_POWER_DOMAIN_DISP>;
+        resets = <&bpmp TEGRA194_RESET_HDA>,
+                 <&bpmp TEGRA194_RESET_HDA2CODEC_2X>,
+                 <&bpmp TEGRA194_RESET_HDA2HDMICODEC>;
+        reset-names = "hda", "hda2codec_2x", "hda2hdmi";
+    };
+
+    combined-uart {
+        console-port;
+        combined-uart;
+        status = "okay";
+    };
+	
+	
+	//can port need clocks configured
+	
+	mttcan@c310000 {
+		status = "disabled";
+		/*pll_source = "pllaon";
+		clocks = <&bpmp_clks TEGRA194_CLK_CAN1_CORE>,
+				 <&bpmp_clks TEGRA194_CLK_CAN1_HOST>,
+				 <&bpmp_clks TEGRA194_CLK_CAN1>,
+				 <&bpmp_clks TEGRA194_CLK_OSC>,
+				 <&bpmp_clks TEGRA194_CLK_PLLAON>;
+		clock-names = "can_core", "can_host","can", "osc", "pllaon";*/
+	};
+
+	mttcan@c320000 {
+		status = "disabled";
+		/*pll_source = "pllaon";
+		clocks = <&bpmp_clks TEGRA194_CLK_CAN2_CORE>,
+				 <&bpmp_clks TEGRA194_CLK_CAN2_HOST>,
+				 <&bpmp_clks TEGRA194_CLK_CAN2>,
+				 <&bpmp_clks TEGRA194_CLK_OSC>,
+				 <&bpmp_clks TEGRA194_CLK_PLLAON>;
+		clock-names = "can_core", "can_host","can", "osc", "pllaon";*/
+	};
+
+    serial@3100000 {
+        compatible = "nvidia,tegra194-hsuart";
+    };
+
+    serial@3140000 {
+        compatible = "nvidia,tegra186-hsuart";
+    };
+
+    serial@3110000 {
+        compatible = "nvidia,tegra186-hsuart";
+    };
+
+    tegra-cache {
+        status = "okay";
+    };
+
+    arm-pmu {
+        status = "okay";
+    };
+
+    power-domain {
+        status = "disabled";
+    };
+
+    interrupt-controller {
+        status = "disabled";
+    };
+
+    mods-simple-bus {
+        status = "disabled";
+    };
+
+    //PN: Maybe no longer needed?
+    eeprom-manager {
+        status = "disabled";
+        data-size = <0x100>;
+        bus@0 {
+            i2c-bus = <&gen1_i2c>;
+            eeprom@0 {
+                slave-address = <0x50>;
+                label = "cvm";
+            };
+            eeprom@1 {
+                slave-address = <0x56>;
+            };
+        };
+        bus@1 {
+            i2c-bus = <&cam_i2c>;
+            eeprom@0 {
+                slave-address = <0x54>;
+            };
+            eeprom@1 {
+                slave-address = <0x57>;
+            };
+            eeprom@2 {
+                slave-address = <0x52>;
+            };
+        };
+        bus@2 {
+            i2c-bus = <&gen2_i2c>;
+            eeprom@0 {
+                slave-address = <0x52>;
+                label = "cvm";
+            };
+            eeprom@1 {
+                slave-address = <0x50>;
+            };
+        };
+
+    };
+
+    cpuidle {
+        compatible = "nvidia,tegra19x-cpuidle";
+        status = "okay";
+    };
+
+    thermal-zones {
+        status = "disabled";
+    };
+
+    reserved-memory {
+        ramoops_carveout {
+            status = "okay";
+        };
+    };
+
+    host1x@13e00000 {
+        dpaux@155F0000 {
+            status = "okay";
+            compatible = "nvidia,tegra194-dpaux3-padctl";
+
+            dpaux_default: pinmux@0 {
+                dpaux3_pins {
+                    pins = "dpaux3-3";
+                    function = "i2c";
+                };
+            };
+        };
+    };
+
+    ufshci@2450000 {
+        status = "disabled";
+        nvidia,enable-hs-mode;
+        nvidia,cd-gpios = <&tegra_aon_gpio TEGRA194_AON_GPIO(EE, 0) GPIO_ACTIVE_HIGH>;
+        nvidia,cd-wakeup-capable;
+    };
+
+    pwm@c340000 {
+        status = "okay";
+    };
+
+    pfsd {
+        pwm_polarity= <PWM_POLARITY_NORMAL>;
+        suspend_state = <0>;
+    };
+
+    tachometer@39c0000 {
+        status = "okay";
+    };
+
+    efuse-burn {
+        nvidia,tz = <&pllx>;
+        nvidia,temp-range = <(-19000) 117000>;
+    };
+
+    tegra_udrm: tegra_udrm {
+        compatible = "nvidia,tegra-udrm";
+        status = "okay";
+    };
+
+    nvsciipc-kernel {
+        compatible = "nvidia,nvsciipc";
+        status = "okay";
+    };
+
+    clocks-init {
+        compatible = "nvidia,clocks-config";
+        status = "okay";
+        disable {
+            clocks = <&aon_clks TEGRA194_CLK_PLLAON>,
+                     <&bpmp_clks TEGRA194_CLK_CAN1>,
+                     <&bpmp_clks TEGRA194_CLK_CAN2>;
+        };
+    };
+
+    tegra-hsp@b950000 {
+        status = "okay";
+    };
+
+    rtcpu@bc00000 {
+        status = "okay";
+        nvidia,cmd-timeout = <2000>;
+    };
+
+    i2c@c240000 {
+        multi-master;   //PN: Check if needed
+    };
+
+    hardwood {
+        compatible = "nvidia,denver-hardwood";
+        interrupts = <0 24 0x4>;
+    };
+};
+
+#if LINUX_VERSION >= 414
+#include <tegra194-linux-4.14.dtsi>
+#endif
+

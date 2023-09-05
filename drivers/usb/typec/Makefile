@@ -9,3 +9,5 @@ obj-$(CONFIG_TYPEC_TPS6598X)	+= tps6598x.o
 obj-$(CONFIG_TYPEC_QCOM_PMIC)	+= qcom-pmic-typec.o
 obj-$(CONFIG_TYPEC_STUSB160X) 	+= stusb160x.o
 obj-$(CONFIG_TYPEC)		+= mux/
+obj-$(CONFIG_TYPEC_FUSB301)	+= fusb301.o
+obj-$(CONFIG_TYPEC_CTI_PTN5150) += cti-ptn5150.o

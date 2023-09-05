@@ -1,0 +1,971 @@
+/*
+ * Copyright (c) 2022, Connect Tech Inc.  All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+//#include "tegra234-orin-agx-cti-csi.dtsi"
+#include "dt-bindings/clock/tegra234-clock.h"
+#include "tegra234-orin-agx-cti-econ-neducam25-modes-header.dtsi"
+
+#define CAM1_PWDN TEGRA234_MAIN_GPIO(AC,0)
+#define CAM1_RST TEGRA234_MAIN_GPIO(AC,1)
+#define CAM0_PWDN TEGRA234_MAIN_GPIO(H,7) //CAM0_PWDN
+#define CAM0_RST TEGRA234_MAIN_GPIO(I,0) //CAM0_RST
+
+
+tegra-capture-vi {
+            num-channels = <8>;
+            status="okay";
+            ports {
+                #address-cells = <1>;
+                #size-cells = <0>;
+                port@0 {
+                    reg = <0>;
+                    status="okay";
+                    neducam25_vi_in0: endpoint {
+                        status="okay";
+                        port-index = <0>;
+                        bus-width = <4>;
+			vc-id = <0>;
+                        remote-endpoint = <&neducam25_csi_out0>;
+                    };
+                };
+                port@1 {
+                    reg = <1>;
+                    status="okay";
+                    neducam25_vi_in1: endpoint {
+                        status="okay";
+                        port-index = <0>;
+                        bus-width = <4>;
+			vc-id = <1>;
+                        remote-endpoint = <&neducam25_csi_out1>;
+                    };
+                };
+                port@2 {
+                    reg = <2>;
+                    status="okay";
+                    neducam25_vi_in2: endpoint {
+                        status="okay";
+                        port-index = <2>;
+                        bus-width = <4>;
+			vc-id = <0>;
+                        remote-endpoint = <&neducam25_csi_out2>;
+                    };
+                };
+                port@3 {
+                    reg = <3>;
+                    status="okay";
+                    neducam25_vi_in3: endpoint {
+                        status="okay";
+                        port-index = <2>;
+                        bus-width = <4>;
+			vc-id = <1>;
+                        remote-endpoint = <&neducam25_csi_out3>;
+                    };
+                };
+                port@4 {
+                    reg = <4>;
+                    status="okay";
+                    neducam25_vi_in4: endpoint {
+                        status="okay";
+                        port-index = <4>;
+                        bus-width = <4>;
+			vc-id = <0>;
+                        remote-endpoint = <&neducam25_csi_out4>;
+                    };
+                };
+
+                port@5 {
+                    reg = <5>;
+                    status="okay";
+                    neducam25_vi_in5: endpoint {
+                        status="okay";
+                        port-index = <4>;
+                        bus-width = <4>;
+			vc-id = <1>;
+                        remote-endpoint = <&neducam25_csi_out5>;
+                    };
+                };
+
+		port@6 {
+			reg = <6>;
+			status = "okay";
+			neducam25_vi_in6: endpoint {
+				status = "okay";
+				port-index = <5>;
+				bus-width = <4>;
+				vc-id = <0>;
+				remote-endpoint = <&neducam25_csi_out6>;
+			};
+		};
+		port@7 {
+			reg = <7>;
+			status = "okay";
+			neducam25_vi_in7: endpoint {
+				status = "okay";
+				port-index = <5>;
+				bus-width = <4>;
+				vc-id = <1>;
+				remote-endpoint = <&neducam25_csi_out7>;
+			};
+		};
+
+            };
+
+};
+
+
+	    host1x@13e00000 {
+          status = "okay";
+		 nvcsi@15a00000 {
+            num-channels = <8>;
+            #address-cells = <1>;
+            #size-cells = <0>;
+            status="okay";
+
+            channel@0 {
+                status="okay";
+                reg = <0>;
+                ports {
+                    status="okay";
+                    #address-cells = <1>;
+                    #size-cells = <0>;
+                    port@0 {
+                        reg = <0>;
+                        status="okay";
+                        neducam25_csi_in0: endpoint@0 {
+                            status="okay";
+                            port-index = <0>;
+                            bus-width = <4>;
+                            remote-endpoint = <&neducam25_cam_out0>;
+                        };
+                    };
+                    port@1 {
+                        status="okay";
+                        reg = <1>;
+                        neducam25_csi_out0: endpoint@1 {
+                            status="okay";
+                            remote-endpoint = <&neducam25_vi_in0>;
+                        };
+                    };
+                };
+            };
+			
+            channel@1 {
+                status="okay";
+                reg = <1>;
+                ports {
+                    status="okay";
+                    #address-cells = <1>;
+                    #size-cells = <0>;
+                    port@0 {
+                        reg = <0>;
+                        status="okay";
+                        neducam25_csi_in1: endpoint@2 {
+                            status="okay";
+                            port-index = <0>;
+                            bus-width = <4>;
+                            remote-endpoint = <&neducam25_cam_out1>;
+                        };
+                    };
+                    port@1 {
+                        status="okay";
+                        reg = <1>;
+                        neducam25_csi_out1: endpoint@3 {
+                            status="okay";
+                            remote-endpoint = <&neducam25_vi_in1>;
+                        };
+                    };
+                };
+            };
+			
+
+            channel@2 {
+                status="okay";
+                reg = <2>;
+                ports {
+                    status="okay";
+                    #address-cells = <1>;
+                    #size-cells = <0>;
+                    port@0 {
+                        reg = <0>;
+                        status="okay";
+                        neducam25_csi_in2: endpoint@4 {
+                            status="okay";
+                            port-index = <2>;
+                            bus-width = <4>;
+                            remote-endpoint = <&neducam25_cam_out2>;
+                        };
+                    };
+                    port@1 {
+                        status="okay";
+                        reg = <1>;
+                        neducam25_csi_out2: endpoint@5 {
+                            status="okay";
+                            remote-endpoint = <&neducam25_vi_in2>;
+                        };
+                    };
+                };
+            };
+            channel@3 {
+                status="okay";
+                reg = <3>;
+                ports {
+                    status="okay";
+                    #address-cells = <1>;
+                    #size-cells = <0>;
+                    port@0 {
+                        reg = <0>;
+                        status="okay";
+                        neducam25_csi_in3: endpoint@6 {
+                            status="okay";
+                            port-index = <2>;
+                            bus-width = <4>;
+                            remote-endpoint = <&neducam25_cam_out3>;
+                        };
+                    };
+                    port@1 {
+                        status="okay";
+                        reg = <1>;
+                        neducam25_csi_out3: endpoint@7 {
+                            status="okay";
+                            remote-endpoint = <&neducam25_vi_in3>;
+                        };
+                    };
+                };
+            };
+
+            channel@4 {
+                status="okay";
+                reg = <4>;
+                ports {
+                    status="okay";
+                    #address-cells = <1>;
+                    #size-cells = <0>;
+                    port@0 {
+                        reg = <0>;
+                        status="okay";
+                        neducam25_csi_in4: endpoint@8 {
+                            status="okay";
+                            port-index = <4>;
+                            bus-width = <4>;
+                            remote-endpoint = <&neducam25_cam_out4>;
+                        };
+                    };
+                    port@1 {
+                        status="okay";
+                        reg = <1>;
+                        neducam25_csi_out4: endpoint@9 {
+                            status="okay";
+                            remote-endpoint = <&neducam25_vi_in4>;
+                        };
+                    };
+                };
+            };
+
+            channel@5 {
+                status="okay";
+                reg = <5>;
+                ports {
+                    status="okay";
+                    #address-cells = <1>;
+                    #size-cells = <0>;
+                    port@0 {
+                        reg = <0>;
+                        status="okay";
+                        neducam25_csi_in5: endpoint@10 {
+                            status="okay";
+                            port-index = <4>;
+                            bus-width = <4>;
+                            remote-endpoint = <&neducam25_cam_out5>;
+                        };
+                    };
+                    port@1 {
+                        status="okay";
+                        reg = <1>;
+                        neducam25_csi_out5: endpoint@11 {
+                            status="okay";
+                            remote-endpoint = <&neducam25_vi_in5>;
+                        };
+                    };
+                };
+            };
+
+	    channel@6 {
+                status="okay";
+                reg = <6>;
+                ports {
+                    status="okay";
+                    #address-cells = <1>;
+                    #size-cells = <0>;
+                    port@0 {
+                        reg = <0>;
+                        status="okay";
+                        neducam25_csi_in6: endpoint@12 {
+                            status="okay";
+                            port-index = <6>;
+                            bus-width = <4>;
+                            remote-endpoint = <&neducam25_cam_out6>;
+                        };
+                    };
+                    port@1 {
+                        status="okay";
+                        reg = <1>;
+                        neducam25_csi_out6: endpoint@13 {
+                            status="okay";
+                            remote-endpoint = <&neducam25_vi_in6>;
+                        };
+                    };
+                };
+            };
+	    channel@7 {
+                status="okay";
+                reg = <7>;
+                ports {
+                    status="okay";
+                    #address-cells = <1>;
+                    #size-cells = <0>;
+                    port@0 {
+                        reg = <0>;
+                        status="okay";
+                        neducam25_csi_in7: endpoint@14 {
+                            status="okay";
+                            port-index = <6>;
+                            bus-width = <4>;
+                            remote-endpoint = <&neducam25_cam_out7>;
+                        };
+                    };
+                    port@1 {
+                        status="okay";
+                        reg = <1>;
+                        neducam25_csi_out7: endpoint@15 {
+                            status="okay";
+                            remote-endpoint = <&neducam25_vi_in7>;
+                        };
+                    };
+                };
+            };
+
+        };
+	};
+	
+	
+/**I2C2**/
+	i2c@31e0000{
+		status = "okay";
+		#address-cells = <1>;
+		#size-cells = <0>;
+	
+		neducam25_a@43 {
+			SENSOR_COMMON
+			devnode = "video0";
+			reg = <0x43>;
+	        boot-gpios = <&tca9539_74 0 GPIO_ACTIVE_HIGH>;
+            pwdn-gpios = <&tca9539_74 1 GPIO_ACTIVE_HIGH>;
+            reset-gpios = <&tegra_main_gpio CAM0_RST GPIO_ACTIVE_HIGH>;
+            camera_mipi_lanes = <4>;
+            deser-addr = <0x30>;
+            ser-alias = <0x21>;
+            expander-alias = <0x50>;
+            sio-port = "A";
+
+			mode0 {
+				num_lanes = "4";
+				vc_id = "0";
+				tegra_sinterface = "serial_a";
+				SENSOR_MODE0
+			};
+            mode1 {
+                num_lanes = "4";
+                vc_id = "0";
+                tegra_sinterface = "serial_a";
+                SENSOR_MODE1
+                
+            };
+            mode2 {
+                num_lanes = "4";
+                vc_id = "0";
+                tegra_sinterface = "serial_a";
+                SENSOR_MODE2
+            };
+
+			ports{
+				#address-cells = <1>;
+				#size-cells = <0>;
+				port@0 {
+					reg = <0>;
+					neducam25_cam_out0: endpoint {
+						port-index = <0>;
+						bus-width = <4>;
+						vc-id = <0>;
+						remote-endpoint = <&neducam25_csi_in0>;
+					};
+				};
+			};
+		};
+		neducam25_b@44 {
+			SENSOR_COMMON
+			devnode = "video1";
+			reg = <0x44>;
+
+            boot-gpios = <&tca9539_74 0 GPIO_ACTIVE_HIGH>;
+            pwdn-gpios = <&tca9539_74 1 GPIO_ACTIVE_HIGH>;
+            reset-gpios = <&tegra_main_gpio CAM0_RST GPIO_ACTIVE_HIGH>;
+            camera_mipi_lanes = <4>;
+            deser-addr = <0x30>;
+            ser-alias = <0x22>;
+            expander-alias = <0x51>;
+            sio-port = "B";
+
+
+			mode0 {
+				num_lanes = "4";
+				vc_id = "1";
+				tegra_sinterface = "serial_a";
+				SENSOR_MODE0
+			};
+            mode1 {
+                num_lanes = "4";
+                vc_id = "1";
+                tegra_sinterface = "serial_a";
+                SENSOR_MODE1
+
+            };
+            mode2 {
+                num_lanes = "4";
+                vc_id = "1";
+                tegra_sinterface = "serial_a";
+                SENSOR_MODE2
+            };
+
+			ports{
+				#address-cells = <1>;
+				#size-cells = <0>;
+				port@0 {
+					reg = <0>;
+					neducam25_cam_out1: endpoint {
+						port-index = <0>;
+						bus-width = <4>;
+						vc-id = <1>;
+						remote-endpoint = <&neducam25_csi_in1>;
+					};
+				};
+			};
+		};
+	
+		neducam25_c@45 {
+			SENSOR_COMMON
+			devnode = "video2";
+			reg = <0x45>;
+
+            boot-gpios = <&tca9539_74 2 GPIO_ACTIVE_HIGH>;
+            pwdn-gpios = <&tca9539_74 3 GPIO_ACTIVE_HIGH>;
+            reset-gpios = <&tegra_main_gpio CAM0_PWDN GPIO_ACTIVE_HIGH>;
+            camera_mipi_lanes = <4>;
+            deser-addr = <0x34>;
+            ser-alias = <0x23>;
+            expander-alias = <0x52>;
+            sio-port = "A";
+			
+			mode0 {
+				num_lanes = "4";
+				vc_id = "0";
+				tegra_sinterface = "serial_c";
+				SENSOR_MODE0
+			};
+            mode1 {
+                num_lanes = "4";
+                vc_id = "0";
+                tegra_sinterface = "serial_c";
+                SENSOR_MODE1
+
+            };
+            mode2 {
+                num_lanes = "4";
+                vc_id = "0";
+                tegra_sinterface = "serial_c";
+                SENSOR_MODE2
+            };
+
+
+			ports{
+				#address-cells = <1>;
+				#size-cells = <0>;
+				port@0 {
+					reg = <0>;
+					neducam25_cam_out2: endpoint {
+						port-index = <2>;
+						bus-width = <4>;
+						vc-id = <0>;
+						remote-endpoint = <&neducam25_csi_in2>;
+					};
+				};
+			};
+		};
+		neducam25_d@46 {
+			SENSOR_COMMON
+			devnode = "video3";
+			reg = <0x46>;
+			
+            boot-gpios = <&tca9539_74 2 GPIO_ACTIVE_HIGH>;
+            pwdn-gpios = <&tca9539_74 3 GPIO_ACTIVE_HIGH>;
+            reset-gpios = <&tegra_main_gpio CAM0_PWDN GPIO_ACTIVE_HIGH>;
+            camera_mipi_lanes = <4>;
+            deser-addr = <0x34>;
+            ser-alias = <0x24>;
+            expander-alias = <0x53>;
+            sio-port = "B";
+
+
+			mode0 {
+				num_lanes = "4";
+				vc_id = "1";
+				tegra_sinterface = "serial_c";
+				SENSOR_MODE0
+			};
+            mode1 {
+                num_lanes = "4";
+                vc_id = "1";
+                tegra_sinterface = "serial_c";
+                SENSOR_MODE1
+
+            };
+            mode2 {
+                num_lanes = "4";
+                vc_id = "1";
+                tegra_sinterface = "serial_c";
+                SENSOR_MODE2
+            };
+
+			ports{
+				#address-cells = <1>;
+				#size-cells = <0>;
+				port@0 {
+					reg = <0>;
+					neducam25_cam_out3: endpoint {
+						port-index = <2>;
+						bus-width = <4>;
+						vc-id = <1>;
+						remote-endpoint = <&neducam25_csi_in3>;
+					};
+				};
+			};
+		};
+
+	
+		neducam25_e@47 {
+			SENSOR_COMMON
+			devnode = "video4";
+			reg = <0x47>;
+			
+            boot-gpios = <&tca9539_74 4 GPIO_ACTIVE_HIGH>;
+            pwdn-gpios = <&tca9539_74 5 GPIO_ACTIVE_HIGH>;
+            reset-gpios = <&tegra_main_gpio CAM1_PWDN GPIO_ACTIVE_HIGH>;
+            camera_mipi_lanes = <4>;
+            deser-addr = <0x38>;
+            ser-alias = <0x25>;
+            expander-alias = <0x54>;
+            sio-port = "A";
+
+			mode0 {
+				num_lanes = "4";
+				vc_id = "0";
+				tegra_sinterface = "serial_e";
+				SENSOR_MODE0
+			};
+            mode1 {
+                num_lanes = "4";
+                vc_id = "0";
+                tegra_sinterface = "serial_e";
+                SENSOR_MODE1
+
+            };
+            mode2 {
+                num_lanes = "4";
+                vc_id = "0";
+                tegra_sinterface = "serial_e";
+                SENSOR_MODE2
+            };
+
+			ports{
+				#address-cells = <1>;
+				#size-cells = <0>;
+				port@0 {
+					reg = <0>;
+					neducam25_cam_out4: endpoint {
+						port-index = <4>;
+						bus-width = <4>;
+						vc-id = <0>;
+						remote-endpoint = <&neducam25_csi_in4>;
+					};
+				};
+			};
+		};
+		neducam25_f@48 {
+			SENSOR_COMMON
+			devnode = "video5";
+			reg = <0x48>;
+
+            boot-gpios = <&tca9539_74 4 GPIO_ACTIVE_HIGH>; //MF I have a feeling this is a typo from econ!
+            pwdn-gpios = <&tca9539_74 5 GPIO_ACTIVE_HIGH>;
+            reset-gpios = <&tegra_main_gpio CAM1_PWDN GPIO_ACTIVE_HIGH>;
+            camera_mipi_lanes = <4>;
+            deser-addr = <0x38>;
+            ser-alias = <0x26>;
+            expander-alias = <0x55>;
+            sio-port = "B";
+
+			
+			mode0 {
+				num_lanes = "4";
+				vc_id = "1";
+				tegra_sinterface = "serial_e";
+				SENSOR_MODE0
+			};
+            mode1 {
+                num_lanes = "4";
+                vc_id = "1";
+                tegra_sinterface = "serial_e";
+                SENSOR_MODE1
+
+            };
+            mode2 {
+                num_lanes = "4";
+                vc_id = "1";
+                tegra_sinterface = "serial_e";
+                SENSOR_MODE2
+            };
+
+			ports{
+				#address-cells = <1>;
+				#size-cells = <0>;
+				port@0 {
+					reg = <0>;
+					neducam25_cam_out5: endpoint {
+						port-index = <4>;
+						bus-width = <4>;
+						vc-id = <1>;
+						remote-endpoint = <&neducam25_csi_in5>;
+					};
+				};
+			};
+		};
+	
+		neducam25_g@49 {
+			SENSOR_COMMON
+			devnode = "video6";
+			reg = <0x49>;
+			
+            boot-gpios = <&tca9539_74 6 GPIO_ACTIVE_HIGH>;
+            pwdn-gpios = <&tca9539_74 7 GPIO_ACTIVE_HIGH>;
+            reset-gpios = <&tegra_main_gpio CAM1_RST GPIO_ACTIVE_HIGH>;
+            camera_mipi_lanes = <4>;
+            deser-addr = <0x3C>;
+            ser-alias = <0x27>;
+            expander-alias = <0x56>;
+            sio-port = "A";
+
+
+			mode0 {
+				num_lanes = "4";
+				vc_id = "0";
+				tegra_sinterface = "serial_g";
+				SENSOR_MODE0
+			};
+            mode1 {
+                num_lanes = "4";
+                vc_id = "0";
+                tegra_sinterface = "serial_g";
+                SENSOR_MODE1
+
+            };
+            mode2 {
+                num_lanes = "4";
+                vc_id = "0";
+                tegra_sinterface = "serial_g";
+                SENSOR_MODE2
+            };
+
+			ports{
+				#address-cells = <1>;
+				#size-cells = <0>;
+				port@0 {
+					reg = <0>;
+					neducam25_cam_out6: endpoint {
+						port-index = <6>;
+						bus-width = <4>;
+						vc-id = <0>;
+						remote-endpoint = <&neducam25_csi_in6>;
+					};
+				};
+			};
+		};
+		neducam25_h@4a {
+			SENSOR_COMMON
+			devnode = "video7";
+			reg = <0x4a>;
+			
+            boot-gpios = <&tca9539_74 6 GPIO_ACTIVE_HIGH>;
+            pwdn-gpios = <&tca9539_74 7 GPIO_ACTIVE_HIGH>;
+            reset-gpios = <&tegra_main_gpio CAM1_RST GPIO_ACTIVE_HIGH>;
+            camera_mipi_lanes = <4>;
+            deser-addr = <0x3C>;
+            ser-alias = <0x28>;
+            expander-alias = <0x57>;
+            sio-port = "B";
+
+
+			mode0 {
+				num_lanes = "4";
+				vc_id = "1";
+				tegra_sinterface = "serial_g";
+				SENSOR_MODE0
+			};
+            mode1 {
+                num_lanes = "4";
+                vc_id = "1";
+                tegra_sinterface = "serial_g";
+                SENSOR_MODE1
+
+            };
+            mode2 {
+                num_lanes = "4";
+                vc_id = "1";
+                tegra_sinterface = "serial_g";
+                SENSOR_MODE2
+            };
+
+			ports{
+				#address-cells = <1>;
+				#size-cells = <0>;
+				port@0 {
+					reg = <0>;
+					neducam25_cam_out7: endpoint {
+						port-index = <6>;
+						bus-width = <4>;
+						vc-id = <1>;
+						remote-endpoint = <&neducam25_csi_in7>;
+					};
+				};
+			};
+		};
+
+
+
+	};
+    /**I2C3*/
+    i2c@3180000 {
+        clock-frequency = <100000>;
+  
+        tca9539_74: tca9539@74 {
+            compatible = "ti,tca9539";
+            gpio-controller;
+            #gpio-cells = <2>;
+            reg = <0x74>;
+            vcc-supply = <&vdd_1v8_sys>;
+            status = "okay";
+ 
+            tca9539_74_outlow {
+                status = "okay";
+                gpio-hog;
+                gpios = <0 0 1 0 2 0 3 0 4 0 5 0 6 0 7 0 8 0 9 0 10 0 11 0 12 0 13 0>;
+                output-low;
+                label = "RST_A","PWDN_A","RST_B","PWDN_B","RST_C","PWDN_C","RST_D","PWDN_D";
+            };
+            tca9539_74_outhigh {
+                status = "disabled";
+            };
+            tca9539_74_input {
+                status = "disabled";
+            };
+        };
+
+    
+    };
+
+//hold off on the pinmux stuff for now
+pinmux@2430000 {
+			cam_i2c_scl_pp2 {
+				nvidia,pins = "cam_i2c_scl_pp2";
+				nvidia,function = "i2c3";
+				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
+				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
+				nvidia,io-high-voltage = <TEGRA_PIN_ENABLE>;
+				nvidia,lpdr = <TEGRA_PIN_DISABLE>;
+			};
+
+			cam_i2c_sda_pp3 {
+				nvidia,pins = "cam_i2c_sda_pp3";
+				nvidia,function = "i2c3";
+				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
+				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
+				nvidia,io-high-voltage = <TEGRA_PIN_ENABLE>;
+				nvidia,lpdr = <TEGRA_PIN_DISABLE>;
+			};
+			
+};
+	tegra-camera-platform {
+		 compatible = "nvidia, tegra-camera-platform";
+        status = "okay";
+        /**
+        * Physical settings to calculate max ISO BW
+        *
+        * num_csi_lanes = <>;
+        * Total number of CSI lanes when all cameras are active
+        *
+        * max_lane_speed = <>;
+        * Max lane speed in Kbit/s
+        *
+        * min_bits_per_pixel = <>;
+        * Min bits per pixel
+        *
+        * vi_peak_byte_per_pixel = <>;
+        * Max byte per pixel for the VI ISO case
+        *
+        * vi_bw_margin_pct = <>;
+        * Vi bandwidth margin in percentage
+        *
+        * max_pixel_rate = <>;
+        * Max pixel rate in Kpixel/s for the ISP ISO case
+        *
+        * isp_peak_byte_per_pixel = <>;
+        * Max byte per pixel for the ISP ISO case
+        *
+        * isp_bw_margin_pct = <>;
+        * Isp bandwidth margin in percentage
+        */
+        num_csi_lanes = <18>;
+        max_lane_speed = <1500000>;
+        min_bits_per_pixel = <8>;
+        vi_peak_byte_per_pixel = <2>;
+        vi_bw_margin_pct = <25>;
+        max_pixel_rate = <160000>;
+        isp_peak_byte_per_pixel = <5>;
+        isp_bw_margin_pct = <25>;
+
+        /**
+        * The general guideline for naming badge_info contains 3 parts, and is as follows,
+        * The first part is the camera_board_id for the module; if the module is in a FFD
+        * platform, then use the platform name for this part.
+        * The second part contains the position of the module, ex. “rear” or “front”.
+        * The third part contains the last 6 characters of a part number which is found
+        * in the module's specsheet from the vender.
+        */
+	modules{
+		module0 {
+			status = "okay";
+			badge = "neducam25_top";
+			position = "top";
+			orientation = "1";
+			drivernode0 {
+				status = "okay";
+				pcl_id = "v4l2_sensor";
+				devname = "neducam25 8-0043";
+				proc-device-tree = "/proc/device-tree/i2c@31e0000/neducam25_a@43";
+			};
+		};
+
+        module1 {
+                status = "okay";
+                badge = "neducam25_center";
+                position = "center";
+                orientation = "1";
+                drivernode0 {
+				status = "okay";
+				pcl_id = "v4l2_sensor";
+				devname = "neducam25 8-0044";
+				proc-device-tree = "/proc/device-tree/i2c@31e0000/neducam25_b@44";
+			};
+		};
+		
+		module2 {
+			status = "okay";
+			badge = "neducam25_bottom";
+			position = "bottom";
+			orientation = "1";
+			drivernode0 {
+				status = "okay";
+				pcl_id = "v4l2_sensor";
+				devname = "neducam25 8-0045";
+				proc-device-tree = "/proc/device-tree/i2c@31e0000/neducam25_c@45";
+			};
+		};
+        module3 {
+			status = "okay";
+			badge = "neducam25_centerleft";
+			position = "center-left";
+			orientation = "1";
+			drivernode0 {
+				pcl_id = "v4l2_sensor";
+				devname = "neducam25 8-0046";
+				proc-device-tree = "/proc/device-tree/i2c@31e0000/neducam25_d@46";
+			};
+		};
+		module4 {
+			status = "okay";
+			badge = "neducam25_centerright";
+			position = "center-right";
+			orientation = "1";
+			drivernode0 {
+				status = "okay";
+				pcl_id = "v4l2_sensor";
+				devname = "neducam25 8-0047";
+				proc-device-tree = "/proc/device-tree/i2c@31e0000/neducam25_e@47";
+			};
+		};
+
+		module5 {
+			status = "okay";
+			badge = "neducam25_topright";
+			position = "topright";
+			orientation = "1";
+			drivernode0 {
+				status = "okay";
+				pcl_id = "v4l2_sensor";
+				devname = "neducam25 8-0048";
+				proc-device-tree = "/proc/device-tree/i2c@31e0000/neducam25_f@48";
+			};
+		};
+		module6 {
+			status = "okay";
+			badge = "neducam25_bottomleft";
+			position = "bottom-left";
+			orientation = "1";
+			drivernode0 {
+				status = "okay";
+				pcl_id = "v4l2_sensor";
+				devname = "neducam25 8-0049";
+				proc-device-tree = "/proc/device-tree/i2c@31e0000/neducam25_g@49";
+			};
+		};
+		module7 {
+			status = "okay";
+			badge = "neducam25_bottomright";
+			position = "bottom-right";
+			orientation = "1";
+			drivernode0 {
+				status = "okay";
+				pcl_id = "v4l2_sensor";
+				devname = "neducam25 8-004a";
+				proc-device-tree = "/proc/device-tree/i2c@31e0000/neducam25_h@4a";
+			};
+		};
+	};
+
+	};
+
+
+};

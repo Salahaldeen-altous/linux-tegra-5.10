@@ -1,0 +1,74 @@
+/ {
+   i2c@31e0000{
+        status = "okay";
+        pinctrl-names = "default";
+        pinctrl-0 = <&dpaux_default>;
+
+        i2c-mux@70{
+            reg = <0x70>;
+            compatible = "nxp,pca9544";
+            vcc-supply = <&battery_reg>;
+            vcc-pullup-supply = <&battery_reg>;
+            vif-supply = <&battery_reg>;
+            vcc_lp = "vif";
+            #address-cells = <1>;
+            #size-cells = <0>;
+
+            //USB0 (OTG)
+            i2c@0{
+                reg = <0>;
+                #address-cells = <1>;
+                #size-cells = <0>;
+                ptn5150@3d{
+                    status = "okay";
+                    compatible = "cti,ptn5150";
+                    reg = <0x3d>;
+                    cti,optional;
+                    connector@0 {
+                        compatible = "usb-c-connector";
+                        label = "USB-C";
+                        data-role = "host";
+                        //Supported opmodes: "default" (900mA), "1.5A", "3.0A"
+                        power-opmode = "1.5A";
+                    };
+                };
+            };
+            //USB1
+            i2c@1{
+                reg = <1>;
+                #address-cells = <1>;
+                #size-cells = <0>;
+                ptn5150@3d{
+                    compatible = "cti,ptn5150";
+                    reg = <0x3d>;
+                    cti,optional;
+                    status = "okay";
+                    connector@0 {
+                        compatible = "usb-c-connector";
+                        label = "USB-C";
+                        data-role = "host";
+                        power-opmode = "3.0A";
+                    };
+                };
+            };
+            //USB2 
+            i2c@2{
+                reg = <2>;
+                #address-cells = <1>;
+                #size-cells = <0>;
+                ptn5150@3d{
+                    compatible = "cti,ptn5150";
+                    reg = <0x3d>;
+                    cti,optional;
+                    status = "okay";
+                    connector@0 {
+                        compatible = "usb-c-connector";
+                        label = "USB-C";
+                        data-role = "host";
+                        power-opmode = "3.0A";
+                    };
+                };
+            };
+        };
+    };
+};

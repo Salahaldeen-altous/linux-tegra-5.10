@@ -1,0 +1,170 @@
+/*
+ * Copyright (c) 2023, Connect Tech Inc.  All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include "tegra234-orin-agx-cti-base.dtsi"
+
+/{
+    nvidia,dtsfilename = "tegra234-orin-agx-cti-UAGX-AS.dts";
+
+
+    display@13800000 {
+        status = "disabled";
+    };
+
+    //1G
+    ethernet@2310000 {
+        status = "okay";
+    };
+
+    xusb_padctl@3520000 {
+        status = "okay";
+        pads {
+            usb2 {
+                lanes {
+                    usb2-0 {
+                        status = "okay";
+                    };
+                    usb2-1 {
+                        status = "disabled";
+                    };
+                    usb2-2 {
+                        status = "disabled";
+                    };
+                    usb2-3 {
+                        status = "disabled";
+                    };
+                };
+            };
+            usb3 {
+                lanes {
+                    usb3-0 {
+                        status = "disabled";
+                    };
+                    usb3-1 {
+                        status = "disabled";
+                    };
+                    usb3-2 {
+                        status = "disabled";
+                    };
+                    usb3-3 {
+                        status = "disabled";
+                    };
+                };
+            };
+        };
+        ports {
+            usb2-0 {
+                mode = "peripheral";
+                status = "okay";
+            };
+            usb2-1 {
+                mode = "host";
+                status = "disabled";
+            };
+            usb2-2 {
+                mode = "host";
+                status = "disabled";
+            };
+            usb2-3 {
+                mode = "host";
+                status = "disabled";
+            };
+
+            usb3-0 {
+                status = "disabled";
+            };
+            usb3-1 {
+                status = "disabled";
+            };
+            usb3-2 {
+                status = "disabled";
+            };
+            usb3-3 {
+                status = "disabled";
+            };
+        };
+    };
+
+    xudc@3550000 {
+        status = "okay";
+        phys =  <&{/xusb_padctl@3520000/pads/usb2/lanes/usb2-0}>;
+        phy-names = "usb2-0";
+    };
+
+    xhci@3610000 {
+        status = "disabled";
+        phys =  <&{/xusb_padctl@3520000/pads/usb2/lanes/usb2-0}>;
+		phy-names = "usb2-0";
+    };
+
+
+    //PCIe C0
+    pcie@14180000 {
+        status = "disabled";
+        num-lanes = <1>;
+        phys = <&p2u_hsio_0>;
+        phy-names = "p2u-0";
+    };
+
+    //PCIe C1
+    pcie@14100000 {
+        status = "disabled";
+        num-lanes = <1>;
+        phys = <&p2u_hsio_3>;
+        phy-names = "p2u-0";
+    };
+
+    //PCIe C4
+    pcie@14160000 {
+        status = "disabled";
+        num-lanes = <4>;
+        phys = <&p2u_hsio_4>, <&p2u_hsio_5>, <&p2u_hsio_6>, <&p2u_hsio_7>;
+        phy-names = "p2u-0", "p2u-1", "p2u-2", "p2u-3";
+    };
+
+    //PCIe C5
+    pcie@141a0000 {
+        status = "disabled";
+        num-lanes = <4>;
+        phys = <&p2u_nvhs_0>, <&p2u_nvhs_1>, <&p2u_nvhs_2>, <&p2u_nvhs_3>;
+        phy-names = "p2u-0", "p2u-1", "p2u-2", "p2u-3";
+    };
+
+    pcie_ep@141a0000 {
+        status = "disabled";
+        num-lanes = <4>;
+        phys = <&p2u_nvhs_0>, <&p2u_nvhs_1>, <&p2u_nvhs_2>, <&p2u_nvhs_3>;
+        phy-names = "p2u-0", "p2u-1", "p2u-2", "p2u-3";
+    };
+
+    //PCIe C6
+    pcie@141c0000{
+        status = "disabled";
+        num-lanes = <2>;
+        phys = <&p2u_nvhs_4>, <&p2u_nvhs_5>;
+        phy-names = "p2u-0", "p2u-1";
+    };
+
+    //PCIe C7
+    pcie@141e0000 {
+        status = "okay";
+        num-lanes = <4>;
+        phys = <&p2u_gbe_0>, <&p2u_gbe_1>, <&p2u_gbe_2>, <&p2u_gbe_3>;
+        phy-names = "p2u-0", "p2u-1", "p2u-2", "p2u-3";
+    };
+
+};
+

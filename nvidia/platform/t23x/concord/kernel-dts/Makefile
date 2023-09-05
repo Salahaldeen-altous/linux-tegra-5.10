@@ -11,6 +11,13 @@ endif
 
 dtb-$(BUILD_ENABLE) += tegra234-p3701-0000-p3737-0000.dtb
 dtb-$(BUILD_ENABLE) += tegra234-p3701-0000-as-p3701-0004-p3737-0000.dtb
+dtb-$(BUILD_ENABLE) += tegra234-p3701-0000-as-p3767-0004-p3737-0000.dtb
+dtb-$(BUILD_ENABLE) += tegra234-p3701-0000-as-p3767-0003-p3737-0000.dtb
+dtb-$(BUILD_ENABLE) += tegra234-p3701-0000-as-p3767-0003-p3737-0000-dsi-innolux-a1-cphy.dtb
+dtb-$(BUILD_ENABLE) += tegra234-p3701-0000-as-p3767-0003-p3737-0000-dsi-innolux-c1-dphy.dtb
+dtb-$(BUILD_ENABLE) += tegra234-p3701-0000-as-p3767-0003-p3737-0000-dsi-innolux-c1-dsc-dphy.dtb
+dtb-$(BUILD_ENABLE) += tegra234-p3701-0000-as-p3767-0003-p3737-0000-dsi-tianma-a-dphy.dtb
+dtb-$(BUILD_ENABLE) += tegra234-p3701-0000-as-p3767-0003-p3737-0000-dsi-tianma-b-dphy.dtb
 dtb-$(BUILD_ENABLE) += tegra234-p3701-0000-as-p3770-p3737-0000.dtb
 dtb-$(BUILD_ENABLE) += tegra234-p3701-0000-as-p3769-p3737-0000.dtb
 dtb-$(BUILD_ENABLE) += tegra234-p3701-0000-as-p3769-p3737-0000-dsi-innolux-a1-cphy.dtb
@@ -23,6 +30,7 @@ dtb-$(BUILD_ENABLE) += tegra234-p3701-0000-as-p3767-0001-p3737-0000.dtb
 dtb-$(BUILD_ENABLE) += tegra234-p3701-0000-as-pxxxx-p3737-0000.dtb
 dtb-$(BUILD_ENABLE) += tegra234-p3701-0000-p3737-0000-kexec.dtb
 dtb-$(BUILD_ENABLE) += tegra234-p3701-0004-p3737-0000.dtb
+dtbo-$(BUILD_ENABLE) += tegra234-p3737-overlay.dtbo
 dtbo-$(BUILD_ENABLE) += tegra234-p3737-a03-overlay.dtbo
 dtbo-$(BUILD_ENABLE) += tegra234-p3737-a04-overlay.dtbo
 dtbo-$(BUILD_ENABLE) += tegra234-p3737-overlay-pcie.dtbo
@@ -43,6 +51,9 @@ dtbo-$(BUILD_ENABLE) += tegra234-p3737-camera-e3331-overlay.dtbo
 dtbo-$(BUILD_ENABLE) += tegra234-p3737-camera-e3333-overlay.dtbo
 dtbo-$(BUILD_ENABLE) += tegra234-p3737-camera-imx185-overlay.dtbo
 dtbo-$(BUILD_ENABLE) += tegra234-p3737-camera-imx390-overlay.dtbo
+dtbo-$(BUILD_ENABLE) += tegra234-p3737-camera-hawk-owl-overlay.dtbo
+dtbo-$(BUILD_ENABLE) += tegra234-p3701-overlay.dtbo
+dtbo-$(BUILD_ENABLE) += tegra234-p3737-camera-dual-hawk-ar0234-e3653-overlay.dtbo
 
 ifneq ($(dtb-y),)
 dtb-y := $(addprefix $(makefile-path)/,$(dtb-y))

@@ -1,0 +1,12 @@
+#include <t234-common-cvm/tegra234-cpufreq-pair-cooling.dtsi>
+#include <t234-common-cvm/tegra234-p3767-pcie-max-speed-gen3.dtsi>
+
+/ {
+	nvidia,dtbbuildtime = __DATE__, __TIME__;		
+    compatible = "nvidia,p3768-0000+p3767-0003", "nvidia,p3768-0000+p3767-0005",
+            "nvidia,p3767-0003", "nvidia,p3767-0005",
+            "nvidia,tegra234", "nvidia,tegra23x";
+    model = "NVIDIA Orin Nano";	
+};
+
+

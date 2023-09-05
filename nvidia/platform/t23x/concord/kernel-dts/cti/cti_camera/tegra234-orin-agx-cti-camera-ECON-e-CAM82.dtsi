@@ -1,0 +1,573 @@
+/*
+ * Copyright (c) 2022, Connect Tech Inc.  All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include "tegra234-orin-agx-cti-csi.dtsi"
+#include "tegra234-orin-agx-cti-ECON-HEXCUXVR.dtsi"
+
+
+#define ECAM_MODE_0 \
+    mclk_khz = "37125"; \
+    num_lanes = "4"; \
+    phy_mode = "DPHY"; \
+    discontinuous_clk = "no"; \
+    dpcm_enable = "false"; \
+    cil_settletime = "0"; \
+    dynamic_pixel_bit_depth = "12"; \
+    csi_pixel_bit_depth = "12"; \
+    mode_type = "bayer"; \
+    pixel_phase = "rggb"; \
+                        \
+    active_w = "3840";  \
+    active_h = "2160";  \
+    readout_orientation = "0"; \
+    line_length = "2200";   \
+    inherent_gain = "1";    \
+    mclk_multiplier = "5.13"; \
+    pix_clk_hz = "190771200"; \
+                        \
+    gain_factor = "10"; \
+    min_gain_val = "0"; \
+    max_gain_val = "300"; \
+    step_gain_val = "3"; \
+    default_gain = "0"; \
+    min_hdr_ratio = "1"; \
+    max_hdr_ratio = "1"; \
+    framerate_factor = "1000000"; \
+    min_framerate = "2500000"; \
+    max_framerate = "60000000"; \
+    step_framerate = "1"; \
+    default_framerate = "60000000"; \
+    exposure_factor = "1000000"; \
+    min_exp_time = "450"; \
+    max_exp_time = "400000"; \
+    step_exp_time = "1"; \
+    default_exp_time = "16667"; \
+    embedded_metadata_height = "1"; \
+
+
+#define ECAM_MODE_1 \
+    mclk_khz = "37125"; \
+    num_lanes = "4"; \
+    phy_mode = "DPHY"; \
+    discontinuous_clk = "no"; \
+    dpcm_enable = "false"; \
+    cil_settletime = "0"; \
+    dynamic_pixel_bit_depth = "10"; \
+    csi_pixel_bit_depth = "10"; \
+    mode_type = "bayer"; \
+    pixel_phase = "rggb"; \
+                          \
+    active_w = "3840"; \
+    active_h = "2160"; \
+    readout_orientation = "0"; \
+    line_length = "2640"; \
+    inherent_gain = "1"; \
+    mclk_multiplier = "7.39"; \
+    pix_clk_hz = "274710528"; \
+                            \
+    gain_factor = "10"; \
+    min_gain_val = "0"; \
+    max_gain_val = "300"; \
+    step_gain_val = "3"; \
+    default_gain = "0"; \
+    min_hdr_ratio = "1"; \
+    max_hdr_ratio = "1"; \
+    framerate_factor = "1000000"; \
+    min_framerate = "2500000"; \
+    max_framerate = "72000000"; \
+    step_framerate = "1"; \
+    default_framerate = "72000000"; \
+    exposure_factor = "1000000"; \
+    min_exp_time = "450"; \
+    max_exp_time = "400000"; \
+    step_exp_time = "1"; \
+    default_exp_time = "16667"; \
+    embedded_metadata_height = "1"; \
+
+#define ECAM_MODE_2 \
+    mclk_khz = "37125"; \
+    num_lanes = "4"; \
+    phy_mode = "DPHY"; \
+    discontinuous_clk = "no"; \
+    dpcm_enable = "false"; \
+    cil_settletime = "0"; \
+    dynamic_pixel_bit_depth = "12"; \
+    csi_pixel_bit_depth = "12"; \
+    mode_type = "bayer"; \
+    pixel_phase = "rggb"; \
+                          \
+    active_w = "1920";  \
+    active_h = "1080";  \
+    readout_orientation = "0"; \
+    line_length = "2200"; \
+    inherent_gain = "1"; \
+    mclk_multiplier = "12.92"; \
+    pix_clk_hz = "480000000"; \
+                        \
+    gain_factor = "10"; \
+    min_gain_val = "0"; \
+    max_gain_val = "300"; \
+    step_gain_val = "3"; \
+    default_gain = "0"; \
+    min_hdr_ratio = "1"; \
+    max_hdr_ratio = "1"; \
+    framerate_factor = "1000000"; \
+    min_framerate = "2500000"; \
+    max_framerate = "90000000"; \
+    step_framerate = "1"; \
+    default_framerate = "90000000"; \
+    exposure_factor = "1000000"; \
+    min_exp_time = "450"; \
+    max_exp_time = "400000"; \
+    step_exp_time = "1"; \
+    default_exp_time = "16667";/* us */ \
+    embedded_metadata_height = "1"; \
+
+#define ECAM_MODE_3 \
+    mclk_khz = "37125"; \
+    num_lanes = "4"; \
+    phy_mode = "DPHY"; \
+    discontinuous_clk = "no"; \
+    dpcm_enable = "false"; \
+    cil_settletime = "0"; \
+    dynamic_pixel_bit_depth = "10"; \
+    csi_pixel_bit_depth = "10"; \
+    mode_type = "bayer"; \
+    pixel_phase = "rggb"; \
+                        \
+    active_w = "1920"; \
+    active_h = "1080"; \
+    readout_orientation = "0"; \
+    line_length = "2640"; \
+    inherent_gain = "1"; \
+    mclk_multiplier = "15.51"; \
+    pix_clk_hz = "576000000"; \
+                        \
+    gain_factor = "10"; \
+    min_gain_val = "0"; \
+    max_gain_val = "300"; \
+    step_gain_val = "3"; \
+    default_gain = "0"; \
+    min_hdr_ratio = "1"; \
+    max_hdr_ratio = "1"; \
+    framerate_factor = "1000000"; \
+    min_framerate = "2500000"; \
+    max_framerate = "90000000"; \
+    step_framerate = "1"; \
+    default_framerate = "90000000"; \
+    exposure_factor = "1000000"; \
+    min_exp_time = "450"; \
+    max_exp_time = "400000"; \
+    step_exp_time = "1"; \
+    default_exp_time = "16667";/* us */ \
+    embedded_metadata_height = "1"; \
+
+
+#define ECAM_SENSOR_INFO_COMMON \
+    compatible = "nvidia,eimx485"; \
+    reg = <0x42>; \
+    sensor_model ="eimx485"; \
+    physical_w = "5.60"; \
+    physical_h = "3.175"; \
+    set_mode_delay_ms = "1000"; \
+    use_decibel_gain = "true"; \
+    use_sensor_mode_id = "true"; \
+    use_dol_wdr_mode = "false"; \
+    use_master_slave_mode = "true"; \
+    limit_analog_gain = "true"; \
+    camera_mipi_lanes = "4"; \
+    avdd-reg = "vana"; \
+    iovdd-reg = "vif"; \
+    clocks = <&bpmp_clks TEGRA234_CLK_EXTPERIPH1>, <&bpmp_clks TEGRA234_CLK_PLLP_OUT0>; \
+    clock-names = "extperiph1", "pllp_grtba"; \
+    mclk = "extperiph1"; \
+    vana-supply = <&vdd_3v3_sys>; \
+    vif-supply = <&vdd_1v8_sys>; \
+
+
+/ {
+
+    i2c@3180000 {
+        tca9548@70 {
+            i2c@0 {
+                status = "okay";
+                eimx485_a@42 {
+                    ECAM_SENSOR_INFO_COMMON
+                    
+                    status = "okay";
+                    devnode = "video0";
+
+                    reset-gpios = <&tca6424_22 0 GPIO_ACTIVE_HIGH>;
+                    flash-gpios = <&tca6424_22 12 GPIO_ACTIVE_HIGH>;
+                    boot-gpios =  <&tca6424_22 6 GPIO_ACTIVE_HIGH>;
+                    mipicfg1-gpios = <&tegra_main_gpio MIPICFG0 GPIO_ACTIVE_HIGH>;
+                    mipicfg2-gpios = <&tegra_main_gpio MIPICFG1 GPIO_ACTIVE_HIGH>;
+                    master-select = /bits/ 16 <240>;
+
+
+                    mode0 {
+                        tegra_sinterface = "serial_a";
+                        ECAM_MODE_0
+                    };
+
+                    mode1 {
+                        tegra_sinterface = "serial_a";
+                        ECAM_MODE_1
+                    };
+
+                    mode2 {
+                        tegra_sinterface = "serial_a";
+                        ECAM_MODE_3
+                    };
+
+                    mode3 {
+                        tegra_sinterface = "serial_a";
+                        ECAM_MODE_3
+                    };
+                    ports {
+                        #address-cells = <1>;
+                        #size-cells = <0>;
+                        port@0 {
+                            reg = <0>;
+                            cam_out0: endpoint {
+                                port-index = <0>;
+                                bus-width = <4>;
+                                remote-endpoint = <&csi_in0>;
+                            };
+                        };
+                    };
+                };
+            };
+
+            i2c@2 {
+                status = "okay";
+                eimx485_c@42 {
+                    ECAM_SENSOR_INFO_COMMON
+                    
+                    status = "okay";
+                    devnode = "video1";
+
+                    reset-gpios = <&tca6424_22 2 GPIO_ACTIVE_HIGH>;
+                    flash-gpios = <&tca6424_22 14 GPIO_ACTIVE_HIGH>;
+                    boot-gpios =  <&tca6424_22 8 GPIO_ACTIVE_HIGH>;
+                    mipicfg1-gpios = <&tegra_main_gpio MIPICFG0 GPIO_ACTIVE_HIGH>;
+                    mipicfg2-gpios = <&tegra_main_gpio MIPICFG1 GPIO_ACTIVE_HIGH>;
+                    master-select = /bits/ 16 <242>;
+
+                    mode0 {
+                        tegra_sinterface = "serial_c";
+                        ECAM_MODE_0
+                    };
+
+                    mode1 {
+                        tegra_sinterface = "serial_c";
+                        ECAM_MODE_1
+                    };
+
+                    mode2 {
+                        tegra_sinterface = "serial_c";
+                        ECAM_MODE_3
+                    };
+
+                    mode3 {
+                        tegra_sinterface = "serial_c";
+                        ECAM_MODE_3
+                    };
+                    ports {
+                        #address-cells = <1>;
+                        #size-cells = <0>;
+                        port@0 {
+                            reg = <0>;
+                            cam_out1: endpoint {
+                                port-index = <2>;
+                                bus-width = <4>;
+                                remote-endpoint = <&csi_in1>;
+                            };
+                        };
+                    };
+                };
+            };
+            i2c@4 {
+                status = "okay";
+                eimx485_e@42 {
+                    ECAM_SENSOR_INFO_COMMON
+                    
+                    status = "okay";
+                    devnode = "video2";
+
+                    reset-gpios = <&tca6424_22 4 GPIO_ACTIVE_HIGH>;
+                    flash-gpios = <&tca6424_22 23 GPIO_ACTIVE_HIGH>;
+                    boot-gpios =  <&tca6424_22 10 GPIO_ACTIVE_HIGH>;
+                    mipicfg1-gpios = <&tegra_main_gpio MIPICFG0 GPIO_ACTIVE_HIGH>;
+                    mipicfg2-gpios = <&tegra_main_gpio MIPICFG1 GPIO_ACTIVE_HIGH>;
+                    master-select = /bits/ 16 <244>;
+
+
+                    mode0 {
+                        tegra_sinterface = "serial_e";
+                        ECAM_MODE_0
+                    };
+
+                    mode1 {
+                        tegra_sinterface = "serial_e";
+                        ECAM_MODE_1
+                    };
+
+                    mode2 {
+                        tegra_sinterface = "serial_e";
+                        ECAM_MODE_3
+                    };
+
+                    mode3 {
+                        tegra_sinterface = "serial_e";
+                        ECAM_MODE_3
+                    };
+                    ports {
+                        #address-cells = <1>;
+                        #size-cells = <0>;
+                        port@0 {
+                            reg = <0>;
+                            cam_out2: endpoint {
+                                port-index = <4>;
+                                bus-width = <4>;
+                                remote-endpoint = <&csi_in2>;
+                            };
+                        };
+                    };
+                };
+            };
+            i2c@5 {
+                status = "okay";
+                eimx485_g@42 {
+                    ECAM_SENSOR_INFO_COMMON
+                    
+                    status = "okay";
+                    devnode = "video3";
+
+                    reset-gpios = <&tca6424_22 5 GPIO_ACTIVE_HIGH>;
+                    flash-gpios = <&tca6424_22 22 GPIO_ACTIVE_HIGH>;
+                    boot-gpios =  <&tca6424_22 11 GPIO_ACTIVE_HIGH>;
+                    mipicfg1-gpios = <&tegra_main_gpio MIPICFG0 GPIO_ACTIVE_HIGH>;
+                    mipicfg2-gpios = <&tegra_main_gpio MIPICFG1 GPIO_ACTIVE_HIGH>;
+                    master-select = /bits/ 16 <245>;
+
+                    mode0 {
+                        tegra_sinterface = "serial_g";
+                        ECAM_MODE_0
+                    };
+
+                    mode1 {
+                        tegra_sinterface = "serial_g";
+                        ECAM_MODE_1
+                    };
+
+                    mode2 {
+                        tegra_sinterface = "serial_g";
+                        ECAM_MODE_3
+                    };
+
+                    mode3 {
+                        tegra_sinterface = "serial_g";
+                        ECAM_MODE_3
+                    };
+                    ports {
+                        #address-cells = <1>;
+                        #size-cells = <0>;
+                        port@0 {
+                            reg = <0>;
+                            cam_out3: endpoint {
+                                port-index = <6>;
+                                bus-width = <4>;
+                                remote-endpoint = <&csi_in3>;
+                            };
+                        };
+                    };
+                };
+            };
+        };
+    };
+    tegra-capture-vi {
+        status = "okay";
+        num-channels = <4>;
+        ports {
+            port@0 {
+                status = "okay";
+                endpoint {
+                    port-index = <0>;
+                    status = "okay";
+                    bus-width = <4>;
+                };
+            };
+            port@1 {
+                status = "okay";
+                endpoint {
+                    port-index = <2>;
+                    status = "okay";
+                    bus-width = <4>;
+                };
+            };
+            port@2 {
+                status = "okay";
+                endpoint {
+                    port-index = <4>;
+                    status = "okay";
+                    bus-width = <4>;
+                };
+            };
+            port@3 {
+                status = "okay";
+                endpoint {
+                    port-index = <5>;
+                    status = "okay";
+                    bus-width = <4>;
+                };
+            };
+        };
+    };
+
+    host1x@13e00000 {
+        nvcsi@15a00000 {
+            status = "okay";
+            channel@0 {
+                status = "okay";
+                ports {
+                    port@0 {
+                        status = "okay";
+                        endpoint@0 {
+                            status = "okay";
+                            bus-width = <4>;
+                            remote-endpoint = <&cam_out0>;
+                        };
+                    };
+                    port@1 {
+                        status = "okay";
+                        endpoint@1 {
+                            status = "okay";
+                        };
+                    };
+                };
+            };
+            channel@1 {
+                status = "okay";
+                ports {
+                    port@0 {
+                        status = "okay";
+                        endpoint@2 {
+                            status = "okay";
+                            bus-width = <4>;
+                            remote-endpoint = <&cam_out1>;
+                        };
+                    };
+                    port@1 {
+                        status = "okay";
+                        endpoint@3 {
+                            status = "okay";
+                        };
+                    };
+                };
+            };
+            channel@2 {
+                status = "okay";
+                ports {
+                    port@0 {
+                        status = "okay";
+                        endpoint@4 {
+                            status = "okay";
+                            bus-width = <4>;
+                            remote-endpoint = <&cam_out2>;
+                        };
+                    };
+                    port@1 {
+                        status = "okay";
+                        endpoint@5 {
+                            status = "okay";
+                        };
+                    };
+                };
+            };
+
+            channel@3 {
+                status = "okay";
+                ports {
+                    port@0 {
+                        status = "okay";
+                        endpoint@6 {
+                            status = "okay";
+                            bus-width = <4>;
+                            remote-endpoint = <&cam_out3>;
+                        };
+                    };
+                    port@1 {
+                        status = "okay";
+                        endpoint@7 {
+                            status = "okay";
+                        };
+                    };
+                };
+            };
+        };
+    };
+
+
+    tegra-camera-platform {
+        num_csi_lanes = <16>;
+        max_lane_speed = <1500000>;
+        min_bits_per_pixel = <10>;
+        vi_peak_byte_per_pixel = <2>;
+        vi_bw_margin_pct = <25>;
+        isp_peak_byte_per_pixel = <5>;
+        isp_bw_margin_pct = <25>;
+
+        modules {
+            module0 {
+                status = "okay";
+                 drivernode0 {
+                    status = "okay";
+                    pcl_id = "v4l2_sensor";
+                    devname = "e-con_cam 30-0042";
+                    proc-device-tree = "/proc/device-tree/i2c@3180000/tca9548@70/i2c@0/eimx485_a@42";
+                };
+            };
+            module2 {
+                status = "okay";
+                drivernode0 {
+                    status = "okay";
+                    pcl_id = "v4l2_sensor";
+                    devname = "e-con_cam 32-0042";
+                    proc-device-tree = "/proc/device-tree/i2c@3180000/tca9548@70/i2c@2/eimx485_c@42";
+                };
+            };
+            module4 {
+                status = "okay";
+                drivernode0 {
+                    status = "okay";
+                    pcl_id = "v4l2_sensor";
+                    devname = "e-con_cam 34-0042";
+                    proc-device-tree = "/proc/device-tree/i2c@3180000/tca9548@70/i2c@4/eimx485_e@42";
+                };
+            };
+            module5 {
+                status = "okay";
+                drivernode0 {
+                    status = "okay";
+                    pcl_id = "v4l2_sensor";
+                    devname = "e-con_cam 35-0042";
+                    proc-device-tree = "/proc/device-tree/i2c@3180000/tca9548@70/i2c@5/eimx485_g@42";
+                };
+            };
+        };
+    };
+};

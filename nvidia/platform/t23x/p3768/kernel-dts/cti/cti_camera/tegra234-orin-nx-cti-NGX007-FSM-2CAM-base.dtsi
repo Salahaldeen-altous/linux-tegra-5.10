@@ -1,0 +1,208 @@
+/*
+ * Copyright (c) 2023, Connect Tech Inc.  All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include "dt-bindings/gpio/tegra234-gpio.h"
+
+#define CAM0_PWDN	TEGRA234_MAIN_GPIO(H, 6)
+#define CAM1_PWDN	TEGRA234_MAIN_GPIO(AC, 0)
+
+/* PCA9539 Pxx bus-port define*/
+#define CAM0_RST_0      0
+#define CAM1_RST_0      2
+#define CAM2_RST_0      4
+#define CAM0_PWDN_1     1 //creset camA
+#define CAM1_PWDN_1     3 //creset camB
+#define CAM2_PWDN_0     5
+#define CAM2_PWDN_1     6 //creset camC
+#define CAM3_RST_0      7
+#define CAM3_PWDN_0     8
+#define CAM3_PWDN_1     9 //creset camD
+#define MIPI_SW_SEL     10 // P12
+
+#define CAMERA_I2C_MUX_BUS(x) (0x1E + x)
+
+/ {
+		//GPIO controller nodes
+		
+		i2c@3180000{
+			gpio_i2c_cam: gpio@77 {
+				status = "okay";
+				compatible = "ti,tca9539";
+				reg = <0x77>;
+				gpio-controller;
+				#gpio-cells = <2>;
+				#address-cells = <1>;
+				#size-cells = <0>;
+				vcc-supply = <&vdd_5v_sys>; //battery_reg
+				camera-rst{
+					gpio-hog;
+					output-low;
+					gpios = <0 0 2 0 4 0 7 0 10 0>;
+					label = "cam0_rst", "cam1_rst", "cam2_rst", "cam3_rst", "mipi_sel";
+				};
+				camera-pwr{
+					gpio-hog;
+					output-high;
+					gpios = <1 0 3 0 5 0 6 0 8 0 9 0>;
+					label = "cam0_pw1", "cam1_pw1", "cam2_pw0", "cam2_pw1", "cam3_pw0", "cam3_pw1";
+				};
+			};
+			tca9548@70 {
+				compatible = "nxp,pca9548";
+				reg = <0x70>;
+				#address-cells = <1>;
+				#size-cells = <0>;
+				skip_mux_detect;
+				vcc-supply = <&vdd_3v3_sys>;
+				force_bus_start = <CAMERA_I2C_MUX_BUS(0)>;
+				status = "okay";	
+				i2c@0 {
+						reg = <0>;
+						i2c-mux,deselect-on-exit;
+						#address-cells = <1>;
+						#size-cells = <0>;
+						status = "okay";
+				};
+				i2c@1 {
+					reg = <1>;
+					i2c-mux,deselect-on-exit;
+					#address-cells = <1>;
+					#size-cells = <0>;
+					status = "okay";		
+				};				
+			};
+		};
+	
+		framos_platform_adapter {
+			cam,use-cam-gpio = "true"; 
+		};
+		
+		gpio@2200000 {
+			status = "okay";
+			camera-control-output-low {
+				gpio-hog;
+				output-low;
+				gpios = <CAM0_PWDN 0 CAM1_PWDN 0>;
+				label = "cam0-pwdn", "cam1-pwdn";
+				status = "okay";
+				};
+		};
+			
+		tegra-capture-vi {
+			num-channels = <2>;
+			status = "okay";
+			ports {
+				#address-cells = <1>;
+				#size-cells = <0>;
+				port@0 {
+					status = "okay";
+					reg = <0>;
+					vi_in0: endpoint {
+						status = "okay";
+						port-index = <0>;
+						bus-width = <4>;
+						remote-endpoint = <&csi_out0>;
+					};
+				};
+				port@1 {
+					status = "okay";
+					reg = <1>;
+					vi_in1: endpoint {
+						status = "okay";
+						port-index = <2>;
+						bus-width = <4>;
+						remote-endpoint = <&csi_out1>;
+					};
+				};
+
+			};
+		};
+
+	host1x@13e00000 {
+		nvcsi@15a00000 {
+			num-channels = <2>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "okay";
+			channel@0 {
+				status = "okay";
+				reg = <0>;
+				ports {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					status = "okay";
+					port@0 {
+						status = "okay";
+						reg = <0>;
+						csi_in0: endpoint@0 {
+							status = "okay";
+							port-index = <0>;
+							bus-width = <4>;
+							remote-endpoint = <&vi_out0>;
+						};
+					};
+					port@1 {
+						status = "okay";
+						reg = <1>;
+						csi_out0: endpoint@1 {
+							remote-endpoint = <&vi_in0>;
+						};
+					};
+				};
+			};
+			channel@1 {
+				status = "okay";
+				reg = <1>;
+				ports {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					status = "okay";
+					port@0 {
+						status = "okay";
+						reg = <0>;
+						csi_in1: endpoint@2 {
+							status = "okay";
+							port-index = <2>;
+							bus-width = <4>;
+							remote-endpoint = <&vi_out1>;
+						};
+					};
+					port@1 {
+						status = "okay";
+						reg = <1>;
+						csi_out1: endpoint@3 {
+							remote-endpoint = <&vi_in1>;
+						};
+					};
+				};
+			};
+
+		};
+	};
+
+	tegra-camera-platform {
+		compatible = "nvidia, tegra-camera-platform";
+
+		num_csi_lanes = <8>;
+		max_lane_speed = <1500000>;
+		min_bits_per_pixel = <10>;
+		vi_peak_byte_per_pixel = <2>;
+		vi_bw_margin_pct = <25>;
+		max_pixel_rate = <240000>;
+		isp_peak_byte_per_pixel = <5>;
+		isp_bw_margin_pct = <25>;
+	};
+};

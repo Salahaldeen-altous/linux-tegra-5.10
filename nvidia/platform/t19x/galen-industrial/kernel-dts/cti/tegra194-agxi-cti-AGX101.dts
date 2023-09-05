@@ -1,0 +1,199 @@
+
+#include "../../galen/kernel-dts/cti/tegra194-agx-cti-base.dtsi"
+#include "../../galen/kernel-dts/cti/cti_common/tegra194-agx-cti-AGX111-USBC.dtsi"
+#include "../common/tegra194-p2888-0008-p2822-0000.dtsi"
+/{
+
+    nvidia,dtsfilename = "tegra194-agxi-cti-AGX101.dts";
+
+    xusb_padctl@3520000 {
+        status = "okay";
+        pads {
+            usb2 {
+                lanes {
+                    usb2-0 {
+                        status = "okay";
+                    };
+                    usb2-1 {
+                        status = "okay";
+                    };
+                    usb2-2 {
+                        status = "okay";
+                    };
+                    usb2-3 {
+                        status = "okay";
+                    };
+                };
+            };
+            usb3 {
+                lanes {
+                    usb3-0 {
+                        status = "okay";
+                    };
+                    usb3-1 {
+                        status = "disabled";
+                    };
+                    usb3-2 {
+                        status = "okay";
+                    };
+                    usb3-3 {
+                        status = "okay";
+                    };
+                };
+            };
+        };
+        ports {
+            usb2-0 {
+                status = "okay";
+                vbus-supply = <&vdd_usb_vbus0>;
+            };
+            usb2-1 {
+                status = "okay";
+                vbus-supply = <&vdd_usb_vbus0>;
+            };
+            usb2-2 {
+                status = "okay";
+            };
+            usb2-3 {
+                status = "okay";
+                vbus-supply = <&vdd_usb_vbus0>;
+            };
+            usb3-0 {
+                nvidia,usb2-companion = <1>;
+            //    nvidia,usb3-gen1-only= <1>;
+                status = "okay";
+            };
+            usb3-1{
+            //    nvidia,usb2-companion = <1>;
+            //    nvidia,usb3-gen1-only= <1>;
+                status = "disabled";
+            };
+            usb3-2 {
+                nvidia,usb2-companion = <0>;
+            //    nvidia,usb3-gen1-only= <1>;
+                status = "okay";
+            };
+            usb3-3 {
+                nvidia,usb2-companion = <3>;
+            //    nvidia,usb3-gen1-only= <1>;
+                status = "okay";
+            };
+        };
+    };
+
+    xhci@3610000 {
+        status = "okay";
+        phys = <&{/xusb_padctl@3520000/pads/usb2/lanes/usb2-0}>,
+            <&{/xusb_padctl@3520000/pads/usb2/lanes/usb2-1}>,
+            <&{/xusb_padctl@3520000/pads/usb2/lanes/usb2-3}>,
+            <&{/xusb_padctl@3520000/pads/usb2/lanes/usb2-2}>,
+            <&{/xusb_padctl@3520000/pads/usb3/lanes/usb3-0}>,
+            <&{/xusb_padctl@3520000/pads/usb3/lanes/usb3-2}>,
+            <&{/xusb_padctl@3520000/pads/usb3/lanes/usb3-3}>;
+        phy-names = "usb2-0", "usb2-1", "usb2-3", "usb2-2",
+                    "usb3-0", "usb3-2", "usb3-3";
+    };
+
+    pcie@14100000 {
+        status = "okay";
+        phys = <&p2u_hsio_0>;
+        phy-names = "p2u-0";
+    };
+
+    pcie@14140000 {
+        status = "okay";
+        phys = <&p2u_hsio_7>;
+        phy-names = "p2u-0";
+    };
+
+    pcie@14180000 {
+        status = "okay";
+        phys = <&p2u_hsio_2>, <&p2u_hsio_3>, <&p2u_hsio_4>, <&p2u_hsio_5>;
+        phy-names = "p2u-0", "p2u-1", "p2u-2", "p2u-3";
+
+    };
+
+    pcie@141a0000 {
+        status = "okay";
+
+        phys =  <&p2u_nvhs_0>, <&p2u_nvhs_1>, <&p2u_nvhs_2>, <&p2u_nvhs_3>;
+
+        phy-names = "p2u-0", "p2u-1", "p2u-2", "p2u-3";
+    };
+
+    spi@3210000{
+        status = "okay";
+        spidev@0 {
+            compatible = "tegra-spidev";
+            reg = <0>;
+            spi-max-frequency = <25000000>;
+        };
+    };
+	
+	//enabling i/o
+	sdhci@3400000{
+		status = "okay";
+	};
+	
+	serial@3100000{
+		status = "okay";
+	};
+	
+	serial@3110000{
+		status = "okay";
+	};
+	
+	mttcan@c310000{
+		status = "okay";
+	};
+	
+	mttcan@c320000{
+		status = "okay";
+	};	
+	
+	/*clocks-init{
+		status = "okay";
+	};*/
+
+};
+
+//sor0
+&head1 {
+    status = "okay";
+};
+
+//sor1
+&head2 {
+    status = "okay";
+};
+
+&sor0 {
+    status = "okay";
+    nvidia,active-panel = <&sor0_hdmi_display>;
+};
+
+&sor0_hdmi_display {
+    status = "okay";
+};
+
+&dpaux0 {
+    status = "okay";
+};
+
+&sor1 {
+    status = "okay";
+    nvidia,active-panel = <&sor1_hdmi_display>;
+};
+
+&sor1_hdmi_display {
+    status = "okay";
+};
+
+&dpaux1 {
+    status = "okay";
+};
+
+&tegra_cec {
+    status = "okay";
+};
+

@@ -1,0 +1,49 @@
+/ {
+
+	tegra-camera-platform {
+		modules {
+			module0 {
+				badge = MODULE0_BADGE;
+				position = "centerleft";
+				orientation = "6";
+				drivernode0 {
+					/* Declare PCL support driver (classically known as guid)  */
+					pcl_id = "v4l2_sensor";
+					/* Driver v4l2 device name */
+					devname = MODULE0_DEVNAME;
+					/* Declare the device-tree hierarchy to driver instance */
+					proc-device-tree = PROC_DEVICE_TREE0;
+					status = "okay";
+				};
+			};
+			module1 {
+				badge = MODULE1_BADGE;
+				position = "bottomleft";
+				orientation = "7";
+				drivernode0 {
+					/* Declare PCL support driver (classically known as guid)  */
+					pcl_id = "v4l2_sensor";
+					/* Driver v4l2 device name */
+					devname = MODULE1_DEVNAME;
+					/* Declare the device-tree hierarchy to driver instance */
+					proc-device-tree = PROC_DEVICE_TREE1;
+					status = "okay";
+				};
+			};
+			module2 {
+				badge = MODULE2_BADGE;
+				position = "topright";
+				orientation = "4";
+				drivernode0 {
+					/* Declare PCL support driver (classically known as guid)  */
+					pcl_id = "v4l2_sensor";
+					/* Driver v4l2 device name */
+					devname = MODULE2_DEVNAME;
+					/* Declare the device-tree hierarchy to driver instance */
+					proc-device-tree = PROC_DEVICE_TREE2;
+					status = "okay";
+				};
+			};		
+		};
+	};
+};

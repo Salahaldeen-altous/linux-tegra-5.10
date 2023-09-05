@@ -1,0 +1,39 @@
+#define I2C_ADDR					i2c@3180000
+#define VI_ADDR      				vi@15c10000
+#define NVCSI_ADDR					nvcsi@15a00000
+#define I2C_EXPANDER_ADDR			tca9546@70
+#define NUM_MIPI_CHAN   			2
+#define BUS_WIDTH 					2
+#define COMPATIBLE_STRING			"alliedvision,avt_csi2"
+
+#define I2C0 						i2c@0
+#define I2C1 						i2c@1			
+
+#define I2C0_NODE					avt_csi2_a@3c
+#define I2C1_NODE					avt_csi2_c@3c
+
+#define I2C_NODE_REG				0x3c
+
+#define SENSOR_MODEL				"avt_csi2"
+
+#define VI_CSI_PORT_INDEX0			0
+#define VI_CSI_PORT_INDEX1			2
+
+#define  NUM_OF_LANES   "2"
+
+#define MODULE0_BADGE    "avt_csi2_front_avt_csi2"
+#define MODULE1_BADGE    "avt_csi2_rear_avt_csi2"
+
+#define MODULE0_DEVNAME				"avt_csi2 0 9-003c"
+#define MODULE1_DEVNAME				"avt_csi2 2 10-003c"
+
+#define I2C0_NODE_SINTERFACE 		"serial_a"
+#define I2C1_NODE_SINTERFACE 		"serial_c"
+
+#define PROC_DEVICE_TREE_MODULE0	"/proc/device-tree/i2c@3180000/tca9546@70/i2c@0/avt_csi2_a@3c"
+#define PROC_DEVICE_TREE_MODULE1	"/proc/device-tree/i2c@3180000/tca9546@70/i2c@1/avt_csi2_c@3c"
+
+/{
+    nvidia,dtsfilename = "tegra194-agx-cti-camera-2cam-base-header.dtsi";
+    nvidia,dtbbuildtime = __DATE__, __TIME__;
+};

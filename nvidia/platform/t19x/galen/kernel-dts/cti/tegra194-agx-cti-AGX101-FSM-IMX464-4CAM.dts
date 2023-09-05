@@ -1,0 +1,11 @@
+/*
+ * Top level DTS file for AGX001.
+ */
+
+#include "tegra194-agx-cti-AGX101.dts"
+#include "cti_camera/tegra194-agx-cti-FSM-IMX464-4CAM.dtsi"
+
+/{
+    nvidia,dtsfilename = "tegra194-agx-cti-AGX101-FSM-IMX464-4CAM.dts";
+    nvidia,dtbbuildtime = __DATE__, __TIME__;
+};

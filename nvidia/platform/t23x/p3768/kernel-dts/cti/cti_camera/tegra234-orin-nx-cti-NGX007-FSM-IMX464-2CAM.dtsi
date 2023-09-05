@@ -1,0 +1,223 @@
+/*
+ * Copyright (c) 2023, Connect Tech Inc.  All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include "tegra234-orin-nx-cti-NGX007-FSM-2CAM-base.dtsi"
+#include "tegra234-cti-fsm-imx464-modes-header.dtsi"
+
+#include "dt-bindings/clock/tegra234-clock.h"
+
+
+/ {
+	i2c@3180000 {
+		tca9548@70 {
+			status = "okay";	
+			i2c@0 {
+					status = "okay";
+					imx464_a@1a{
+								status = "okay";
+								reg = <0x1a>;
+								compatible = "framos,imx464";
+								
+								/* Define any required hw resources needed by driver */
+								/* ie. clocks, io pins, power sources */
+								clocks = <&bpmp_clks TEGRA234_CLK_EXTPERIPH1>,
+											<&bpmp_clks TEGRA234_CLK_EXTPERIPH1>;
+								clock-names = "extperiph1", "pllp_grtba";
+								mclk = "extperiph1";
+								clock-frequency = <37125000>;
+								
+								reset-gpios = <&gpio_i2c_cam 0 GPIO_ACTIVE_HIGH>;
+								pwdn-gpios = <&tegra_main_gpio CAM0_PWDN GPIO_ACTIVE_HIGH>;
+								
+								//vana-supply = <&p3737_avdd_cam_2v8>;
+								//vif-supply = <&vdd_1v8_sys>;
+
+								devnode = "video0";
+
+								physical_w = "15.00";
+								physical_h = "12.50";
+
+								sensor_model ="imx464";	
+
+								//avdd-reg = "vana";
+								//iovdd-reg = "vif"; 
+								
+								post_crop_frame_drop = "0";
+								use_decibel_gain = "true";
+								delayed_gain = "false";
+								use_sensor_mode_id = "false";
+
+								mode0 {
+										lane_polarity = "6";
+										num_lanes = "4";
+										tegra_sinterface = "serial_a";
+										pix_clk_hz = "475200000";
+										SENSOR_MODE0
+								};
+								mode1 {
+										lane_polarity = "6";
+										num_lanes = "4";
+										tegra_sinterface = "serial_a";
+										pix_clk_hz = "475200000";
+										SENSOR_MODE1
+								};
+
+								mode2 {
+										lane_polarity = "6";
+										num_lanes = "4";
+										tegra_sinterface = "serial_a";
+										pix_clk_hz = "475200000";
+										SENSOR_MODE2
+								};
+
+								mode3 {
+										lane_polarity = "6";
+										num_lanes = "4";
+										tegra_sinterface = "serial_a";
+										pix_clk_hz = "475200000";
+										SENSOR_MODE3
+								};
+
+								ports {
+									#address-cells = <1>;
+									#size-cells = <0>;
+
+									port@0 {
+										reg = <0>;
+										vi_out0: endpoint {
+											port-index = <0>;
+											bus-width = <4>;
+											remote-endpoint = <&csi_in0>;
+										};
+									};
+								};
+					};
+				};
+				i2c@1 {
+					status = "okay";
+					imx464_c@1a{
+								status = "okay";
+								reg = <0x1a>;
+								compatible = "framos,imx464";
+								
+								/* Define any required hw resources needed by driver */
+								/* ie. clocks, io pins, power sources */
+								clocks = <&bpmp_clks TEGRA234_CLK_EXTPERIPH1>,
+											<&bpmp_clks TEGRA234_CLK_EXTPERIPH1>;
+								clock-names = "extperiph1", "pllp_grtba";
+								mclk = "extperiph1";
+								clock-frequency = <37125000>;
+								
+								reset-gpios = <&gpio_i2c_cam 2 GPIO_ACTIVE_HIGH>;
+								pwdn-gpios = <&tegra_main_gpio CAM1_PWDN GPIO_ACTIVE_HIGH>;
+								
+								//vana-supply = <&p3737_avdd_cam_2v8>;
+								//vif-supply = <&vdd_1v8_sys>;
+
+								devnode = "video2";
+
+								physical_w = "15.00";
+								physical_h = "12.50";
+
+								sensor_model ="imx464";	
+
+								//avdd-reg = "vana";
+								//iovdd-reg = "vif"; 
+								
+								post_crop_frame_drop = "0";
+								use_decibel_gain = "true";
+								delayed_gain = "false";
+								use_sensor_mode_id = "false";
+
+								mode0 {
+										lane_polarity = "0";
+										num_lanes = "4";
+										tegra_sinterface = "serial_c";
+										pix_clk_hz = "475200000";
+										SENSOR_MODE0
+								};
+								mode1 {
+										lane_polarity = "0";
+										num_lanes = "4";
+										tegra_sinterface = "serial_c";
+										pix_clk_hz = "475200000";
+										SENSOR_MODE1
+								};
+
+								mode2 {
+										lane_polarity = "0";
+										num_lanes = "4";
+										tegra_sinterface = "serial_c";
+										pix_clk_hz = "475200000";
+										SENSOR_MODE2
+								};
+
+								mode3 {
+										lane_polarity = "0";
+										num_lanes = "4";
+										tegra_sinterface = "serial_c";
+										pix_clk_hz = "475200000";
+										SENSOR_MODE3
+								};
+								
+								ports {
+									#address-cells = <1>;
+									#size-cells = <0>;
+
+									port@0 {
+										reg = <0>;
+										vi_out1: endpoint {
+											port-index = <2>;
+											bus-width = <4>;
+											remote-endpoint = <&csi_in1>;
+										};
+									};
+								};
+							};
+						};
+				};
+				
+			};
+
+	tegra-camera-platform {
+		modules {
+			module0 {
+				badge = "imx464_bottomleft";
+				position = "bottomleft";
+				orientation = "1";
+				status = "okay";
+				drivernode0 {
+					status = "okay";
+					pcl_id = "v4l2_sensor";
+					devname = "imx464 30-001a";
+					proc-device-tree = "/proc/device-tree/i2c@3180000/tca9548@70/i2c@0/imx464_a@1a";
+				};
+			};
+			module1 {
+				badge = "imx464_centerright";
+				position = "centerright";
+				orientation = "1";
+				status = "okay";
+				drivernode0 {
+					status = "okay";
+					pcl_id = "v4l2_sensor";
+					devname = "imx464 31-001a";
+					proc-device-tree = "/proc/device-tree/i2c@3180000/tca9548@70/i2c@1/imx464_c@1a";
+				};
+			};
+		};
+	};
+};

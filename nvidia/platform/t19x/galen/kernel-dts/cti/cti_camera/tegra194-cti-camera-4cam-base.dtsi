@@ -1,0 +1,115 @@
+/*
+ * Copyright (c) 2018, NVIDIA CORPORATION.  All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#include "tegra194-cti-camera-4cam-vi-csi-base.dtsi"
+#include "tegra194-cti-camera-4cam-platform-base.dtsi"
+
+/ { 
+	I2C_ADDR {
+		status = "okay";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		I2C_EXPANDER_ADDR {
+			I2C0 {
+				status = "okay";
+				I2C0_NODE0 {
+					status = "okay";
+					compatible = COMPATIBLE_STRING;
+					reg = <I2C_NODE0_REG>;
+					sensor_model = SENSOR_MODEL;		
+					ports {
+						#address-cells = <1>;
+						#size-cells = <0>;
+						port@0 {
+							reg = <0>;
+							vi_out0: endpoint {
+								port-index = <I2C0_NODE0_PORT_INDEX>;
+								bus-width = <BUS_WIDTH0>;
+								remote-endpoint = <&csi_in0>;
+							};
+						};
+					};	
+				};
+			};
+
+			I2C1 {
+				status = "okay";
+				I2C1_NODE0 {
+					status = "okay";
+					compatible = COMPATIBLE_STRING;
+					reg = <I2C_NODE0_REG>;				
+					sensor_model = SENSOR_MODEL;				
+					ports {
+						#address-cells = <1>;
+						#size-cells = <0>;
+						port@0 {
+							reg = <0>;
+							vi_out1: endpoint {
+								port-index = <I2C1_NODE0_PORT_INDEX>;
+								bus-width = <BUS_WIDTH1>;
+								remote-endpoint = <&csi_in1>;
+							};
+						};
+					};					
+				};
+			};
+			
+			I2C2 {
+				status = "okay";
+				I2C2_NODE0 {
+					status = "okay";
+					compatible = COMPATIBLE_STRING;
+					reg = <I2C_NODE0_REG>;
+					sensor_model = SENSOR_MODEL;
+
+					ports {
+						#address-cells = <1>;
+						#size-cells = <0>;
+						port@0 {
+							reg = <0>;
+							vi_out2: endpoint {
+								port-index = <I2C2_NODE0_PORT_INDEX>;
+								bus-width = <BUS_WIDTH2>;
+								remote-endpoint = <&csi_in2>;
+							};
+						};
+					};
+				};
+			};
+			I2C3 {
+				status = "okay";
+				I2C3_NODE0 {
+					status = "okay";
+					compatible = COMPATIBLE_STRING;
+					sensor_model = SENSOR_MODEL;
+					reg = <I2C_NODE0_REG>;					
+					ports {
+						#address-cells = <1>;
+						#size-cells = <0>;
+						port@0 {
+							reg = <0>;
+							vi_out3: endpoint {
+								port-index = <I2C3_NODE0_PORT_INDEX>;
+								bus-width = <BUS_WIDTH3>;
+								remote-endpoint = <&csi_in3>;
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};

@@ -1,0 +1,907 @@
+/*
+ * Copyright (c) 2022, Connect Tech Inc.  All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include "tegra234-orin-agx-cti-csi.dtsi"
+#include "tegra234-orin-agx-cti-ECON-HEXCUXVR.dtsi"
+#include "dt-bindings/clock/tegra234-clock.h"
+
+
+#define RST_IO_EXP TEGRA234_MAIN_GPIO(AC,1)
+#define PWM_CALIB_GPIO TEGRA234_MAIN_GPIO(H,7) //CAM0_PWDN
+#define TRIGGER_SEL TEGRA234_MAIN_GPIO(I,0) //CAM0_RST
+
+#define CAM_LANES 2
+#define CAM_LANES_STRING "2"
+
+
+/ {
+
+	gpio@2200000 {
+		camera-control-output-high {
+			status = "okay";
+			gpio-hog;
+			gpios = <RST_IO_EXP 0>;
+			output-high;
+			label = "rst-io-expender"; 
+		};
+		camera-control-output-low {
+			status = "okay";
+			gpio-hog;
+			gpios = <TRIGGER_SEL 0>;
+			output-low;
+			label = "trigger_sel";
+		};
+	};
+
+	i2c@3180000 {
+		clock-frequency = <100000>;
+		tca9539_74: tca9539@74 {
+			compatible = "ti,tca9539";
+			gpio-controller;
+			#gpio-cells = <2>;
+			reg = <0x74>;
+			vcc-supply = <&vdd_1v8_sys>;
+			status = "okay";
+			
+			tca9539_74_outlow {
+				status = "okay";
+				gpio-hog;
+				gpios = <0 0 1 0 2 0 3 0 4 0 5 0 6 0 7 0 8 0 9 0 10 0 11 0 12 0 13 0>;
+				output-low;
+				label = "RST_A","PWDN_A","RST_B","PWDN_B","RST_C","PWDN_C","RST_D","PWDN_D";
+			};
+			tca9539_74_outhigh {
+				status = "disabled";
+			};
+			tca9539_74_input {
+				status = "disabled";
+			};
+		};
+	};
+
+    i2c@31e0000 {
+	status = "okay";
+	#address-cells = <1>;
+	#size-cells = <0>;
+        tca9544@72 {
+	    status = "okay";
+	    compatible = "nxp,pca9544";
+	    reg = <0x72>;
+	    #address-cells = <1>;
+	    #size-cells = <0>;
+	    vcc-supply = <&vdd_1v8_sys>;
+	    skip_mux_detect;
+	    force_bus_start = <0x28>;
+            i2c@0 {
+                status = "okay";
+		reg = <0>;
+		i2c-mux,deselect-on-exit;
+		#address-cells = <1>;
+		#size-cells = <0>;
+		ar0233_g@43 {
+			status = "okay";
+			compatible = "nvidia,ar0233";
+			reg = <0x43>;
+			sensor_model = "ar0233";
+			avdd-reg = "vana";
+			iovdd-reg = "vif";
+			clocks = <&bpmp_clks TEGRA234_CLK_EXTPERIPH1>,<&bpmp_clks TEGRA234_CLK_EXTPERIPH1>;
+			clock-names = "extperiph1","pllp_grtba";
+			mclk = "extperiph1";
+			clock-frequency = <24000000>;
+			boot-gpios = <&tca9539_74 0 GPIO_ACTIVE_HIGH>;
+			pwdn-gpios = <&tca9539_74 1 GPIO_ACTIVE_HIGH>;
+			
+			trigger-gpios = <&tegra_main_gpio TRIGGER_SEL GPIO_ACTIVE_LOW>;
+			default-trigger = "internal";
+			vana-supply = <&vdd_cam_2v8>;
+			vif-supply = <&vdd_1v8_sys>;
+			devnode = "video0";
+			
+			use_sensor_mode_id = "false";
+			camera_mipi_lanes = <2>;
+			camera-mipi-clk = <1200>;
+			sio-port = "A";
+			/*pwm-invert = <1>;
+			pwm-duty_ns = <0x1CBC720>;
+			pwm-period_ns = <0x2037FE7>;
+			pwm-calib-gpio = <&tegra_main_gpio PWM_CALIB_GPIO GPIO_ACTIVE_HIGH>;
+			pwm-name = "ecam-trigger";*/
+
+#define LOCAL_VC_ID "1"
+#define TEGRA_SINTERFACE "serial_g"
+#include "nilecam21_cuxvr_mode.dtsi"
+
+
+			ports {
+				#address-cells = <1>;
+				#size-cells = <0>;
+				
+				port@0 {
+					reg = <0>;
+					cam_out0: endpoint {
+						status = "okay";
+						vc-id = <1>;
+						port-index = <6>;
+						bus-width = <4>;
+						remote-endpoint = <&csi_in0>;
+					};
+				};
+			};	
+		};     
+		ar0233_h@44 {
+			status = "okay";
+			compatible = "nvidia,ar0233";
+			reg = <0x44>;
+			sensor_model = "ar0233";
+			avdd-reg = "vana";
+			iovdd-reg = "vif";
+			clocks = <&bpmp_clks TEGRA234_CLK_EXTPERIPH1>,<&bpmp_clks TEGRA234_CLK_EXTPERIPH1>;
+			clock-names = "extperiph1","pllp_grtba";
+			mclk = "extperiph1";
+			clock-frequency = <24000000>;
+			boot-gpios = <&tca9539_74 0 GPIO_ACTIVE_HIGH>;
+			pwdn-gpios = <&tca9539_74 1 GPIO_ACTIVE_HIGH>;
+			
+			trigger-gpios = <&tegra_main_gpio TRIGGER_SEL GPIO_ACTIVE_LOW>;
+			default-trigger = "internal";
+			vana-supply = <&vdd_cam_2v8>;
+			vif-supply = <&vdd_1v8_sys>;
+			devnode = "video1";
+			
+			use_sensor_mode_id = "false";
+			camera_mipi_lanes = <2>;
+			camera-mipi-clk = <1200>;
+			sio-port = "B";
+			/*pwm-invert = <1>;
+			pwm-duty_ns = <0x1CBC720>;
+			pwm-period_ns = <0x2037FE7>;
+			pwm-calib-gpio = <&tegra_main_gpio PWM_CALIB_GPIO GPIO_ACTIVE_HIGH>;
+			pwm-name = "ecam-trigger";*/
+#undef TEGRA_SINTERFACE
+#define TEGRA_SINTERFACE "serial_g"
+#undef LOCAL_VC_ID
+#define LOCAL_VC_ID "0"
+#include "nilecam21_cuxvr_mode.dtsi"
+
+			ports {
+				#address-cells = <1>;
+				#size-cells = <0>;
+				port@0 {
+					reg = <0>;
+					cam_out1: endpoint {
+						vc-id = <0>;
+						port-index = <6>;
+						bus-width = <4>;
+						remote-endpoint = <&csi_in1>;
+					};
+				};
+			};	
+		};           
+            };
+
+	    i2c@1 {
+		status = "okay";
+		reg = <1>;
+		i2c-mux,deselect-on-exit;
+		#address-cells = <1>;
+		#size-cells = <0>;
+		ar0233_e@43 {
+			status = "okay";
+			compatible = "nvidia,ar0233";
+			reg = <0x43>;
+			sensor_model = "ar0233";
+			avdd-reg = "vana";
+			iovdd-reg = "vif";
+			clocks = <&bpmp_clks TEGRA234_CLK_EXTPERIPH1>,<&bpmp_clks TEGRA234_CLK_EXTPERIPH1>;
+			clock-names = "extperiph1","pllp_grtba";
+			mclk = "extperiph1";
+			clock-frequency = <24000000>;
+			boot-gpios = <&tca9539_74 2 GPIO_ACTIVE_HIGH>;
+			pwdn-gpios = <&tca9539_74 3 GPIO_ACTIVE_HIGH>;
+			trigger-gpios = <&tegra_main_gpio TRIGGER_SEL GPIO_ACTIVE_LOW>;
+			default-trigger = "internal";
+			vana-supply = <&vdd_cam_2v8>;
+			vif-supply = <&vdd_1v8_sys>;
+			devnode = "video4";
+			use_sensor_mode_id = "false";
+			camera_mipi_lanes = <2>;
+			camera-mipi-clk = <1200>;
+			sio-port = "A";
+#undef LOCAL_VC_ID 
+#define LOCAL_VC_ID "1"
+#undef TEGRA_SINTERFACE
+#define TEGRA_SINTERFACE "serial_e"
+#include "nilecam21_cuxvr_mode.dtsi"
+			ports {
+				#address-cells = <1>;
+				#size-cells = <0>;
+				port@0 {
+					reg = <0>;
+					cam_out2: endpoint {
+						status = "okay";
+						vc-id = <1>;
+						port-index = <4>;
+						bus-width = <4>;
+						remote-endpoint = <&csi_in2>;
+					};	
+				};
+			};
+		};
+		ar0233_f@44 {
+			status = "okay";
+			compatible = "nvidia,ar0233";
+			reg = <0x44>;
+			sensor_mode = "ar0233";
+			avdd-reg = "vana";
+			iovdd-reg = "vif";
+			clocks = <&bpmp_clks TEGRA234_CLK_EXTPERIPH1>,<&bpmp_clks TEGRA234_CLK_EXTPERIPH1>;
+			clock-names = "extperiph1","pllp_grtba";
+			mclk = "extperiph1";
+			clock-frequency = <24000000>;
+			boot-gpios = <&tca9539_74 2 GPIO_ACTIVE_HIGH>;
+			pwdn-gpios = <&tca9539_74 3 GPIO_ACTIVE_HIGH>;
+			trigger-gpios = <&tegra_main_gpio TRIGGER_SEL GPIO_ACTIVE_LOW>;
+			default-trigger = "internal";
+			vana-supply = <&vdd_cam_2v8>;
+			vif-supply = <&vdd_1v8_sys>;
+			devnode = "video5";
+			use_sensor_mode_id = "false";
+			camera_mipi_lanes = <2>;
+			camera-mipi-clk = <1200>;
+			sio-port = "B";
+#undef LOCAL_VC_ID 
+#define LOCAL_VC_ID "0"
+#undef TEGRA_SINTERFACE
+#define TEGRA_SINTERFACE "serial_e"
+#include "nilecam21_cuxvr_mode.dtsi"
+			ports {
+				#address-cells = <1>;
+				#size-cells = <0>;
+				port@0 {
+					reg = <0>;
+					cam_out3: endpoint {
+						status = "okay";
+						vc-id = <0>;
+						port-index = <4>;
+						bus-width = <4>;
+						remote-endpoint = <&csi_in3>;
+					};
+				};
+			};
+		};	 
+	    };
+
+
+            i2c@2 {
+                status = "okay";
+                reg = <2>;
+		i2c-mux,deselect-on-exit;
+		#address-cells = <1>;
+		#size-cells = <0>;
+		ar0233_c@43 {
+			status = "okay";
+			compatible = "nvidia,ar0233";
+			reg = <0x43>;
+			sensor_model = "ar0233";
+			avdd-reg = "vana";
+			iovdd-reg = "vif";
+			clocks = <&bpmp_clks TEGRA234_CLK_EXTPERIPH1>,<&bpmp_clks TEGRA234_CLK_EXTPERIPH1>;
+			clock-names = "extperiph1","pllp_grtba";
+			mclk = "extperiph1";
+			clock-frequency = <24000000>;
+			boot-gpios = <&tca9539_74 2 GPIO_ACTIVE_HIGH>;
+			pwdn-gpios = <&tca9539_74 3 GPIO_ACTIVE_HIGH>;
+			trigger-gpios = <&tegra_main_gpio TRIGGER_SEL GPIO_ACTIVE_LOW>;
+			default-trigger = "internal";
+			vana-supply = <&vdd_cam_2v8>;
+			vif-supply = <&vdd_1v8_sys>;
+			devnode = "video4";
+			use_sensor_mode_id = "false";
+			camera_mipi_lanes = <2>;
+			camera-mipi-clk = <1200>;
+			sio-port = "A";
+#undef LOCAL_VC_ID 
+#define LOCAL_VC_ID "1"
+#undef TEGRA_SINTERFACE
+#define TEGRA_SINTERFACE "serial_c"
+#include "nilecam21_cuxvr_mode.dtsi"
+			ports {
+				#address-cells = <1>;
+				#size-cells = <0>;
+				port@0 {
+					reg = <0>;
+					cam_out4: endpoint {
+						status = "okay";
+						vc-id = <1>;
+						port-index = <2>;
+						bus-width = <4>;
+						remote-endpoint = <&csi_in4>;
+					};	
+				};
+			};
+		};
+		ar0233_d@44 {
+			status = "okay";
+			compatible = "nvidia,ar0233";
+			reg = <0x44>;
+			sensor_mode = "ar0233";
+			avdd-reg = "vana";
+			iovdd-reg = "vif";
+			clocks = <&bpmp_clks TEGRA234_CLK_EXTPERIPH1>,<&bpmp_clks TEGRA234_CLK_EXTPERIPH1>;
+			clock-names = "extperiph1","pllp_grtba";
+			mclk = "extperiph1";
+			clock-frequency = <24000000>;
+			boot-gpios = <&tca9539_74 2 GPIO_ACTIVE_HIGH>;
+			pwdn-gpios = <&tca9539_74 3 GPIO_ACTIVE_HIGH>;
+			trigger-gpios = <&tegra_main_gpio TRIGGER_SEL GPIO_ACTIVE_LOW>;
+			default-trigger = "internal";
+			vana-supply = <&vdd_cam_2v8>;
+			vif-supply = <&vdd_1v8_sys>;
+			devnode = "video5";
+			use_sensor_mode_id = "false";
+			camera_mipi_lanes = <2>;
+			camera-mipi-clk = <1200>;
+			sio-port = "B";
+#undef LOCAL_VC_ID 
+#define LOCAL_VC_ID "0"
+#undef TEGRA_SINTERFACE
+#define TEGRA_SINTERFACE "serial_c"
+#include "nilecam21_cuxvr_mode.dtsi"
+			ports {
+				#address-cells = <1>;
+				#size-cells = <0>;
+				port@0 {
+					reg = <0>;
+					cam_out5: endpoint {
+						status = "okay";
+						vc-id = <0>;
+						port-index = <2>;
+						bus-width = <4>;
+						remote-endpoint = <&csi_in5>;
+					};
+				};
+			};
+		};
+            };
+                
+            i2c@3 {
+                status = "okay";
+		reg = <3>;
+		i2c-mux,deselect-on-exit;
+		#address-cells = <1>;
+		#size-cells = <0>;
+		ar0233_a@43 {
+			status = "okay";
+			compatible = "nvidia,ar0233";
+			reg = <0x43>;
+			sensor_model = "ar0233";
+			avdd-reg = "vana";
+			iovdd-reg = "vif";
+			clocks = <&bpmp_clks TEGRA234_CLK_EXTPERIPH1>,<&bpmp_clks TEGRA234_CLK_EXTPERIPH1>;
+			clock-names = "extperiph1","pllp_grtba";
+			mclk = "extperiph1";
+			clock-frequency = <24000000>;
+			boot-gpios = <&tca9539_74 6 GPIO_ACTIVE_HIGH>;
+			pwdn-gpios = <&tca9539_74 7 GPIO_ACTIVE_HIGH>;
+			trigger-gpios = <&tegra_main_gpio TRIGGER_SEL GPIO_ACTIVE_LOW>;
+			default-trigger = "internal";
+			vana-supply = <&vdd_cam_2v8>;
+			vif-supply = <&vdd_1v8_sys>;
+			devnode = "video6";
+			
+			use_sensor_mode_id = "false";
+			camera_mipi_lanes = <2>;
+			camera-mipi-clk = <1200>;
+			sio-port = "A";
+			/*pwm-invert = <1>;
+			pwm-duty_ns = <0x1CBC720>;
+			pwm-period_ns = <0x2037FE7>;
+			pwm-calib-gpio = <&tegra_main_gpio PWM_CALIB_GPIO GPIO_ACTIVE_HIGH>;
+			pwm-name = "ecam-trigger";*/
+#undef LOCAL_VC_ID
+#define LOCAL_VC_ID "1"
+#undef TEGRA_SINTERFACE 
+#define TEGRA_SINTERFACE "serial_a"
+#include "nilecam21_cuxvr_mode.dtsi"
+
+
+			ports {
+				#address-cells = <1>;
+				#size-cells = <0>;
+				
+				port@0 {
+					reg = <0>;
+					cam_out6: endpoint {
+						status = "okay";
+						vc-id = <1>;
+						port-index = <0>;
+						bus-width = <4>;
+						remote-endpoint = <&csi_in6>;
+					};
+				};
+			};	
+		};     
+		ar0233_b@44 {
+			status = "okay";
+			compatible = "nvidia,ar0233";
+			reg = <0x44>;
+			sensor_model = "ar0233";
+			avdd-reg = "vana";
+			iovdd-reg = "vif";
+			clocks = <&bpmp_clks TEGRA234_CLK_EXTPERIPH1>,<&bpmp_clks TEGRA234_CLK_EXTPERIPH1>;
+			clock-names = "extperiph1","pllp_grtba";
+			mclk = "extperiph1";
+			clock-frequency = <24000000>;
+			boot-gpios = <&tca9539_74 6 GPIO_ACTIVE_HIGH>;
+			pwdn-gpios = <&tca9539_74 7 GPIO_ACTIVE_HIGH>;
+			
+			trigger-gpios = <&tegra_main_gpio TRIGGER_SEL GPIO_ACTIVE_LOW>;
+			default-trigger = "internal";
+			vana-supply = <&vdd_cam_2v8>;
+			vif-supply = <&vdd_1v8_sys>;
+			devnode = "video7";
+			
+			use_sensor_mode_id = "false";
+			camera_mipi_lanes = <2>;
+			camera-mipi-clk = <1200>;
+			sio-port = "B";
+			/*pwm-invert = <1>;
+			pwm-duty_ns = <0x1CBC720>;
+			pwm-period_ns = <0x2037FE7>;
+			pwm-calib-gpio = <&tegra_main_gpio PWM_CALIB_GPIO GPIO_ACTIVE_HIGH>;
+			pwm-name = "ecam-trigger";*/
+#undef TEGRA_SINTERFACE
+#define TEGRA_SINTERFACE "serial_a"
+#undef LOCAL_VC_ID
+#define LOCAL_VC_ID "0"
+#include "nilecam21_cuxvr_mode.dtsi"
+
+			ports {
+				#address-cells = <1>;
+				#size-cells = <0>;
+				port@0 {
+					reg = <0>;
+					cam_out7: endpoint {
+						vc-id = <0>;
+						port-index = <0>;
+						bus-width = <4>;
+						remote-endpoint = <&csi_in7>;
+					};
+				};
+			};	
+		};
+            };
+        };
+    };
+
+    tegra-capture-vi {
+        status = "okay";
+        num-channels = <8>;
+        ports {
+	    #address-cells = <1>;
+	    #size-cells = <0>;
+	    status = "okay";
+            port@0 {
+		reg = <0>;
+                status = "okay";
+                vi_in0: endpoint {
+		    vc-id = <1>;
+                    port-index = <5>;
+                    status = "okay";
+                    bus-width = <4>;
+		    remote-endpoint = <&csi_out0>;
+                };
+            };
+            port@1 {
+                status = "okay";
+		reg = <1>;
+                vi_in1: endpoint {
+		    vc-id = <0>;
+                    port-index = <5>;
+                    status = "okay";
+                    bus-width = <4>;
+		    remote-endpoint = <&csi_out1>;
+                };
+            };
+	    port@2 {
+		status = "okay";
+		reg = <2>;
+		vi_in2: endpoint {
+			vc-id = <1>;
+			port-index = <4>;
+			bus-width = <4>;
+			remote-endpoint = <&csi_out2>;
+			status = "okay";
+		};
+	    };
+	    port@3{
+		status = "okay";
+		reg = <3>;
+		vi_in3: endpoint {
+			vc-id = <0>;
+			port-index = <4>;
+			bus-width = <4>;
+			remote-endpoint = <&csi_out3>;
+			status = "okay";
+		};
+	    };
+	    port@4 {
+		status = "okay";
+		reg = <4>;
+		vi_in4: endpoint {
+			vc-id = <1>;
+			port-index = <2>;
+			bus-width = <4>;
+			remote-endpoint = <&csi_out4>;
+			status = "okay";
+		};
+	    };
+	    port@5 {
+		status = "okay";
+		reg = <5>;
+		vi_in5: endpoint {
+			vc-id = <0>;
+			port-index = <2>;
+			bus-width = <4>;
+			remote-endpoint = <&csi_out5>;
+			status = "okay";
+		};
+	    };
+            port@6 {
+                status = "okay";
+		reg = <6>;
+                vi_in6: endpoint {
+                    port-index = <0>;
+                    status = "okay";
+                    bus-width = <4>;
+		    vc-id = <1>;
+		    remote-endpoint = <&csi_out6>;
+                };
+            };
+            port@7 {
+                status = "okay";
+		reg = <7>;
+                vi_in7: endpoint {
+                    port-index = <0>;
+                    status = "okay";
+                    bus-width = <4>;
+		    vc-id = <0>;
+		    remote-endpoint = <&csi_out7>;
+                };
+            };
+        };
+    };
+
+    host1x@13e00000 {
+        nvcsi@15a00000 {
+	    num-channels = <8>;
+	    #address-cells = <1>;
+	    #size-cells = <0>;
+            status = "okay";
+            channel@0 {
+                status = "okay";
+		reg = <0>;
+                ports {
+		    #address-cells = <1>;
+		    #size-cells = <0>;
+                    port@0 {
+                        status = "okay";
+			reg = <0>;
+                        csi_in0: endpoint@0 {
+                            status = "okay";
+                            port-index = <6>;
+			    bus-width = <4>;
+                            remote-endpoint = <&cam_out0>;
+                        };
+                    };
+                    port@1 {
+                        status = "okay";
+			reg = <1>;
+                        csi_out0: endpoint@1 {
+                            status = "okay";
+			    port-index = <6>;
+			    bus-width = <4>;
+			    remote-endpoint = <&vi_in0>;
+                        };
+                    };
+                };
+            };
+            channel@1 {
+                status = "okay";
+		reg = <1>;
+                ports {
+		    #address-cells = <1>;
+		    #size-cells = <0>;
+                    
+		    port@0 {
+			reg = <0>;
+                        status = "okay";
+                        csi_in1: endpoint@2 {
+                            status = "okay";
+			    port-index = <6>;
+                            bus-width = <4>;
+                            remote-endpoint = <&cam_out1>;
+                        };
+                    };
+                    port@1 {
+                        status = "okay";
+			reg = <1>;
+                        csi_out1: endpoint@3 {
+                            status = "okay";
+			    port-index = <6>;
+			    bus-width = <4>;
+			    remote-endpoint = <&vi_in1>;
+                        };
+                    };
+                };
+            };
+	    channel@2 {
+                status = "okay";
+		reg = <2>;
+                ports {
+		    #address-cells = <1>;
+		    #size-cells = <0>;
+                    port@0 {
+                        status = "okay";
+			reg = <0>;
+                        csi_in2: endpoint@4 {
+                            status = "okay";
+                            port-index = <4>;
+			    bus-width = <4>;
+                            remote-endpoint = <&cam_out2>;
+                        };
+                    };
+                    port@1 {
+                        status = "okay";
+			reg = <1>;
+                        csi_out2: endpoint@5 {
+                            status = "okay";
+			    port-index = <4>;
+			    bus-width = <4>;
+			    remote-endpoint = <&vi_in2>;
+                        };
+                    };
+                };
+            };
+            channel@3 {
+                status = "okay";
+		reg = <3>;
+                ports {
+		    #address-cells = <1>;
+		    #size-cells = <0>;
+                    
+		    port@0 {
+			reg = <0>;
+                        status = "okay";
+                        csi_in3: endpoint@6 {
+                            status = "okay";
+			    port-index = <4>;
+                            bus-width = <4>;
+                            remote-endpoint = <&cam_out3>;
+                        };
+                    };
+                    port@1 {
+                        status = "okay";
+			reg = <1>;
+                        csi_out3: endpoint@7 {
+                            status = "okay";
+			    port-index = <4>;
+			    bus-width = <4>;
+			    remote-endpoint = <&vi_in3>;
+                        };
+                    };
+                };
+            };
+	    channel@4 {
+                status = "okay";
+		reg = <4>;
+                ports {
+		    #address-cells = <1>;
+		    #size-cells = <0>;
+                    port@0 {
+                        status = "okay";
+			reg = <0>;
+                        csi_in4: endpoint@8 {
+                            status = "okay";
+                            port-index = <2>;
+			    bus-width = <4>;
+                            remote-endpoint = <&cam_out4>;
+                        };
+                    };
+                    port@1 {
+                        status = "okay";
+			reg = <1>;
+                        csi_out4: endpoint@9 {
+                            status = "okay";
+			    port-index = <2>;
+			    bus-width = <4>;
+			    remote-endpoint = <&vi_in4>;
+                        };
+                    };
+                };
+            };
+            channel@5 {
+                status = "okay";
+		reg = <5>;
+                ports {
+		    #address-cells = <1>;
+		    #size-cells = <0>;
+                    
+		    port@0 {
+			reg = <0>;
+                        status = "okay";
+                        csi_in5: endpoint@10 {
+                            status = "okay";
+			    port-index = <2>;
+                            bus-width = <4>;
+                            remote-endpoint = <&cam_out5>;
+                        };
+                    };
+                    port@1 {
+                        status = "okay";
+			reg = <1>;
+                        csi_out5: endpoint@11 {
+                            status = "okay";
+			    port-index = <2>;
+			    bus-width = <4>;
+			    remote-endpoint = <&vi_in5>;
+                        };
+                    };
+                };
+            };
+
+            channel@6 {
+                status = "okay";
+		reg = <6>;
+                ports {
+		    #address-cells = <1>;
+		    #size-cells = <0>;
+                    port@0 {
+			reg = <0>;
+                        status = "okay";
+                        csi_in6: endpoint@12 {
+                            status = "okay";
+                            bus-width = <4>;
+			    port-index = <0>;
+			    remote-endpoint = <&cam_out6>;
+                            //remote-endpoint = <&cam_out2>;
+                        };
+                    };
+                    port@1 {
+                        status = "okay";
+                        reg = <1>;
+			csi_out6: endpoint@13 {
+                            status = "okay";
+			    remote-endpoint = <&vi_in6>;
+                        };
+                    };
+                };
+            };
+
+            channel@7 {
+                status = "okay";
+		reg = <7>;
+                ports {
+		    #address-cells = <1>;
+		    #size-cells = <0>;
+                    port@0 {
+			reg = <0>;
+                        status = "okay";
+                        csi_in7: endpoint@14 {
+                            status = "okay";
+                            bus-width = <4>;
+			    port-index = <0>;
+			    remote-endpoint = <&cam_out7>;
+                        };
+                    };
+                    port@1 {
+                        status = "okay";
+			reg = <1>;
+                        csi_out7: endpoint@15 {
+                            status = "okay";
+			    remote-endpoint = <&vi_in7>;
+                        };
+                    };
+                };
+            };
+        };
+    };
+
+
+    tegra-camera-platform {
+        num_csi_lanes = <16>;
+        max_lane_speed = <2500000>;
+        min_bits_per_pixel = <10>;
+        vi_peak_byte_per_pixel = <2>;
+        vi_bw_margin_pct = <25>;
+	//max_pixel_rate = <750000>;
+        isp_peak_byte_per_pixel = <5>;
+        isp_bw_margin_pct = <25>;
+	compatible = "nvidia, tegra-camera-platform";
+	status = "okay";
+        
+	modules {
+            module0 {
+                status = "okay";
+		badge = "ar0233_g";
+		orientation = "1";
+		position = "rear1"; 
+                 drivernode0 {
+                    status = "okay";
+                    pcl_id = "v4l2_sensor";
+                    devname = "ar0233_g 40-0043";
+                    proc-device-tree = "/proc/device-tree/i2c@31e0000/tca9544@72/i2c@0/ar0233_g@43";
+                };
+            };
+	    module1 {
+                status = "okay";
+		badge = "ar0233_h";
+		orientation = "2";
+		position = "rear2";
+                drivernode0 {
+                    status = "okay";
+                    pcl_id = "v4l2_sensor";
+                    devname = "ar0233_h 40-0044";
+                    proc-device-tree = "/proc/device-tree/i2c@3180000/tca9544@72/i2c@0/ar0233_h@44";
+                };
+            };
+            
+	    module2 {
+		status = "okay";
+		badge = "ar0233_e";
+		orientation = "1";
+		position = "rear3";
+		drivernode0 {
+			status = "okay";
+			pcl_id = "v4l2_sensor";
+			devname = "ar0233_e 41-0043";
+			proc-device-tree = "/proc/device-tree/i2c@3180000/tca9544@72/i2c@1/ar0233_e@43";
+		};
+	    };
+	    module3 {
+		status = "okay";
+		badge = "ar0233_f";
+		orientation = "1";
+		position = "rear4";
+		drivernode0 {
+			status = "okay";
+			pcl_id = "v4l2_sensor";
+			devname = "ar0233_f 41-0044";
+			proc-device-tree = "/proc/device-tree/i2c@3180000/tca9544@72/i2c@1/ar0233_f@44";
+		};
+	    };
+            module4 {
+                status = "okay";
+                drivernode0 {
+                    status = "okay";
+                    pcl_id = "v4l2_sensor";
+                    devname = "e-con_cam 44-0042";
+                    proc-device-tree = "/proc/device-tree/i2c@3180000/tca9548@70/i2c@4/eimx485_e@42";
+                };
+            };
+            module5 {
+                status = "okay";
+                drivernode0 {
+                    status = "okay";
+                    pcl_id = "v4l2_sensor";
+                    devname = "e-con_cam 45-0042";
+                    proc-device-tree = "/proc/device-tree/i2c@3180000/tca9548@70/i2c@5/eimx485_g@42";
+                };
+            };
+        };
+    };
+};

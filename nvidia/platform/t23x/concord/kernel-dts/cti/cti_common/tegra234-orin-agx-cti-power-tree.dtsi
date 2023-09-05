@@ -1,0 +1,86 @@
+/*
+ * Copyright (c) 2022, Connect Tech Inc.  All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include "tegra234-orin-agx-cti-regulator.dtsi"
+
+/{
+
+	bpmp {
+		i2c {
+			vrs@3c {
+				//Power Sequence RTC
+				rtc {
+					status = "okay";
+				};
+			};
+		};
+	};
+	
+	pcie@141a0000 {
+				vpcie3v3-supply = <&vdd_3v3_sys>;
+				vpcie12v-supply = <&vdd_12v_sys>;
+	};
+	pcie_ep@141a0000 {
+				vpcie3v3-supply = <&vdd_3v3_sys>;
+				vpcie12v-supply = <&vdd_12v_sys>;
+	};
+	sdhci@3400000 {
+				vmmc-supply = <&vdd_3v3_sd>;
+	};
+
+	ethernet@2310000 {
+			vddio_sys_enet_bias-supply = <&battery_reg>;
+			vddio_enet-supply = <&battery_reg>;
+			phy_pllvdd-supply = <&battery_reg>;
+	};
+
+
+	sdhci@3440000 {
+			/*
+			* Both 3.3V and 1.8V vqmmc/IO supplies are always provided
+			* and enabling either of the supplies is controller by
+			* pad controls. Do not list any vqmmc supply here.
+			*/
+			vmmc-supply = <&vdd_3v3_sd>;
+	};
+
+
+	xusb_padctl@3520000 {
+		avdd-usb-supply = <&vdd_3v3_sys>;
+		//Board level devicetrees can override
+		ports {
+			usb2-0 {
+				vbus-supply = <&vdd_usb_vbus0>;
+			};
+			usb2-1 {
+				vbus-supply = <&vdd_usb_vbus1>;
+			};
+			usb2-2 {
+				vbus-supply = <&vdd_usb_vbus1>;
+			};
+			usb2-3 {
+				vbus-supply = <&vdd_usb_vbus1>;
+			};
+		};
+	};
+
+	xudc@3550000 {
+		avdd-usb-supply = <&vdd_3v3_sys>;
+	};
+
+
+
+};

@@ -1,0 +1,13 @@
+/dts-v1/;
+#include "tegra194-xavier-nx-cti-NGX004.dts" 
+#include "cti_camera/tegra194-xavier-nx-cti-NGX003-RPI-IMX219-base.dtsi"
+
+/ {
+    nvidia,dtsfilename = "tegra194-xavier-nx-cti-NGX004-RPI-IMX219-2CAM.dts";
+    nvidia,dtbbuildtime = __DATE__, __TIME__;
+
+};
+
+#if LINUX_VERSION >= 414
+#include <tegra194-linux-4.14.dtsi>
+#endif

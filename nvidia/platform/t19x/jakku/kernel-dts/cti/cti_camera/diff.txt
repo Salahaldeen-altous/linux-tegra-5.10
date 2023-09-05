@@ -1,0 +1,326 @@
+/*								/*
+ * Copyright (c) 2018, NVIDIA CORPORATION.  All rights reserv	 * Copyright (c) 2018, NVIDIA CORPORATION.  All rights reserv
+ *								 *
+ * This program is free software; you can redistribute it and	 * This program is free software; you can redistribute it and
+ * it under the terms of the GNU General Public License as pu	 * it under the terms of the GNU General Public License as pu
+ * the Free Software Foundation; either version 2 of the Lice	 * the Free Software Foundation; either version 2 of the Lice
+ * (at your option) any later version.				 * (at your option) any later version.
+ *								 *
+ * This program is distributed in the hope that it will be us	 * This program is distributed in the hope that it will be us
+ * ANY WARRANTY; without even the implied warranty of MERCHAN	 * ANY WARRANTY; without even the implied warranty of MERCHAN
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Pub	 * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Pub
+ * more details.						 * more details.
+ *								 *
+ * You should have received a copy of the GNU General Public 	 * You should have received a copy of the GNU General Public 
+ * along with this program.  If not, see <http://www.gnu.org/	 * along with this program.  If not, see <http://www.gnu.org/
+ */								 */
+#define VC_ID0_ports 					1     <
+#define VC_ID1_ports 					0     <
+#include "tegra194-cti-camera-4cam-vi-csi-base.dtsi"		#include "tegra194-cti-camera-4cam-vi-csi-base.dtsi"
+#include "tegra194-cti-camera-4cam-platform-base.dtsi"		#include "tegra194-cti-camera-4cam-platform-base.dtsi"
+
+/ { 								/ { 
+	I2C_ADDR0 {					      |		I2C_ADDR {
+		status = "okay";						status = "okay";
+		#address-cells = <1>;						#address-cells = <1>;
+		#size-cells = <0>;						#size-cells = <0>;
+		I2C_EXPANDER_ADDR0 {			      |			I2C_EXPANDER_ADDR {
+			I2C0 {								I2C0 {
+				status = "okay";						status = "okay";
+				I2C0_NODE0 {							I2C0_NODE0 {
+					status = "okay";						status = "okay";
+					compatible = COMPATIB						compatible = COMPATIB
+					reg = <I2C_NODE0_REG>						reg = <I2C_NODE0_REG>
+					sensor_model = SENSOR |						sensor_model = SENSOR
+							      >						
+					mode0 {								mode0 {
+						num_lanes = N <
+						tegra_sinterf							tegra_sinterf
+						vc_id = "0";  |							vc_id = VC_ID
+						SENSOR_MODE0							SENSOR_MODE0
+					};								};
+
+					mode1 {								mode1 {
+						num_lanes = N <
+						tegra_sinterf							tegra_sinterf
+						vc_id = "0";  |							vc_id = VC_ID
+						SENSOR_MODE1							SENSOR_MODE1
+					};								};
+
+					mode2 {								mode2 {
+						num_lanes = N <
+						tegra_sinterf							tegra_sinterf
+						vc_id = "0";  |							vc_id = VC_ID
+						SENSOR_MODE2							SENSOR_MODE2
+					};								};
+												
+					mode3 {								mode3 {
+						num_lanes = N <
+						tegra_sinterf							tegra_sinterf
+						vc_id = "0";  |							vc_id = VC_ID
+						SENSOR_MODE3							SENSOR_MODE3
+					};								};
+												
+					mode4 {								mode4 {
+						num_lanes = N <
+						tegra_sinterf							tegra_sinterf
+						vc_id = "0";  |							vc_id = VC_ID
+						SENSOR_MODE4							SENSOR_MODE4
+					};								};
+							      >						
+							      >						mode5 {
+							      >							tegra_sinterf
+							      >							vc_id = VC_ID
+							      >							SENSOR_MODE5
+							      >						};
+							      >						
+							      >						/*mode6 {
+							      >							tegra_sinterf
+							      >							vc_id = VC_ID
+							      >							SENSOR_MODE6
+							      >						};*/
+					ports {								ports {
+						#address-cell							#address-cell
+						#size-cells =							#size-cells =
+						port@0 {							port@0 {
+							reg =								reg =
+							vi_ou								vi_ou
+							      |								
+															
+															
+															
+							};								};
+						};								};
+					};		      |						};		
+							      |					};			
+				};			      |					I2C0_NODE1 {
+			};				      <
+			I2C1 {				      <
+				status = "okay";	      <
+				I2C1_NODE0 {		      <
+					status = "okay";						status = "okay";
+					compatible = COMPATIB						compatible = COMPATIB
+					reg = <I2C_NODE0_REG> |						reg = <I2C_NODE1_REG>
+					sensor_model = SENSOR |						sensor_model = SENSOR
+							      >
+					mode0 {								mode0 {
+						num_lanes = N |							tegra_sinterf
+						tegra_sinterf |							vc_id = VC_ID
+						vc_id = "0";  <
+						SENSOR_MODE0							SENSOR_MODE0
+					};								};
+
+					mode1 {								mode1 {
+						num_lanes = N |							tegra_sinterf
+						tegra_sinterf |							vc_id = VC_ID
+						vc_id = "0";  <
+						SENSOR_MODE1							SENSOR_MODE1
+					};								};
+
+					mode2 {								mode2 {
+						num_lanes = N |							tegra_sinterf
+						tegra_sinterf |							vc_id = VC_ID
+						vc_id = "0";  <
+						SENSOR_MODE2							SENSOR_MODE2
+					};								};
+												
+					mode3 {								mode3 {
+						num_lanes = N |							tegra_sinterf
+						tegra_sinterf |							vc_id = VC_ID
+						vc_id = "0";  <
+						SENSOR_MODE3							SENSOR_MODE3
+					};								};
+												
+					mode4 {								mode4 {
+						num_lanes = N |							tegra_sinterf
+						tegra_sinterf |							vc_id = VC_ID
+						vc_id = "0";  <
+						SENSOR_MODE4							SENSOR_MODE4
+					};								};
+													
+							      >						mode5 {
+							      >							tegra_sinterf
+							      >							vc_id = VC_ID
+							      >							SENSOR_MODE5
+							      >						};
+							      >						
+							      >						/*mode6 {
+							      >							tegra_sinterf
+							      >							vc_id = VC_ID
+							      >							SENSOR_MODE6
+							      >						};*/
+					ports {								ports {
+						#address-cell							#address-cell
+						#size-cells =							#size-cells =
+						port@0 {							port@0 {
+							reg =								reg =
+							vi_ou								vi_ou
+							      |								
+							      |								
+															
+							      |								
+							};								};
+						};								};
+					};		      |						};		
+				};			      |					};			
+			};				      |				};
+			I2C2 {				      |				I2C1 {
+				status = "okay";	      |					status = "okay";
+				I2C2_NODE0 {		      |					I2C1_NODE0 {
+					status = "okay";      |							status = "oka
+					compatible = COMPATIB |							compatible = 
+					reg = <I2C_NODE0_REG> |							reg = <I2C_NO
+					sensor_model = SENSOR |							sensor_model 
+							      |							
+					mode0 {		      |							mode0 {
+						num_lanes = N |								tegra
+						tegra_sinterf |								vc_id
+						vc_id = "0";  |								SENSO
+						SENSOR_MODE0  |							};
+					};		      <
+
+					mode1 {		      |							mode1 {
+						num_lanes = N |								tegra
+						tegra_sinterf |								vc_id
+						vc_id = "0";  |								SENSO
+						SENSOR_MODE1  |							};
+					};		      <
+
+					mode2 {		      |							mode2 {
+						num_lanes = N |								tegra
+						tegra_sinterf |								vc_id
+						vc_id = "0";  |								SENSO
+						SENSOR_MODE2  |							};
+					};		      <
+							      <
+					mode3 {		      <
+						num_lanes = N <
+						tegra_sinterf <
+						vc_id = "0";  <
+						SENSOR_MODE3  <
+					};		      <
+							      <
+					mode4 {		      <
+						num_lanes = N <
+						tegra_sinterf <
+						vc_id = "0";  <
+						SENSOR_MODE4  <
+					};		      <
+													
+					ports {		      |							mode3 {
+						#address-cell |								tegra
+						#size-cells = |								vc_id
+						port@0 {      |								SENSO
+							reg = <
+							vi_ou <
+							      <
+							      <
+							      <
+							      <
+							};    <
+						};								};
+					};		      |						
+				};			      |							mode4 {
+			};				      |								tegra
+			I2C3 {				      |								vc_id
+				status = "okay";	      |								SENSO
+				I2C3_NODE0 {		      |							};
+							      >							
+							      >							mode5 {
+							      >								tegra
+							      >								vc_id
+							      >								SENSO
+							      >							};
+							      >							
+							      >							/*mode6 {
+							      >								tegra
+							      >								vc_id
+							      >								SENSO
+							      >							};*/
+							      >							
+							      >							ports {
+							      >								#addr
+							      >								#size
+							      >								port@
+							      >								
+							      >								
+							      >								
+							      >								
+							      >								
+							      >								
+							      >								
+							      >								};
+							      >							};	
+							      >						};		
+							      >					
+							      >					I2C1_NODE1 {
+					status = "okay";						status = "okay";
+					compatible = COMPATIB						compatible = COMPATIB
+					sensor_model = SENSOR						sensor_model = SENSOR
+					reg = <I2C_NODE0_REG> |						reg = <I2C_NODE1_REG>
+							      >					
+					mode0 {								mode0 {
+						num_lanes = N |							tegra_sinterf
+						tegra_sinterf |							vc_id = VC_ID
+						vc_id = "0";  <
+						SENSOR_MODE0							SENSOR_MODE0
+					};								};
+
+					mode1 {								mode1 {
+						num_lanes = N |							tegra_sinterf
+						tegra_sinterf |							vc_id = VC_ID
+						vc_id = "0";  <
+						SENSOR_MODE1							SENSOR_MODE1
+					};								};
+
+					mode2 {								mode2 {
+						num_lanes = N |							tegra_sinterf
+						tegra_sinterf |							vc_id = VC_ID
+						vc_id = "0";  <
+						SENSOR_MODE2							SENSOR_MODE2
+					};								};
+												
+					mode3 {								mode3 {
+						num_lanes = N |							tegra_sinterf
+						tegra_sinterf |							vc_id = VC_ID
+						vc_id = "0";  <
+						SENSOR_MODE3							SENSOR_MODE3
+					};								};
+												
+					mode4 {								mode4 {
+						num_lanes = N |							tegra_sinterf
+						tegra_sinterf |							vc_id = VC_ID
+						vc_id = "0";  <
+						SENSOR_MODE4							SENSOR_MODE4
+					};								};
+													
+							      >						mode5 {
+							      >							tegra_sinterf
+							      >							vc_id = VC_ID
+							      >							SENSOR_MODE5
+							      >						};
+							      >						
+							      >						/*mode6 {
+							      >							tegra_sinterf
+							      >							vc_id = VC_ID
+							      >							SENSOR_MODE6
+							      >						};*/
+							      >						
+					ports {								ports {
+						#address-cell							#address-cell
+						#size-cells =							#size-cells =
+						port@0 {							port@0 {
+							reg =								reg =
+							vi_ou								vi_ou
+							      |								
+							      |								
+															
+															
+							};								};
+						};								};
+					};								};
+				};								};
+			};								};		
+		};								};
+	};								};
+};								};

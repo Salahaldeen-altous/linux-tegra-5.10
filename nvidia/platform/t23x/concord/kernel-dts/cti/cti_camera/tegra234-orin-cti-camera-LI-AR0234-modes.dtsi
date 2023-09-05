@@ -1,0 +1,83 @@
+#define LI_AR0234_MODE0 \
+			mode0 { \
+					mclk_khz = "24000"; \
+					num_lanes = CAM_LANES_STRING; \
+					tegra_sinterface = TEGRA_SINTERFACE; \
+					vc_id = MODE_VC; \
+					discontinuous_clk = "no"; \
+					dpcm_enable = "false"; \
+					cil_settletime = "0"; \
+					dynamic_pixel_bit_depth = "10"; \
+					csi_pixel_bit_depth = "10"; \
+					mode_type = "bayer"; \
+					pixel_phase = "grbg"; \
+					active_w = "1920"; \
+					active_h = "1200"; \
+					readout_orientation = "0"; \
+					line_length = "2448"; \
+					inherent_gain = "1"; \
+					mclk_multiplier = "3.01"; \
+					pix_clk_hz = "134400000"; \
+					serdes_pix_clk_hz = "299000000"; \
+					gain_factor = "100"; \
+					min_gain_val = "100"; \
+					max_gain_val = "1600"; \
+					step_gain_val = "1"; \
+					default_gain = "100"; \
+					min_hdr_ratio = "1"; \
+					max_hdr_ratio = "1"; \
+					framerate_factor = "1000000"; \
+					min_framerate = "30000000"; \
+					max_framerate = "30000000"; \
+					step_framerate = "30000000"; \
+					default_framerate = "30000000"; \
+					exposure_factor = "1000000"; \
+					min_exp_time = "28"; \
+					max_exp_time = "22000"; \
+					step_exp_time = "1"; \
+					default_exp_time = "22000"; \
+					embedded_metadata_height = "0"; \
+				}; \
+
+#define LI_AR0234_MODE1 \
+			mode1 { \
+                                        mclk_khz = "24000"; \
+                                        num_lanes = CAM_LANES_STRING; \
+                                        tegra_sinterface = TEGRA_SINTERFACE; \
+                                        vc_id = MODE_VC; \
+                                        discontinuous_clk = "no"; \
+                                        dpcm_enable = "false"; \
+                                        cil_settletime = "0"; \
+                                        dynamic_pixel_bit_depth = "10"; \
+                                        csi_pixel_bit_depth = "10"; \
+                                        mode_type = "bayer"; \
+                                        pixel_phase = "grbg"; \
+                                        active_w = "960"; \
+                                        active_h = "600"; \
+                                        readout_orientation = "0"; \
+                                        line_length = "2464"; \
+                                        inherent_gain = "1"; \
+                                        mclk_multiplier = "3.01"; \
+                                        pix_clk_hz = "230000000"; \
+                                        serdes_pix_clk_hz = "299000000"; \
+                                        gain_factor = "100"; \
+                                        min_gain_val = "100"; \
+                                        max_gain_val = "1600"; \
+                                        step_gain_val = "1"; \
+                                        default_gain = "100"; \
+                                        min_hdr_ratio = "1"; \
+                                        max_hdr_ratio = "1"; \
+                                        framerate_factor = "1000000"; \
+                                        min_framerate = "120000000"; \
+                                        max_framerate = "120000000"; \
+                                        step_framerate = "10000000"; \
+                                        default_framerate = "120000000"; \
+                                        exposure_factor = "1000000"; \
+                                        min_exp_time = "28"; \
+                                        max_exp_time = "22000"; \
+                                        step_exp_time = "1"; \
+                                        default_exp_time = "22000"; \
+                                        embedded_metadata_height = "0"; \
+                    	}; \
+
+

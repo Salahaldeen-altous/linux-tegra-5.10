@@ -1,0 +1,13 @@
+
+#include "tegra234-orin-nano-cti-NGX003.dts"
+#include "../cti_camera/tegra234-orin-nx-cti-NGX003-RPI-IMX219-base.dtsi"
+
+/{
+    nvidia,dtsfilename = "tegra234-orin-nano-cti-NGX003-RPI-IMX219-2CAM.dts";
+};
+
+#if LINUX_VERSION >= 414
+#include <tegra194-linux-4.14.dtsi>
+#endif
+
+

@@ -1,0 +1,201 @@
+#define PIXEL_CLK_HZ "160000000"
+                    
+                    mode0 {		// MODE_640X480@60fps
+						mclk_khz = "24000";
+						num_lanes = CAM_LANES_STRING;
+						tegra_sinterface = TEGRA_SINTERFACE;
+						vc_id = LOCAL_VC_ID;
+						phy_mode = "DPHY";
+						discontinuous_clk = "no";
+						dpcm_enable = "false";
+						cil_settletime = "0";
+						dynamic_pixel_bit_depth = "16";
+						csi_pixel_bit_depth = "16";
+						mode_type = "yuv";
+						pixel_phase = "uyvy";
+					    lane_polarity=LANE_POLARITY;	
+
+						active_w = "640";
+						active_h = "480";
+						readout_orientation = "0";
+						deskew_initial_enable = "false";
+						pix_clk_hz = PIXEL_CLK_HZ;
+						/* Below mode parameter not used for econ UYVY camera sensor */ 
+						line_length = "640";
+						inherent_gain = "1";
+						mclk_multiplier = "6.67";
+
+						min_gain_val = "1";
+						max_gain_val = "8";
+						min_hdr_ratio = "1";
+						max_hdr_ratio = "1";
+						min_framerate = "1";
+						max_framerate = "58";
+						min_exp_time = "10"; /* 1ms */
+						max_exp_time = "5000"; /* 500ms */
+					};
+					mode1 {		// MODE_640X480@45fps
+						mclk_khz = "24000";
+						num_lanes = CAM_LANES_STRING;
+						tegra_sinterface = TEGRA_SINTERFACE;
+						vc_id = LOCAL_VC_ID;
+						phy_mode = "DPHY";
+						discontinuous_clk = "no";
+						dpcm_enable = "false";
+						cil_settletime = "0";
+						dynamic_pixel_bit_depth = "16";
+						csi_pixel_bit_depth = "16";
+						mode_type = "yuv";
+						pixel_phase = "uyvy";
+						lane_polarity=LANE_POLARITY;
+						active_w = "640";
+						active_h = "480";
+						readout_orientation = "0";
+						deskew_initial_enable = "false";
+						pix_clk_hz = PIXEL_CLK_HZ;
+						/* Below mode parameter not used for econ UYVY camera sensor */ 
+						line_length = "640";
+						inherent_gain = "1";
+						mclk_multiplier = "6.67";
+
+						min_gain_val = "1";
+						max_gain_val = "8";
+						min_hdr_ratio = "1";
+						max_hdr_ratio = "1";
+						min_framerate = "1";
+						max_framerate = "45";
+						min_exp_time = "10"; /* 1ms */
+						max_exp_time = "5000"; /* 500ms */
+					};
+					mode2 {		// MODE_960X540@58fps
+						mclk_khz = "24000";
+						num_lanes = CAM_LANES_STRING;
+						tegra_sinterface = TEGRA_SINTERFACE;
+						vc_id = LOCAL_VC_ID;
+						phy_mode = "DPHY";
+						discontinuous_clk = "no";
+						dpcm_enable = "false";
+						cil_settletime = "0";
+						dynamic_pixel_bit_depth = "16";
+						csi_pixel_bit_depth = "16";
+						mode_type = "yuv";
+						pixel_phase = "uyvy";
+						lane_polarity=LANE_POLARITY;
+						active_w = "960";
+						active_h = "540";
+						readout_orientation = "0";
+						deskew_initial_enable = "false";
+						pix_clk_hz = PIXEL_CLK_HZ;
+						/* Below mode parameter not used for econ UYVY camera sensor */ 
+						line_length = "960";
+						inherent_gain = "1";
+						mclk_multiplier = "6.67";
+
+						min_gain_val = "1";
+						max_gain_val = "8";
+						min_hdr_ratio = "1";
+						max_hdr_ratio = "1";
+						min_framerate = "1";
+						max_framerate = "58";
+						min_exp_time = "10"; /* 1ms */
+						max_exp_time = "5000"; /* 500ms */
+					};
+					mode3 {		// MODE_960X540@30fps
+						mclk_khz = "24000";
+						num_lanes = CAM_LANES_STRING;
+						tegra_sinterface = TEGRA_SINTERFACE;
+						vc_id = LOCAL_VC_ID;
+						phy_mode = "DPHY";
+						discontinuous_clk = "no";
+						dpcm_enable = "false";
+						cil_settletime = "0";
+						dynamic_pixel_bit_depth = "16";
+						csi_pixel_bit_depth = "16";
+						mode_type = "yuv";
+						pixel_phase = "uyvy";
+						lane_polarity=LANE_POLARITY;
+						active_w = "960";
+						active_h = "540";
+						readout_orientation = "0";
+						deskew_initial_enable = "false";
+						pix_clk_hz = PIXEL_CLK_HZ;
+						/* Below mode parameter not used for econ UYVY camera sensor */ 
+						line_length = "960";
+						inherent_gain = "1";
+						mclk_multiplier = "6.67";
+
+						min_gain_val = "1";
+						max_gain_val = "8";
+						min_hdr_ratio = "1";
+						max_hdr_ratio = "1";
+						min_framerate = "1";
+						max_framerate = "30";
+						min_exp_time = "10"; /* 1ms */
+						max_exp_time = "5000"; /* 500ms */
+					};
+					mode4 {		// MODE_1280X720@45fps						
+						mclk_khz = "24000";
+						num_lanes = CAM_LANES_STRING;
+						tegra_sinterface = TEGRA_SINTERFACE;
+						vc_id = LOCAL_VC_ID;
+						phy_mode = "DPHY";
+						discontinuous_clk = "no";
+						dpcm_enable = "false";
+						cil_settletime = "0";
+						dynamic_pixel_bit_depth = "16";
+						csi_pixel_bit_depth = "16";
+						mode_type = "yuv";
+						pixel_phase = "uyvy";
+						lane_polarity=LANE_POLARITY;
+						active_w = "1280";
+						active_h = "720";
+						readout_orientation = "0";
+						deskew_initial_enable = "false";
+						pix_clk_hz = PIXEL_CLK_HZ;
+						/* Below mode parameter not used for econ UYVY camera sensor */ 
+						line_length = "1280";
+						inherent_gain = "1";
+						mclk_multiplier = "6.67";
+
+						min_gain_val = "1";
+						max_gain_val = "8";
+						min_hdr_ratio = "1";
+						max_hdr_ratio = "1";
+						min_framerate = "1";
+						max_framerate = "45";
+						min_exp_time = "10"; /* 1ms */
+						max_exp_time = "5000"; /* 500ms */
+					};
+					mode5 {		// MODE_1920X1080@30fps
+						mclk_khz = "24000";
+						num_lanes = CAM_LANES_STRING;
+						tegra_sinterface = TEGRA_SINTERFACE;
+						vc_id = LOCAL_VC_ID;
+						phy_mode = "DPHY";
+						discontinuous_clk = "no";
+						dpcm_enable = "false";
+						cil_settletime = "0";
+						dynamic_pixel_bit_depth = "16";
+						csi_pixel_bit_depth = "16";
+						mode_type = "yuv";
+						pixel_phase = "uyvy";
+						lane_polarity=LANE_POLARITY;
+						active_w = "1920";
+						active_h = "1080";
+						readout_orientation = "0";
+						deskew_initial_enable = "false";
+						pix_clk_hz = PIXEL_CLK_HZ;
+						/* Below mode parameter not used for econ UYVY camera sensor */ 
+						line_length = "1920";
+						inherent_gain = "1";
+						mclk_multiplier = "6.67";
+
+						min_gain_val = "1";
+						max_gain_val = "8";
+						min_hdr_ratio = "1";
+						max_hdr_ratio = "1";
+						min_framerate = "1";
+						max_framerate = "30";
+						min_exp_time = "10"; /* 1ms */
+						max_exp_time = "5000"; /* 500ms */
+					};

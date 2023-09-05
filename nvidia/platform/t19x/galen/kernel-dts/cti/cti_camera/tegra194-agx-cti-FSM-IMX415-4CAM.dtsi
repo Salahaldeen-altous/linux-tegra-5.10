@@ -1,0 +1,275 @@
+/*
+ * tegra194-camera-imx415.dtsi - imx415 sensor device tree
+ *
+ * Copyright (c) 2019. FRAMOS.  All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/* camera control gpio definitions */
+#include "tegra194-cti-camera-fsm-imx415-4cam-header.dtsi"
+#include "tegra194-cti-fsm-imx415-modes-header.dtsi"
+#include "tegra194-cti-camera-4cam-base.dtsi"
+
+
+/* camera control gpio definitions */
+#define CAM0_RST	TEGRA194_MAIN_GPIO(H, 3)
+#define CAM0_PWDN   TEGRA194_MAIN_GPIO(H, 6)
+#define CRESETB     TEGRA194_MAIN_GPIO(T, 5)
+#define CAMERA_I2C_MUX_BUS(x) (0x1E + x)
+
+/ {
+	tegra-camera-platform {
+		compatible = "nvidia, tegra-camera-platform";
+
+		TEGRA_CAM_PLAT_DATA
+	};
+	
+	framos_platform_adapter {
+		cam,use-cam-gpio = "true"; 
+    };
+};
+
+/{
+	I2C_ADDR {
+		I2C_EXPANDER_ADDR {
+			compatible = "nxp,pca9548";
+		    reg = <0x70>;
+		    #address-cells = <1>;
+		    #size-cells = <0>;
+		    skip_mux_detect;
+            vcc-supply = <&battery_reg>;
+            force_bus_start = <CAMERA_I2C_MUX_BUS(0)>;
+            status = "okay";
+			
+			I2C0 {
+				reg = <0>;
+			    i2c-mux,deselect-on-exit;
+			    #address-cells = <1>;
+			    #size-cells = <0>;
+                		status = "okay";			
+				I2C0_NODE0 {
+					devnode = "video0";
+
+                    clocks = <&bpmp_clks TEGRA194_CLK_EXTPERIPH1>,
+						<&bpmp_clks TEGRA194_CLK_EXTPERIPH1>;
+                    clock-names = "extperiph1", "pllp_grtba";
+                    mclk = "extperiph1";
+                    clock-frequency = <37125000>;
+                    reset-gpios = <&tegra_main_gpio CAM0_RST GPIO_ACTIVE_HIGH>;
+					pwdn-gpios = <&tegra_main_gpio CAM0_PWDN GPIO_ACTIVE_HIGH>;
+					CAM_DATA
+					mode0 {
+						tegra_sinterface = I2C0_NODE0_SINTERFACE;
+						num_lanes = NUM_OF_LANES0;
+						SENSOR_MODE0
+					};
+
+					mode1 {
+						tegra_sinterface = I2C0_NODE0_SINTERFACE;
+						num_lanes = NUM_OF_LANES0;
+						SENSOR_MODE1
+					};
+
+					mode2 {
+						tegra_sinterface = I2C0_NODE0_SINTERFACE;
+						num_lanes = NUM_OF_LANES0;
+						SENSOR_MODE2
+					};
+				
+					mode3 {
+						tegra_sinterface = I2C0_NODE0_SINTERFACE;
+						num_lanes = NUM_OF_LANES0;
+						SENSOR_MODE3
+					};
+				
+					mode4 {
+						tegra_sinterface = I2C0_NODE0_SINTERFACE;
+						num_lanes = NUM_OF_LANES0;
+						SENSOR_MODE4
+					};
+				};
+			};
+            
+			I2C1 {
+				reg = <2>;
+			    i2c-mux,deselect-on-exit;
+			    #address-cells = <1>;
+			    #size-cells = <0>;
+                status = "okay";
+				I2C1_NODE0 {
+					devnode = "video2";
+
+
+                    clocks = <&bpmp_clks TEGRA194_CLK_EXTPERIPH1>,
+						<&bpmp_clks TEGRA194_CLK_EXTPERIPH1>;
+                    clock-names = "extperiph1", "pllp_grtba";
+                    mclk = "extperiph1";
+                    clock-frequency = <37125000>;
+                    reset-gpios = <&tegra_main_gpio CAM0_RST GPIO_ACTIVE_HIGH>;
+					pwdn-gpios = <&tegra_main_gpio CAM0_PWDN GPIO_ACTIVE_HIGH>;
+					CAM_DATA
+					mode0 {
+						tegra_sinterface = I2C1_NODE0_SINTERFACE;
+						num_lanes = NUM_OF_LANES1;						
+						SENSOR_MODE0
+					};
+
+					mode1 {
+						tegra_sinterface = I2C1_NODE0_SINTERFACE;
+						num_lanes = NUM_OF_LANES1;
+						SENSOR_MODE1
+					};
+
+					mode2 {
+						tegra_sinterface = I2C1_NODE0_SINTERFACE;
+						num_lanes = NUM_OF_LANES1;
+						SENSOR_MODE2
+					};
+				
+					mode3 {
+						tegra_sinterface = I2C1_NODE0_SINTERFACE;
+						num_lanes = NUM_OF_LANES1;
+						SENSOR_MODE3
+					};
+				
+					mode4 {
+						tegra_sinterface = I2C1_NODE0_SINTERFACE;
+						num_lanes = NUM_OF_LANES1;
+						SENSOR_MODE4
+					};	
+				};
+			};
+			
+			I2C2 {
+				reg = <4>;
+			    i2c-mux,deselect-on-exit;
+			    #address-cells = <1>;
+			    #size-cells = <0>;
+                status = "okay";
+				
+				I2C2_NODE0 {
+					devnode = "video3";
+
+					clocks = <&bpmp_clks TEGRA194_CLK_EXTPERIPH1>,
+						<&bpmp_clks TEGRA194_CLK_EXTPERIPH1>;
+                    clock-names = "extperiph1", "pllp_grtba";
+                    mclk = "extperiph1";
+                    clock-frequency = <37125000>;
+                    reset-gpios = <&tegra_main_gpio CAM0_RST GPIO_ACTIVE_HIGH>;
+					pwdn-gpios = <&tegra_main_gpio CAM0_PWDN GPIO_ACTIVE_HIGH>;
+					CAM_DATA
+					mode0 {
+						tegra_sinterface = I2C2_NODE0_SINTERFACE;
+						num_lanes = NUM_OF_LANES2;
+						SENSOR_MODE0
+					};
+
+					mode1 {
+						tegra_sinterface = I2C2_NODE0_SINTERFACE;
+						num_lanes = NUM_OF_LANES2;
+						SENSOR_MODE1
+					};
+
+					mode2 {
+						tegra_sinterface = I2C2_NODE0_SINTERFACE;
+						num_lanes = NUM_OF_LANES2;
+						SENSOR_MODE2
+					};
+				
+					mode3 {
+						tegra_sinterface = I2C2_NODE0_SINTERFACE;
+						num_lanes = NUM_OF_LANES2;
+						SENSOR_MODE3
+					};
+				
+					mode4 {
+						tegra_sinterface = I2C2_NODE0_SINTERFACE;
+						num_lanes = NUM_OF_LANES2;
+						SENSOR_MODE4
+					};
+				};
+			};
+            
+            I2C3 {
+				reg = <6>;
+			    i2c-mux,deselect-on-exit;
+			    #address-cells = <1>;
+			    #size-cells = <0>;
+                status = "okay";
+				
+				I2C3_NODE0 {
+					devnode = "video4";
+
+                    clocks = <&bpmp_clks TEGRA194_CLK_EXTPERIPH1>,
+                                                <&bpmp_clks TEGRA194_CLK_EXTPERIPH1>;
+
+
+                    clock-names = "extperiph1", "pllp_grtba";
+                    mclk = "extperiph1";
+                    clock-frequency = <37125000>;
+                    reset-gpios = <&tegra_main_gpio CAM0_RST GPIO_ACTIVE_HIGH>;
+					pwdn-gpios = <&tegra_main_gpio CAM0_PWDN GPIO_ACTIVE_HIGH>;
+					CAM_DATA
+					mode0 {
+						tegra_sinterface = I2C3_NODE0_SINTERFACE;
+						num_lanes = NUM_OF_LANES3;
+						SENSOR_MODE0
+					};
+
+					mode1 {
+						tegra_sinterface = I2C3_NODE0_SINTERFACE;
+						num_lanes = NUM_OF_LANES3;
+						SENSOR_MODE1
+					};
+
+					mode2 {
+						tegra_sinterface = I2C3_NODE0_SINTERFACE;
+						num_lanes = NUM_OF_LANES3;
+						SENSOR_MODE2
+					};
+				
+					mode3 {
+						tegra_sinterface = I2C3_NODE0_SINTERFACE;
+						num_lanes = NUM_OF_LANES3;
+						SENSOR_MODE3
+					};
+				
+					mode4 {
+						tegra_sinterface = I2C3_NODE0_SINTERFACE;
+						num_lanes = NUM_OF_LANES3;
+						SENSOR_MODE4
+					};
+                };
+            };
+		};
+	};
+		gpio@2200000 {
+					camera-control-output-low {
+						gpio-hog;
+						output-low;
+						gpios = <CAM0_RST 0>;
+						label = "cam0-rst";
+						status = "okay";
+					};
+					camera-control-output-high {
+						gpio-hog;
+						output-high;
+						gpios = <CAM0_PWDN 0 CRESETB 0>;
+						label = "cam0-pwdn", "cresetb";
+						status = "okay";
+					};
+				};
+
+};

@@ -1,0 +1,287 @@
+/*
+ * tegra194-camera-imx415.dtsi - imx415 sensor device tree
+ *
+ * Copyright (c) 2019. FRAMOS.  All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/* camera control gpio definitions */
+#include "tegra194-cti-camera-fsm-imx415-3cam-1mux-header.dtsi"
+#include "tegra194-cti-fsm-imx415-modes-header.dtsi"
+#include "tegra194-cti-camera-3cam-1mux-base.dtsi"
+#include "tegra194-xavier-nx-cti-NGX007-FSM-3CAM-base.dtsi"
+
+
+/* camera control gpio definitions */
+/ {
+	tegra-camera-platform {
+		compatible = "nvidia, tegra-camera-platform";
+
+		/**
+		* Physical settings to calculate max ISO BW
+		*
+		* num_csi_lanes = <>;
+		* Total number of CSI lanes when all cameras are active
+		*
+		* max_lane_speed = <>;
+		* Max lane speed in Kbit/s
+		*
+		* min_bits_per_pixel = <>;
+		* Min bits per pixel
+		*
+		* vi_peak_byte_per_pixel = <>;
+		* Max byte per pixel for the VI ISO case
+		*
+		* vi_bw_margin_pct = <>;
+		* Vi bandwidth margin in percentage
+		*
+		* max_pixel_rate = <>;
+		* Max pixel rate in Kpixel/s for the ISP ISO case
+		*
+		* isp_peak_byte_per_pixel = <>;
+		* Max byte per pixel for the ISP ISO case
+		*
+		* isp_bw_margin_pct = <>;
+		* Isp bandwidth margin in percentage
+		*/
+		num_csi_lanes = <12>;
+		max_lane_speed = <1500000>;
+		min_bits_per_pixel = <10>;
+		vi_peak_byte_per_pixel = <2>;
+		vi_bw_margin_pct = <25>;
+		max_pixel_rate = <240000>;
+		isp_peak_byte_per_pixel = <5>;
+		isp_bw_margin_pct = <25>;
+	};
+};
+
+/{
+	i2c@3180000 {
+		tca9548@70 {
+			i2c@0 {
+				imx415_a@1a {
+					devnode = "video0";
+
+					physical_w = "15.00";
+					physical_h = "12.50";
+
+					/* Define any required hw resources needed by driver */
+				    /* ie. clocks, io pins, power sources */
+                    clocks = <&bpmp_clks TEGRA194_CLK_EXTPERIPH1>,
+						<&bpmp_clks TEGRA194_CLK_EXTPERIPH1>;
+                    clock-names = "extperiph1", "pllp_grtba";
+                    mclk = "extperiph1";
+                    clock-frequency = <37125000>;
+                    reset-gpios = <&gpio_i2c_cam 0 GPIO_ACTIVE_HIGH>;
+
+			    /* Defines number of frames to be dropped by driver internally after applying */
+			    /* sensor crop settings. Some sensors send corrupt frames after applying */
+			    /* crop co-ordinates */
+			    post_crop_frame_drop = "0";
+
+			    /* Convert Gain to unit of dB (decibel) befor passing to kernel driver */
+			    use_decibel_gain = "true";
+
+			    /* if true, delay gain setting by one frame to be in sync with exposure */
+			    delayed_gain = "false";
+
+			    /* enable CID_SENSOR_MODE_ID for sensor modes selection */
+			    use_sensor_mode_id = "false";
+				mode0 {
+					num_lanes = NUM_OF_LANES0;
+					tegra_sinterface = I2C0_NODE0_SINTERFACE;
+                                        pix_clk_hz = PIX_CLK_HZ0;
+					vc_id = "0";
+					SENSOR_MODE1
+				};
+
+				mode1 {
+					num_lanes = NUM_OF_LANES0;
+					tegra_sinterface = I2C0_NODE0_SINTERFACE;
+                                        pix_clk_hz = PIX_CLK_HZ0;
+					vc_id = "0";
+					SENSOR_MODE2
+				};
+
+				mode2 {
+					num_lanes = NUM_OF_LANES0;
+					tegra_sinterface = I2C0_NODE0_SINTERFACE;
+                                        pix_clk_hz = PIX_CLK_HZ0;
+					vc_id = "0";
+					SENSOR_MODE3
+				};
+				mode3 {
+					num_lanes = NUM_OF_LANES0;
+					tegra_sinterface = I2C0_NODE0_SINTERFACE;
+                                        pix_clk_hz = PIX_CLK_HZ0;
+					vc_id = "0";
+					SENSOR_MODE4
+				};
+
+				/*mode4 {
+					num_lanes = NUM_OF_LANES0;
+					tegra_sinterface = I2C0_NODE0_SINTERFACE;
+                                        pix_clk_hz = PIX_CLK_HZ0;
+					vc_id = "0";
+					SENSOR_MODE4
+				};*/
+
+				};
+			};
+            
+			i2c@1 {
+				imx415_c@1a {
+					devnode = "video2";
+
+					physical_w = "15.00";
+					physical_h = "12.50";
+
+					/* Define any required hw resources needed by driver */
+				    /* ie. clocks, io pins, power sources */
+                    clocks = <&bpmp_clks TEGRA194_CLK_EXTPERIPH1>,
+						<&bpmp_clks TEGRA194_CLK_EXTPERIPH1>;
+                    clock-names = "extperiph1", "pllp_grtba";
+                    mclk = "extperiph1";
+                    clock-frequency = <37125000>;
+                    reset-gpios = <&gpio_i2c_cam 2 GPIO_ACTIVE_HIGH>;
+
+				    /* Defines number of frames to be dropped by driver internally after applying */
+				    /* sensor crop settings. Some sensors send corrupt frames after applying */
+				    /* crop co-ordinates */
+				    post_crop_frame_drop = "0";
+
+				    /* Convert Gain to unit of dB (decibel) befor passing to kernel driver */
+				    use_decibel_gain = "true";
+
+				    /* if true, delay gain setting by one frame to be in sync with exposure */
+				    delayed_gain = "false";
+
+				    /* enable CID_SENSOR_MODE_ID for sensor modes selection */
+				    use_sensor_mode_id = "false";
+                                mode0 {
+                                        num_lanes = NUM_OF_LANES1;
+                                        tegra_sinterface = I2C1_NODE0_SINTERFACE;
+                                        pix_clk_hz = PIX_CLK_HZ1;
+                                        vc_id = "0";
+                                        SENSOR_MODE1
+                                };
+
+                                mode1 {
+                                        num_lanes = NUM_OF_LANES1;
+                                        tegra_sinterface = I2C1_NODE0_SINTERFACE;
+                                        pix_clk_hz = PIX_CLK_HZ1;
+                                        vc_id = "0";
+                                        SENSOR_MODE2
+                                };
+
+                                mode2 {
+                                        num_lanes = NUM_OF_LANES1;
+                                        tegra_sinterface = I2C1_NODE0_SINTERFACE;
+                                        pix_clk_hz = PIX_CLK_HZ1;
+                                        vc_id = "0";
+                                        SENSOR_MODE3
+                                };
+                                mode3 {
+                                        num_lanes = NUM_OF_LANES1;
+                                        tegra_sinterface = I2C1_NODE0_SINTERFACE;
+                                        pix_clk_hz = PIX_CLK_HZ1;
+                                        vc_id = "0";
+                                        SENSOR_MODE4
+                                };
+
+                               /* mode4 {
+                                        num_lanes = NUM_OF_LANES1;
+                                        tegra_sinterface = I2C1_NODE0_SINTERFACE;
+                                        pix_clk_hz = PIX_CLK_HZ1;
+                                        vc_id = "0";
+                                        SENSOR_MODE4
+                                };*/
+
+				};
+			};
+            
+            i2c@3 {
+				imx415_e@1a {
+					devnode = "video4";
+
+					physical_w = "15.00";
+					physical_h = "12.50";
+					
+					/* Define any required hw resources needed by driver */
+				    /* ie. clocks, io pins, power sources */
+                    clocks = <&bpmp_clks TEGRA194_CLK_EXTPERIPH1>,
+						<&bpmp_clks TEGRA194_CLK_EXTPERIPH1>;
+                    clock-names = "extperiph1", "pllp_grtba";
+                    mclk = "extperiph1";
+                    clock-frequency = <37125000>;
+                    reset-gpios = <&gpio_i2c_cam 7 GPIO_ACTIVE_HIGH>;
+
+				    /* Defines number of frames to be dropped by driver internally after applying */
+				    /* sensor crop settings. Some sensors send corrupt frames after applying */
+				    /* crop co-ordinates */
+				    post_crop_frame_drop = "0";
+
+				    /* Convert Gain to unit of dB (decibel) befor passing to kernel driver */
+				    use_decibel_gain = "true";
+
+				    /* if true, delay gain setting by one frame to be in sync with exposure */
+				    delayed_gain = "false";
+
+				    /* enable CID_SENSOR_MODE_ID for sensor modes selection */
+				    use_sensor_mode_id = "false";
+                                mode0 {
+                                        num_lanes = NUM_OF_LANES2;
+                                        tegra_sinterface = I2C2_NODE0_SINTERFACE;
+                                        pix_clk_hz = PIX_CLK_HZ2;
+					vc_id = "0";
+                                        SENSOR_MODE1
+                                };
+
+                                mode1 {
+                                        num_lanes = NUM_OF_LANES2;
+                                        tegra_sinterface = I2C2_NODE0_SINTERFACE;
+                                        pix_clk_hz = PIX_CLK_HZ2;
+                                        vc_id = "0";
+                                        SENSOR_MODE2
+                                };
+
+                                mode2 {
+                                        num_lanes = NUM_OF_LANES2;
+                                        tegra_sinterface = I2C2_NODE0_SINTERFACE;
+                                        pix_clk_hz = PIX_CLK_HZ2;
+                                        vc_id = "0";
+                                        SENSOR_MODE3
+                                };
+                                mode3 {
+                                        num_lanes = NUM_OF_LANES2;
+                                        tegra_sinterface = I2C2_NODE0_SINTERFACE;
+                                        pix_clk_hz = PIX_CLK_HZ2;
+                                        vc_id = "0";
+                                        SENSOR_MODE4
+                                };
+
+                                /*mode4 {
+                                        num_lanes = NUM_OF_LANES2;
+                                        tegra_sinterface = I2C2_NODE0_SINTERFACE;
+                                        pix_clk_hz = PIX_CLK_HZ2;
+                                        vc_id = "0";
+                                        SENSOR_MODE4
+                                };*/
+
+                		};
+         	   	};
+		};
+	};
+};

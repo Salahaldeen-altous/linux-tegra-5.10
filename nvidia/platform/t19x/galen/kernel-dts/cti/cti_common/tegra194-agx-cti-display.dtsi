@@ -1,0 +1,104 @@
+
+#include <dt-bindings/display/tegra-dc.h>
+#include <dt-bindings/display/tegra-panel.h>
+#include <t19x-common-platforms/tegra194-hdmi.dtsi>
+#include <t19x-common-platforms/tegra194-dp.dtsi>
+
+
+&head0 {
+	status = "disabled";
+	nvidia,fb-bpp = <32>;
+	nvidia,fbmem-size = <265420800>; /* 8K (7680*4320) 32bpp double buffered */
+	nvidia,fb-flags = <TEGRA_FB_FLIP_ON_PROBE>;
+	win-mask = <0x3>;
+	nvidia,fb-win = <0>;
+	nvidia,dc-connector = <&sor2>;
+	nvidia,dc-flags = <TEGRA_DC_FLAG_ENABLED>;
+};
+
+&head1 {
+	status = "disabled";
+	nvidia,fb-bpp = <32>;
+	nvidia,fbmem-size = <265420800>; /* 8K (7680*4320) 32bpp double buffered */
+	nvidia,fb-flags = <TEGRA_FB_FLIP_ON_PROBE>;
+	win-mask = <0xC>;
+	nvidia,fb-win = <2>;
+	nvidia,dc-connector = <&sor0>;
+	nvidia,dc-flags = <TEGRA_DC_FLAG_ENABLED>;
+};
+
+&head2 {
+	status = "disabled";
+	nvidia,fb-bpp = <32>;
+	nvidia,fbmem-size = <265420800>; /* 8K (7680*4320) 32bpp double buffered */
+	nvidia,fb-flags = <TEGRA_FB_FLIP_ON_PROBE>;
+	win-mask = <0x30>;
+	nvidia,fb-win = <4>;
+	nvidia,dc-connector = <&sor1>;
+	nvidia,dc-flags = <TEGRA_DC_FLAG_ENABLED>;
+};
+
+
+&sor0 {
+	status = "disabled";
+};
+
+&sor0_dp_display {
+	status = "disabled";
+	nvidia,is_ext_dp_panel = <1>;
+};
+
+&sor0_hdmi_display {
+	status = "disabled";
+	disp-default-out {
+		nvidia,out-flags = <TEGRA_DC_OUT_HOTPLUG_LOW>;
+	};
+};
+
+&sor1 {
+	status = "disabled";
+};
+
+&sor1_dp_display {
+	status = "disabled";
+	nvidia,is_ext_dp_panel = <1>;
+};
+
+&sor1_hdmi_display {
+    status = "disabled";
+    disp-default-out {
+        nvidia,out-flags = <TEGRA_DC_OUT_HOTPLUG_LOW>;
+    };
+};
+
+&sor2 {
+	status = "disabled";
+};
+
+&sor2_dp_display {
+	status = "disabled";
+	nvidia,is_ext_dp_panel = <1>;
+};
+
+&sor2_hdmi_display {
+	status = "disabled";
+	disp-default-out {
+		nvidia,out-flags = <TEGRA_DC_OUT_HOTPLUG_LOW>;
+	};
+};
+
+&dpaux0 {
+	status = "disabled";
+};
+
+&dpaux1 {
+	status = "disabled";
+};
+
+&dpaux2 {
+	status = "disabled";
+};
+
+&tegra_cec {
+	status = "disabled";
+};

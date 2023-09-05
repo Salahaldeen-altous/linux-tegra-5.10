@@ -1,0 +1,56 @@
+#include "tegra234-orin-nx-cti-NGX003.dts"
+/{
+
+nvidia,dtsfilename = "tegra234-orin-nx-cti-NGX003-usb-device.dts";
+
+xusb_padctl@3520000 {
+        status = "okay";
+        pads {
+            usb2 {
+                lanes {
+                    usb2-0 {
+                        nvidia,function = "xusb";
+                        status = "okay";
+                    };
+                    usb2-1 {
+                        nvidia,function = "xusb";
+                        status = "okay";
+                    };
+                    usb2-2 {
+                        nvidia,function = "xusb";
+                        status = "okay";
+                    };
+                };
+            };
+            usb3 {
+                lanes {
+                    usb3-0 {
+                        nvidia,function = "xusb";
+                        status = "okay";
+                    };
+                };
+            };
+        };
+
+        ports {
+            usb2-0 {
+                mode = "peripheral";
+                status = "okay";
+                /delete-node/ connector;
+
+            };
+            usb2-1 {
+                mode = "host";
+                status = "okay";
+            };
+            usb2-2 {/* Goes to M2.E */
+                mode = "host";
+                status = "okay";
+            };
+            usb3-0 {
+                nvidia,usb2-companion = <0>;
+                status = "okay";
+            };
+        };
+    };
+};

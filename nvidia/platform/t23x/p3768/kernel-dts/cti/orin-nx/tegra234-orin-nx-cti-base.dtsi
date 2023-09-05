@@ -1,0 +1,282 @@
+/*
+ * Top level DTS file for CVM:P3767-0000 and CVB:P3509-a02-0000.
+ *
+ * Copyright (c) 2021-2022, NVIDIA CORPORATION.  All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ */
+
+/dts-v1/;
+#include <dt-bindings/gpio/tegra234-gpio.h>
+#include "dt-bindings/input/input.h"
+#include "../../tegra234-dcb-p3767-0000-hdmi.dtsi"
+#include <tegra234-soc/mods-simple-bus.dtsi>
+#include <t234-common-cvm/tegra234-cpuidle.dtsi>
+#include "../../cvm/tegra234-p3767-0000.dtsi"
+
+#include "../cti_common/tegra234-orin-nx-cti-thermal.dtsi"
+#include "../cti_common/tegra234-orin-nx-cti-power-tree.dtsi"
+
+
+
+/ {
+	nvidia,dtbbuildtime = __DATE__, __TIME__;
+	compatible = "nvidia,p3509-0000+p3767-0000", "nvidia,p3767-0000", "nvidia,tegra234", "nvidia,tegra23x";
+	model = "NVIDIA Orin NX Developer Kit";
+	
+    aliases {
+        rtc0 = &tegra_rtc;
+        rtc1 = &vrs_rtc;
+    };
+
+
+	gpio-keys {
+		compatible = "gpio-keys";
+		gpio-keys,name = "gpio-keys";
+		status = "okay";
+
+		forcerecovery {
+			label = "force-recovery";
+			gpios = <&tegra_main_gpio TEGRA234_MAIN_GPIO(G, 0) GPIO_ACTIVE_LOW>;
+			linux,code = <BTN_1>;
+		};
+
+		power_key {
+			label = "power-key";
+			gpios = <&tegra_aon_gpio TEGRA234_AON_GPIO(EE, 4) GPIO_ACTIVE_LOW>;
+			linux,code = <KEY_POWER>;
+			gpio-key,wakeup;
+		};
+	};
+
+	eeprom-manager {
+		data-size = <0x100>;
+		bus@0 {
+			i2c-bus = <&gen1_i2c>;
+			eeprom@1 {
+			slave-address = <0x57>;
+				label = "cvb";
+			};
+		};
+
+		bus@1 {
+			i2c-bus = <&gen2_i2c>;
+			eeprom@1 {
+				slave-address = <0x50>;
+				label = "super-module";
+			};
+		};
+	};
+	xusb_padctl: xusb_padctl@3520000 {
+		status = "okay";
+		pads {
+			usb2 {
+				lanes {
+					usb2-0 {
+						nvidia,function = "xusb";
+						status = "okay";
+					};
+					usb2-1 {
+						nvidia,function = "xusb";
+						status = "okay";
+					};
+					usb2-2 {
+						nvidia,function = "xusb";
+						status = "okay";
+					};
+				};
+			};
+			usb3 {
+				lanes {
+					usb3-0 {
+						nvidia,function = "xusb";
+						status = "okay";
+					};
+				};
+			};
+		};
+
+		ports {
+			usb2-0 {
+				mode = "otg";
+				status = "okay";
+				usb-role-switch;
+				connector {
+					/* NOTE: PN: While the Physical connector is Type-C we are using the 
+					 * microUSB driver as the HW uses the older OTG_ID/VBUS_DET gpio
+					 * for indicating role switchs
+					 */
+					compatible = "gpio-usb-b-connector", "usb-b-connector";
+					label = "micro-USB";
+					type = "micro";
+					vbus-gpios = <&tegra_main_gpio TEGRA234_MAIN_GPIO(Z, 1) GPIO_ACTIVE_HIGH>;
+					id-gpios = <&tegra_aon_gpio TEGRA234_AON_GPIO(EE, 2) GPIO_ACTIVE_HIGH>;				
+				};
+				
+			};
+			usb2-1 {
+				mode = "host";
+				status = "okay";
+			};
+			usb2-2 {/* Goes to M2.E */
+				mode = "host";
+				status = "okay";
+			};
+			usb3-0 {
+				nvidia,usb2-companion = <0>;
+				status = "okay";
+			};
+		};
+	};
+
+	tegra_xudc: xudc@3550000 {
+		status = "okay";
+		phys =	<&{/xusb_padctl@3520000/pads/usb2/lanes/usb2-0}>,
+				<&{/xusb_padctl@3520000/pads/usb3/lanes/usb3-0}>;
+		phy-names = "usb2-0", "usb3-0";
+		nvidia,xusb-padctl = <&xusb_padctl>;
+	};
+
+	tegra_xhci: xhci@3610000 {
+		status = "okay";
+		phys =	<&{/xusb_padctl@3520000/pads/usb2/lanes/usb2-0}>,
+				<&{/xusb_padctl@3520000/pads/usb2/lanes/usb2-1}>,
+				<&{/xusb_padctl@3520000/pads/usb2/lanes/usb2-2}>,
+				<&{/xusb_padctl@3520000/pads/usb3/lanes/usb3-0}>;
+		phy-names = "usb2-0", "usb2-1", "usb2-2", "usb3-0";
+		nvidia,xusb-padctl = <&xusb_padctl>;
+	};
+
+    pcie@14100000 {/* C1 - M.2 Key-E */
+        status = "okay";
+        phys = <&p2u_hsio_3>;
+        phy-names = "p2u-0";
+    };
+
+    pcie@14160000 {/* C4 - M2 Key M */
+        status = "okay";
+        phys = <&p2u_hsio_4>, <&p2u_hsio_5>, <&p2u_hsio_6>,
+               <&p2u_hsio_7>;
+        phy-names = "p2u-0", "p2u-1", "p2u-2", "p2u-3";
+    };
+
+    pcie@140a0000 {/* C8 - Ethernet */
+        status = "okay";
+
+        nvidia,pex-wake-gpios = <&tegra_main_gpio TEGRA234_MAIN_GPIO(L, 2) GPIO_ACTIVE_LOW>;
+    };
+
+
+	spi@3210000{ /* SPI1 in 40 pin conn */
+		status = "okay";
+		spi@0 { /* chip select 0 */
+			compatible = "tegra-spidev";
+			reg = <0x0>;
+			spi-max-frequency = <50000000>;
+			controller-data {
+				nvidia,enable-hw-based-cs;
+				nvidia,rx-clk-tap-delay = <0x10>;
+				nvidia,tx-clk-tap-delay = <0x0>;
+			};
+		};
+	};
+
+	spi@3230000{ /* SPI3 in 40 pin conn */
+		status = "okay";
+		spi@0 { /* chip select 0 */
+			compatible = "tegra-spidev";
+			reg = <0x0>;
+			spi-max-frequency = <50000000>;
+			controller-data {
+				nvidia,enable-hw-based-cs;
+				nvidia,rx-clk-tap-delay = <0x10>;
+				nvidia,tx-clk-tap-delay = <0x0>;
+			};
+		};
+	};
+    //dev/ttyTHS4
+	serial@3140000 {
+		/* UARTE, Goes to M2.E and also some of the pins to bootstrap */
+		status = "disabled";
+	};
+    //dev/ttyTHS3
+	serial@3130000 {
+		status = "disabled";
+	};
+	//dev/ttyTHS1
+	serial@3110000 {
+		status = "disabled";
+	};
+    //dev/ttyTHS0
+	serial@3100000 {/* UARTA, for 40 pin header */
+		status = "disabled";
+	};
+
+	mttcan@c310000 {
+		status = "okay";
+	};
+	
+	mttcan@c320000 { //orin-nx only has one can
+		status = "disabled";
+	};
+
+
+
+
+	serial@31d0000 {/* UARTI - SBSA */
+		status = "okay";
+	};
+
+	tachometer@39c0000 {
+		status = "okay";
+		upper-threshold = <0xfffff>;
+		lower-threshold = <0x0>;
+	};
+
+	pwm@3280000 {/* PWM1 40pin header, pin 15 */
+		status = "disabled";
+	};
+
+
+	pwm@32a0000 {/* PWM3 - FAN */
+		status = "okay";
+	};
+
+	pwm@c340000 { /* PWM4 - OVR */
+		status = "disabled";
+	};
+
+	pwm@32c0000 {/* PWM5 40 pin header, pin 33 */
+		status = "okay";
+	};
+
+	pwm@32d0000 {/* PWM6 OVR */
+		status = "disabled";
+	};
+    //PWM7
+    pwm@32e0000{
+        status = "okay";
+    };
+	
+    bluedroid_pm {
+		status = "disabled";
+	};
+
+	display@13800000 {
+		status = "okay";
+		os_gpio_hotplug_a = <&tegra_main_gpio TEGRA234_MAIN_GPIO(M, 0) GPIO_ACTIVE_HIGH>;
+	};	
+	
+	
+	
+
+};
+
+

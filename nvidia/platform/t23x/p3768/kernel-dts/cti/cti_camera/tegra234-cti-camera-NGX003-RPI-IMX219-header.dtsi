@@ -1,0 +1,41 @@
+#define I2C_ADDR					i2c@3180000
+#define NVCSI_ADDR					nvcsi@15a00000
+#define I2C_EXPANDER_ADDR			tca9546@70
+#define NUM_MIPI_CHAN   			2
+#define BUS_WIDTH 					2
+#define COMPATIBLE_STRING			"sony,imx219"
+
+#define I2C0 						i2c@0
+#define I2C1 						i2c@1			
+
+#define I2C0_NODE					rbpcv2_imx219_a@10
+#define I2C1_NODE					rbpcv2_imx219_c@10
+
+#define I2C_NODE_REG				0x10
+
+#define SENSOR_MODEL				"imx219"
+
+#define VI_CSI_PORT_INDEX0			0
+#define VI_CSI_PORT_INDEX1			2
+
+#define  NUM_OF_LANES   "2"
+
+#define MODULE0_BADGE    "jakku_front_RBP194"
+#define MODULE1_BADGE    "jakku_rear_RBP194"
+
+#define MODULE0_DEVNAME				"imx219 9-0010"
+#define MODULE1_DEVNAME				"imx219 10-0010"
+
+#define I2C0_NODE_SINTERFACE 		"serial_a"
+#define I2C1_NODE_SINTERFACE 		"serial_c"
+
+#define LANE_POLARITY0              lane_polarity = "6";
+#define LANE_POLARITY1              lane_polarity = "0";
+
+#define PROC_DEVICE_TREE_MODULE0	"/proc/device-tree/i2c@3180000/tca9546@70/i2c@0/rbpcv2_imx219_a@10"
+#define PROC_DEVICE_TREE_MODULE1	"/proc/device-tree/i2c@3180000/tca9546@70/i2c@1/rbpcv2_imx219_c@10"
+
+/{
+    nvidia,dtsfilename = "tegra194-cti-camera-NGX003-RPI-IMX219-header.dtsi";
+    nvidia,dtbbuildtime = __DATE__, __TIME__;
+};

@@ -1,0 +1,376 @@
+/*
+ * tegra234-p3737-camera-imx304-J5-4lane-overlay.dts - IMX304 sensor device tree
+ *
+ * Copyright (c) 2022. FRAMOS. All right reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ */
+
+#include "tegra234-orin-nx-cti-NGX007.dts"
+//#include "tegra234-orin-nx-cti-rpi-imx219-modes-header.dtsi"
+
+#include "dt-bindings/gpio/tegra234-gpio.h"
+#include "dt-bindings/clock/tegra234-clock.h"
+
+#define CAM0_PWDN	TEGRA234_MAIN_GPIO(H, 6)
+#define CAM1_PWDN	TEGRA234_MAIN_GPIO(AC, 0)
+
+/* PCA9539 Pxx bus-port define*/
+#define CAM0_RST_0      0
+#define CAM1_RST_0      2
+#define CAM2_RST_0      4
+#define CAM0_PWDN_1     1 //creset camA
+#define CAM1_PWDN_1     3 //creset camB
+#define CAM2_PWDN_0     5
+#define CAM2_PWDN_1     6
+#define CAM3_RST_0      7
+#define CAM3_PWDN_0     8
+#define CAM3_PWDN_1     9 //creset camC
+#define MIPI_SW_SEL     10 // P12
+
+#define CAMERA_I2C_MUX_BUS(x) (0x1E + x)
+
+/ {
+		nvidia,dtsfilename = "tegra234-orin-nx-cti-NGX007-FSM-IMX304-4CAM.dts";
+		
+		
+		
+		//GPIO controller nodes
+		
+		i2c@3180000{
+			gpio_i2c_cam: gpio@77 {
+				status = "okay";
+				compatible = "ti,tca9539";
+				reg = <0x77>;
+				gpio-controller;
+				#gpio-cells = <2>;
+				#address-cells = <1>;
+				#size-cells = <0>;
+				vcc-supply = <&vdd_5v_sys>; //battery_reg
+				camera-rst{
+					gpio-hog;
+					output-low;
+					gpios = <0 0 2 0 4 0 7 0 10 0>;
+					label = "cam0_rst", "cam1_rst", "cam2_rst", "cam3_rst", "mipi_sel";
+				};
+				camera-pwr{
+					gpio-hog;
+					output-high;
+					gpios = <1 0 3 0 5 0 6 0 8 0 9 0>;
+					label = "cam0_pw1", "cam1_pw1", "cam2_pw0", "cam2_pw1", "cam3_pw0", "cam3_pw1";
+				};
+			};
+		};
+	
+		framos_platform_adapter {
+			cam,use-cam-gpio = "true"; 
+		};
+		
+		gpio@2200000 {
+			status = "okay";
+			camera-control-output-low {
+				gpio-hog;
+				output-low;
+				gpios = <CAM0_PWDN 0 CAM1_PWDN 0>;
+				label = "cam0-pwdn", "cam1-pwdn";
+				status = "okay";
+				};
+		};
+			
+		tegra-capture-vi {
+			num-channels = <1>;
+			status = "okay";
+			ports {
+				#address-cells = <1>;
+				#size-cells = <0>;
+				port@0 {
+					status = "okay";
+					reg = <0>;
+					vi_in0: endpoint {
+						//vc-id=<0>
+						status = "okay";
+						port-index = <0>;
+						bus-width = <4>;
+						remote-endpoint = <&csi_out0>;
+					};
+				};
+
+			};
+		};
+
+	host1x@13e00000 {
+		nvcsi@15a00000 {
+			num-channels = <1>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "okay";
+			channel@0 {
+				status = "okay";
+				reg = <0>;
+				ports {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					status = "okay";
+					port@0 {
+						status = "okay";
+						reg = <0>;
+						csi_in0: endpoint@0 {
+							status = "okay";
+							port-index = <0>;
+							bus-width = <4>;
+							remote-endpoint = <&vi_out0>;
+						};
+					};
+					port@1 {
+						status = "okay";
+						reg = <1>;
+						csi_out0: endpoint@1 {
+							remote-endpoint = <&vi_in0>;
+						};
+					};
+				};
+			};
+
+		};
+	};
+	i2c@3180000 {
+		tca9548@70 {
+			compatible = "nxp,pca9548";
+			reg = <0x70>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+			skip_mux_detect;
+			vcc-supply = <&vdd_3v3_sys>;
+			force_bus_start = <CAMERA_I2C_MUX_BUS(0)>;
+			status = "okay";	
+			i2c@0 {
+					reg = <0>;
+					i2c-mux,deselect-on-exit;
+					#address-cells = <1>;
+					#size-cells = <0>;
+					status = "okay";
+					// lvds firmware 
+					lifmd_lvds2mipi_1_a: lifmd_lvds2mipi_1_a@22 {
+						compatible = "framos,lifmd_lvds2mipi_1";
+						reg = <0x22>;
+						device = "lifmd_lvds2mipi_1";
+						cresetb = <&gpio_i2c_cam 1 GPIO_ACTIVE_HIGH>;
+					};
+					fsm_imx304_a@1a{
+								status = "okay";
+								reg = <0x1a>;
+								compatible = "framos,imx304";
+								
+								/* Define any required hw resources needed by driver */
+								/* ie. clocks, io pins, power sources */
+								clocks = <&bpmp_clks TEGRA234_CLK_EXTPERIPH1>,
+											<&bpmp_clks TEGRA234_CLK_EXTPERIPH1>;
+								clock-names = "extperiph1", "pllp_grtba";
+								mclk = "extperiph1";
+								clock-frequency = <27000000>;
+								lifmd_lvds2mipi_1-device = <&lifmd_lvds2mipi_1_a>;
+								
+								reset-gpios = <&gpio_i2c_cam 0 GPIO_ACTIVE_HIGH>;
+								pwdn-gpios = <&tegra_main_gpio CAM0_PWDN GPIO_ACTIVE_HIGH>;
+								
+								//vana-supply = <&p3737_avdd_cam_2v8>;
+								//vif-supply = <&vdd_1v8_sys>;
+
+								devnode = "video0";
+
+								physical_w = "15.00";
+								physical_h = "12.50";
+
+								sensor_model ="imx304";	
+
+								//avdd-reg = "vana";
+								//iovdd-reg = "vif"; 
+								
+								post_crop_frame_drop = "0";
+								use_decibel_gain = "true";
+								delayed_gain = "false";
+								use_sensor_mode_id = "false";
+
+								mode0 { //
+									mclk_khz = "37125";
+									num_lanes = "4";
+									tegra_sinterface = "serial_a";
+									phy_mode = "DPHY";
+									discontinuous_clk = "no";
+									dpcm_enable = "false";
+									cil_settletime = "0";
+									active_w = "4112";
+									active_h = "3008";
+
+									lane_polarity = "6";
+//									mclk_multiplier = "13"; //12.8
+									
+									dynamic_pixel_bit_depth = "12";
+									csi_pixel_bit_depth = "12";
+									mode_type = "bayer";
+									pixel_phase = "rggb";
+
+									readout_orientation = "0";
+									line_length = "4112";
+									inherent_gain = "1";
+									pix_clk_hz = "475200000";
+
+									gain_factor = "10";
+									min_gain_val = "0"; /* 0dB */
+									max_gain_val = "480"; /* 48dB */
+									step_gain_val = "1"; /* 0.1 */
+									default_gain = "0";
+									min_hdr_ratio = "1";
+									max_hdr_ratio = "64";
+									framerate_factor = "1000000";
+									min_framerate = "1500000"; /* 1.5 */
+									max_framerate = "24000000"; /* 24 */
+									step_framerate = "1";
+									default_framerate= "24000000";
+									exposure_factor = "1000000";
+									min_exp_time = "28"; /* us */
+									max_exp_time = "660000"; /* us */
+									step_exp_time = "1";
+									default_exp_time = "27879";/* us */
+									embedded_metadata_height = "0";
+								};
+								mode1 { //
+									mclk_khz = "37125";
+									num_lanes = "4";
+									tegra_sinterface = "serial_a";
+									phy_mode = "DPHY";
+									discontinuous_clk = "no";
+									dpcm_enable = "false";
+									cil_settletime = "0";
+									active_w = "4096";
+									active_h = "2160";
+									
+									lane_polarity = "6";
+//									mclk_multiplier = "13"; //12.8
+
+									dynamic_pixel_bit_depth = "12";
+									csi_pixel_bit_depth = "12";
+									mode_type = "bayer";
+									pixel_phase = "rggb";
+
+									readout_orientation = "0";
+									line_length = "4096";
+									inherent_gain = "1";
+									pix_clk_hz = "475200000";
+
+									gain_factor = "10";
+									min_gain_val = "0"; /* 0dB */
+									max_gain_val = "480"; /* 48dB */
+									step_gain_val = "1"; /* 0.1 */
+									default_gain = "0";
+									min_hdr_ratio = "1";
+									max_hdr_ratio = "64";
+									framerate_factor = "1000000";
+									min_framerate = "1500000"; /* 1.5 */
+									max_framerate = "31000000"; /* 31 */
+									step_framerate = "1";
+									default_framerate= "30000000";
+									exposure_factor = "1000000";
+									min_exp_time = "28"; /* us */
+									max_exp_time = "660000"; /* us */
+									step_exp_time = "1";
+									default_exp_time = "20906";/* us */
+									embedded_metadata_height = "0";
+								};
+								mode2 { //
+									mclk_khz = "37125";
+									num_lanes = "4";
+									tegra_sinterface = "serial_a";
+									phy_mode = "DPHY";
+									discontinuous_clk = "no";
+									dpcm_enable = "false";
+									cil_settletime = "0";
+									active_w = "3840";
+									active_h = "2160";
+
+									lane_polarity = "6";
+//									mclk_multiplier = "13"; //12.8
+
+									dynamic_pixel_bit_depth = "12";
+									csi_pixel_bit_depth = "12";
+									mode_type = "bayer";
+									pixel_phase = "rggb";
+
+									readout_orientation = "0";
+									line_length = "3840";
+									inherent_gain = "1";
+									pix_clk_hz = "475200000";
+
+									gain_factor = "10";
+									min_gain_val = "0"; /* 0dB */
+									max_gain_val = "480"; /* 48dB */
+									step_gain_val = "1"; /* 0.1 */
+									default_gain = "0";
+									min_hdr_ratio = "1";
+									max_hdr_ratio = "64";
+									framerate_factor = "1000000";
+									min_framerate = "1500000"; /* 1.5 */
+									max_framerate = "31000000"; /* 31 */
+									step_framerate = "1";
+									default_framerate= "30000000";
+									exposure_factor = "1000000";
+									min_exp_time = "28"; /* us */
+									max_exp_time = "660000"; /* us */
+									step_exp_time = "1";
+									default_exp_time = "10000";/* us */
+									embedded_metadata_height = "0";
+								};
+								ports {
+									#address-cells = <1>;
+									#size-cells = <0>;
+
+									port@0 {
+										reg = <0>;
+										vi_out0: endpoint {
+											port-index = <0>;
+											bus-width = <4>;
+											remote-endpoint = <&csi_in0>;
+										};
+									};
+								};
+							};
+						};
+					};	
+				};
+
+	tegra-camera-platform {
+		compatible = "nvidia, tegra-camera-platform";
+
+		num_csi_lanes = <4>;
+		max_lane_speed = <1500000>;
+		min_bits_per_pixel = <10>;
+		vi_peak_byte_per_pixel = <2>;
+		vi_bw_margin_pct = <25>;
+		max_pixel_rate = <240000>;
+		isp_peak_byte_per_pixel = <5>;
+		isp_bw_margin_pct = <25>;
+
+		modules {
+				module0 {
+				badge = "imx304_front_fsm_imx304";
+				position = "front";
+				orientation = "1";
+				status = "okay";
+				drivernode0 {
+					status = "okay";
+					pcl_id = "v4l2_sensor";
+					devname = "imx304 30-001a";
+					proc-device-tree = "/proc/device-tree/i2c@3180000/tca9548@70/i2c@0/fsm_imx304_a@1a";
+				};
+			};
+		};
+	};
+};

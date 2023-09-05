@@ -1,0 +1,6 @@
+#include "tegra194-xavier-nx-cti-NGX007.dts" 
+#include "cti_camera/tegra194-xavier-nx-cti-NGX007-FSM-IMX530-3CAM.dtsi" 
+/{
+    nvidia,dtsfilename = "tegra194-xavier-nx-cti-NGX007-FSM-IMX530-3CAM.dts";
+    nvidia,dtbbuildtime = __DATE__, __TIME__;
+};

@@ -1,0 +1,81 @@
+#define  VI_ADDR   vi@15c10000
+#define  NVCSI_ADDR   nvcsi@15a00000
+#define  NUM_MIPI_CHAN   4
+#define  COMPATIBLE_STRING   "framos,imx412"
+
+
+#define  I2C_ADDR0   i2c@3180000
+
+#define  I2C_EXPANDER_ADDR0   tca9548@70
+
+#define  BUS_WIDTH0   4
+#define  BUS_WIDTH1   2
+#define  BUS_WIDTH2   2
+#define  BUS_WIDTH3   4
+
+#define  NUM_OF_LANES0   "4"
+#define  NUM_OF_LANES1   "2"
+#define  NUM_OF_LANES2   "2"
+#define  NUM_OF_LANES3   "4"
+
+#define CSI_PORT_INDEX0  0
+#define CSI_PORT_INDEX1  2
+#define CSI_PORT_INDEX2  3
+#define CSI_PORT_INDEX3  4
+
+#define VI_PORT_INDEX0  0
+#define VI_PORT_INDEX1  2
+#define VI_PORT_INDEX2  3
+#define VI_PORT_INDEX3  4
+
+#define  I2C0   i2c@0
+#define  I2C1   i2c@1
+#define  I2C2   i2c@2
+#define  I2C3   i2c@3
+
+#define  I2C_NODE0_REG   0x1a
+#define  I2C_NODE1_REG   0x1a
+#define  SENSOR_MODEL   "imx412"
+
+
+#define  I2C0_NODE0    imx412_a@1a
+#define  I2C1_NODE0    imx412_c@1a
+#define  I2C2_NODE0    imx412_d@1a
+#define  I2C3_NODE0    imx412_e@1a
+
+#define  I2C0_NODE0_SINTERFACE    "serial_a"
+#define  I2C1_NODE0_SINTERFACE    "serial_c"
+#define  I2C2_NODE0_SINTERFACE    "serial_d"
+#define  I2C3_NODE0_SINTERFACE    "serial_e"
+
+/* pix_clk_hz moved to header since its calculated from Bus width value*/
+#define  PIX_CLK_HZ0    "1110000000"
+#define  PIX_CLK_HZ1    "555000000"
+#define  PIX_CLK_HZ2    "555000000"
+#define  PIX_CLK_HZ3    "1110000000"
+
+#define  I2C0_NODE0_PORT_INDEX    0
+#define  I2C1_NODE0_PORT_INDEX    2
+#define  I2C2_NODE0_PORT_INDEX    3
+#define  I2C3_NODE0_PORT_INDEX    4
+
+#define MODULE0_BADGE    "imx412_front_fsm_imx412"
+#define MODULE1_BADGE    "imx412_rear_fsm_imx412"
+#define MODULE2_BADGE    "imx412_centerright_fsm_imx412"
+#define MODULE3_BADGE    "imx412_centerleft_fsm_imx412"
+
+#define MODULE0_DEVNAME  "imx412 30-001a"
+#define MODULE1_DEVNAME  "imx412 31-001a"
+#define MODULE2_DEVNAME  "imx412 32-001a"
+#define MODULE3_DEVNAME  "imx412 33-001a"
+
+#define PROC_DEVICE_TREE0  "/proc/device-tree/i2c@3180000/tca9548@70/i2c@0/imx412_a@1a"
+#define PROC_DEVICE_TREE1  "/proc/device-tree/i2c@3180000/tca9548@70/i2c@1/imx412_c@1a"
+#define PROC_DEVICE_TREE2  "/proc/device-tree/i2c@3180000/tca9548@70/i2c@2/imx412_d@1a"
+#define PROC_DEVICE_TREE3  "/proc/device-tree/i2c@3180000/tca9548@70/i2c@3/imx412_e@1a"
+
+
+/{
+nvidia,dtsfilename = "tegra194-cti-camera-imx412-4cam-1mux-1sensor-header.dtsi";
+nvidia,dtbbuildtime = __DATE__, __TIME__;
+};

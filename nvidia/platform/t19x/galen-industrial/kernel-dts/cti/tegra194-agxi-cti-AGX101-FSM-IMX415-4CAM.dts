@@ -1,0 +1,6 @@
+#include "tegra194-agxi-cti-AGX101.dts" 
+#include "../../galen/kernel-dts/cti/cti_camera/tegra194-agx-cti-FSM-IMX415-4CAM.dtsi" 
+/{
+    nvidia,dtsfilename = "tegra194-agxi-cti-AGX101-FSM-IMX415-4CAM.dts";
+    nvidia,dtbbuildtime = __DATE__, __TIME__;
+};

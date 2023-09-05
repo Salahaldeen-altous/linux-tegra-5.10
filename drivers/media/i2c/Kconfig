@@ -719,6 +719,29 @@ endmenu
 menu "Camera sensor devices"
 	visible if MEDIA_CAMERA_SUPPORT
 
+config VIDEO_ECAM
+   tristate "e-con camera support"
+   depends on I2C && VIDEO_V4L2 && VIDEO_V4L2_SUBDEV_API
+   help
+   This is a flag to enable changes required to support the
+   Video4Linux2 sensor-level driver for the e-con Systems camera.
+config VIDEO_ECAM_ISP
+   tristate "NVIDIA ISP based e-con camera support"
+   depends on I2C && VIDEO_V4L2 && VIDEO_V4L2_SUBDEV_API
+   help
+   This is a flag to enable changes required to support the
+   Video4Linux2 sensor-level driver for the e-con Systems camera
+   with NVIDIA ISP.
+
+config VIDEO_ECAM_ISP_MULTICAM
+   tristate "Multicam Features support for NVIDIA ISP based e-con Systems camera"
+   depends on I2C && VIDEO_V4L2 && VIDEO_V4L2_SUBDEV_API
+   help
+   This is a flag to enable changes required to support the Multicam features
+   such as Master/Slave Mode or Frame Sync Mode. Verify with e-con to confirm that
+   features are supported for specific sensors.
+
+
 config VIDEO_APTINA_PLL
 	tristate
 
@@ -1329,6 +1352,20 @@ config VIDEO_LM3646
 	help
 	  This is a driver for the lm3646 dual flash controllers. It controls
 	  flash, torch LEDs.
+endmenu
+
+menu "Allied Vision Drivers"
+	visible if !MEDIA_SUBDRV_AUTOSELECT || COMPILE_TEST
+
+config VIDEO_AVT_CSI2
+	tristate "Allied Vision CSI2 camera support"
+	depends on I2C && VIDEO_V4L2 && VIDEO_V4L2_SUBDEV_API
+	help
+	  This is a Video4Linux2 sensor-level driver for Allied Vision camera.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called avt_csi2.
+
 endmenu
 
 endif # VIDEO_V4L2

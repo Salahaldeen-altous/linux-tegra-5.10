@@ -1,0 +1,267 @@
+
+#include "tegra194-agx-cti-base.dtsi"
+/{
+
+    nvidia,dtsfilename = "tegra194-agx-cti-AGX924.dts";
+   
+   //!!! for first rev tx and rx lines are swapped!
+//    ethernet@2490000{
+//        status = "disabled";
+//    };
+
+
+    fixed-regulators {
+        //USB VBUS 5V
+        vdd_usb_vbus0: regulator@114 {
+            compatible = "regulator-fixed";
+            reg = <114>;
+            regulator-name = "vdd-usb-vbus0";
+            regulator-min-microvolt = <5000000>;
+            regulator-max-microvolt = <5000000>;
+            gpio = <&tegra_main_gpio TEGRA194_MAIN_GPIO(Z, 1) 0>;
+            enable-active-high;
+            vin-supply = <&battery_reg>;
+        };
+        vdd_usb_vbus1: regulator@115 {
+            compatible = "regulator-fixed";
+            reg = <114>;
+            regulator-name = "vdd-usb-vbus1";
+            regulator-min-microvolt = <5000000>;
+            regulator-max-microvolt = <5000000>;
+            gpio = <&tegra_main_gpio TEGRA194_MAIN_GPIO(Z, 2) 0>;
+            enable-active-low;
+            vin-supply = <&battery_reg>;
+
+        };
+
+     };
+
+
+
+xusb_padctl@3520000 {
+        status = "okay";
+        pads {
+            usb2 {
+                lanes {
+                    usb2-0 {
+                        status = "okay";
+                    };
+                    usb2-1 {
+                        status = "okay";
+                    };
+                    usb2-2 {
+                        status = "disabled";
+                    };
+                    usb2-3 {
+                        status = "disabled";
+                    };
+                };
+            };
+            usb3 {
+                lanes {
+                    usb3-0 {
+                        status = "okay";
+                    };
+                    usb3-1 {
+                        status = "disabled";
+                    };
+                    usb3-2 {
+                        status = "okay";
+                    };
+                    usb3-3 {
+                        status = "disabled";
+                    };
+                };
+            };
+        };
+        ports {
+            usb2-0 {
+                status = "okay";
+                vbus-supply = <&vdd_usb_vbus0>;
+            };
+            usb2-1 {
+                status = "okay";
+                vbus-supply = <&vdd_usb_vbus1>;
+            };
+            usb2-2 {
+                status = "disabled";
+            };
+            usb2-3 {
+                status = "disabled";
+                vbus-supply = <&vdd_usb_vbus1>;
+            };
+            usb3-0 {
+                nvidia,usb2-companion = <1>;
+                status = "okay";
+            };
+            usb3-1{
+                status = "disabled";
+            };
+            usb3-2 {
+                nvidia,usb2-companion = <0>;
+                status = "okay";
+            };
+            usb3-3 {
+                nvidia,usb2-companion = <3>;
+                status = "disabled";
+            };
+        };
+    };
+
+    xhci@3610000 {
+        status = "okay";
+        phys = <&{/xusb_padctl@3520000/pads/usb2/lanes/usb2-0}>,
+            <&{/xusb_padctl@3520000/pads/usb2/lanes/usb2-1}>,
+            <&{/xusb_padctl@3520000/pads/usb2/lanes/usb2-3}>,
+            <&{/xusb_padctl@3520000/pads/usb2/lanes/usb2-2}>,
+            <&{/xusb_padctl@3520000/pads/usb3/lanes/usb3-0}>,
+            <&{/xusb_padctl@3520000/pads/usb3/lanes/usb3-2}>,
+            <&{/xusb_padctl@3520000/pads/usb3/lanes/usb3-3}>;
+        phy-names = "usb2-0", "usb2-1", "usb2-3", "usb2-2",
+                    "usb3-0", "usb3-2", "usb3-3";
+    };
+
+    pcie@14100000 {
+        status = "disabled";
+        phys = <&p2u_hsio_0>;
+        phy-names = "p2u-0";
+    };
+
+    pcie@14140000 {
+        status = "disabled";
+        phys = <&p2u_hsio_7>;
+        phy-names = "p2u-0";
+    };
+
+    pcie@14180000 {
+        status = "okay";
+        phys = <&p2u_hsio_2>, <&p2u_hsio_3>, <&p2u_hsio_4>, <&p2u_hsio_5>;
+        phy-names = "p2u-0", "p2u-1", "p2u-2", "p2u-3";
+
+    };
+
+    pcie@141a0000 {
+        status = "okay";
+
+        phys =  <&p2u_nvhs_0>, <&p2u_nvhs_1>, <&p2u_nvhs_2>, <&p2u_nvhs_3>;
+
+        phy-names = "p2u-0", "p2u-1", "p2u-2", "p2u-3";
+    };
+
+    spi@3210000{
+        status = "okay";
+        spidev@0 {
+            compatible = "tegra-spidev";
+            reg = <0>;
+            spi-max-frequency = <25000000>;
+        };
+    };
+	
+	//enabling i/o
+	sdhci@3400000{
+		status = "disabled";
+	};
+	
+	serial@3100000{
+		status = "okay";
+	};
+	
+	serial@3110000{
+		status = "okay";
+	};
+	
+	mttcan@c310000{
+		status = "disabled";
+	};
+	
+	mttcan@c320000{
+		status = "disabled";
+	};	
+    i2c@c240000{
+        RTC@52{
+            reg=<0x52>;
+            compatible="microcrystal,rv3028";
+        };
+
+        ptn5150@3d{
+            compatible = "cti,ptn5150";
+            reg = <0x3d>;
+            cti,optional;
+            status = "okay";
+            connector@0 {
+                compatible = "usb-c-connector";
+                label = "USB-C";
+                data-role = "host";
+                power-opmode = "1.5A";
+
+            };
+        };
+
+        ksz9897@5f{
+            compatible = "microchip,ksz9897";
+            reg=<0x5f>;
+            status="okay";
+            ports{
+                #address-cells = <1>;
+                #size-cells = <0>;
+
+                port@0{
+                    reg = <0>;
+                    label = "GBE_B";
+                };
+
+                port@1{
+                    reg = <1>;
+                    label = "ACT_LINK";
+                };
+
+                port@2{
+                    reg = <2>;
+                    label = "GBE_A";
+                };
+
+                port@3{
+                    reg = <3>;
+                    label = "i210_con";
+                };
+                port@4{
+                    reg = <4>;
+                    label = "GBE_C";
+                };
+                port@5{
+                    reg = <5>;
+                    label = "eth0";
+                };
+
+            };
+
+        };
+    
+
+    };
+};
+&tegra_rtc{
+    status = "disabled"; //disable internal rtc in favor of external rtc
+};
+//sor2
+&head0 {
+    status = "okay";
+};
+
+&sor2 {
+    status = "okay";
+    nvidia,active-panel = <&sor2_hdmi_display>;
+};
+
+&sor2_hdmi_display {
+    status = "okay";
+};
+
+&dpaux2 {
+    status = "okay";
+};
+
+&tegra_cec {
+    status = "okay";
+};
+
